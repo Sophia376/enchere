@@ -36,8 +36,8 @@ public class GestionbD {
     
     public static void creeSchema(Connection con)
             throws SQLException {
-        // je veux que le schema soit entierement crÃ©Ã© ou pas du tout
-        // je vais donc gÃ©rer explicitement une transaction
+        // je veux que le schema soit entierement cree ou pas du tout
+        // je vais donc gerer explicitement une transaction
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
             // creation des tables
@@ -52,17 +52,17 @@ public class GestionbD {
                     """);
             
             con.commit();
-            // je retourne dans le mode par dÃ©faut de gestion des transaction :
-            // chaque ordre au SGBD sera considÃ©rÃ© comme une transaction indÃ©pendante
+            // je retourne dans le mode par defaut de gestion des transaction :
+            // chaque ordre au SGBD sera considere comme une transaction independante
             con.setAutoCommit(true);
         } catch (SQLException ex) {
-            // quelque chose s'est mal passÃ©
+            // quelque chose s'est mal passe
             // j'annule la transaction
             con.rollback();
-            // puis je renvoie l'exeption pour qu'elle puisse Ã©ventuellement etre geree (message Ã  l'utilisateur...)
+            // puis je renvoie l'exeption pour qu'elle puisse eventuellement etre geree (message a  l'utilisateur...)
             throw ex;
         } finally {
-            // je reviens Ã  la gestion par dÃ©faut : une transaction pour chaque ordre SQL
+            // je reviens a  la gestion par defaut : une transaction pour chaque ordre SQL
             con.setAutoCommit(true);
         }
         
