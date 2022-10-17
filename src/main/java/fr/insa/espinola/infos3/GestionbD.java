@@ -64,18 +64,51 @@ public class GestionbD {
         } finally {
             // je reviens a  la gestion par defaut : une transaction pour chaque ordre SQL
             con.setAutoCommit(true);
-        }
+        }}
         
-        
+    public static void supprimeSchema(Connection con)
+            throws SQLException {
+        // je veux que le schema soit entierement cree ou pas du tout
+        // je vais donc gerer explicitement une transaction
+        con.setAutoCommit(false);
+        try ( Statement st = con.createStatement()) {
+            // creation des tables
+            st.executeUpdate(
+                    """
+                    drop table Clients 
+                    """);
+            
+            con.commit();
+            // je retourne dans le mode par defaut de gestion des transaction :
+            // chaque ordre au SGBD sera considere comme une transaction independante
+            con.setAutoCommit(true);
+        } catch (SQLException ex) {
+            // quelque chose s'est mal passe
+            // j'annule la transaction
+            con.rollback();
+            // puis je renvoie l'exeption pour qu'elle puisse eventuellement etre geree (message a  l'utilisateur...)
+            throw ex;
+        } finally {
+            // je reviens a  la gestion par defaut : une transaction pour chaque ordre SQL
+            con.setAutoCommit(true);
+        }      
     }
     
+   /* public static donnesUtilisateur{
+            System.out.println("Nom");
+            
+            System.out.println("Preom");
+}*/
     
     public static void main(String[] args) {
         try {
             Connection con = defautConnect();
             System.out.println("connection OK");
+            supprimeSchema(con);
+            System.out.println("Table eliminee");
             creeSchema(con);
             System.out.println("creation OK");
+            
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GestionbD.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
