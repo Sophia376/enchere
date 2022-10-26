@@ -72,7 +72,7 @@ public class GestionbD {
         // je vais donc gerer explicitement une transaction
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
-            // creation des tables
+            // suppression des tables
             st.executeUpdate(
                     """
                     drop table Clients 
