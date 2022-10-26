@@ -32,7 +32,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        Scene sc = new Scene(new Label());
+        Scene sc = new Scene(new Label("coucou"));
 //        Scene sc = new Scene(new TestFx());
         stage.setWidth(800);
         stage.setHeight(600);
