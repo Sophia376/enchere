@@ -121,30 +121,6 @@ public class GestionbD {
         }
     }
 
-    public static void afficheToutesPersonnes(Connection con)
-            throws SQLException {
-        try ( Statement st = con.createStatement()) {
-            ResultSet res = st.executeQuery(
-                    "select * from clients");
-            while (res.next()) {
-// on peut accéder à une colonne par son nom
-                int id = res.getInt("id");
-                String nom = res.getString("nom");
-// on peut aussi y accéder par son numéro
-// !! numéro 1 pour la première
-                java.sql.Date dn = res.getDate(3);
-                System.out.println(id + " : " + nom + " né le " + dn);
-            }
-        }
-    }
-
-    // public static void completeSchema(Connection con, )
-    //        throws SQLException {
-    /* public static donnesUtilisateur{
-            System.out.println("Nom");
-            
-            System.out.println("Preom");
-}*/
     public static void main(String[] args) {
         try {
             Connection con = defautConnect();
@@ -155,7 +131,6 @@ public class GestionbD {
             System.out.println("creation OK");
             createUser(con);
             System.out.println("creation2 OK");
-
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GestionbD.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
