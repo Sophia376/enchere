@@ -37,7 +37,7 @@ public class Main extends Application {
         stage.setWidth(800);
         stage.setHeight(600);
         stage.setScene(sc);
-        stage.setTitle("AmourFx");
+        stage.setTitle("Site d'enchere de ouf");
           stage.show();
     }
 
