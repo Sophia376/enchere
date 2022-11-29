@@ -4,6 +4,9 @@
  */
 package fr.insa.espinola.infos3;
 
+import static fr.insa.espinola.infos3.Users.createTableUser;
+import static fr.insa.espinola.infos3.Users.createUser;
+import static fr.insa.espinola.infos3.Users.deleteTableUser;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -37,7 +40,7 @@ public class GestionbD {
         return connectGeneralPostGres("localhost", 5439, "postgres", "postgres", "pass");
     }
 
-    public static void creeUtilisateur(Connection con)
+    /*public static void creeUtilisateur(Connection con)
             throws SQLException {
         // je veux que le schema soit entierement cree ou pas du tout
         // je vais donc gerer explicitement une transaction
@@ -119,16 +122,16 @@ public class GestionbD {
         } finally {
             con.setAutoCommit(true);
         }
-    }
+    }*/
 
     public static void main(String[] args) {
         try {
             Connection con = defautConnect();
             System.out.println("connection OK");
-            supprimeUtilisateur(con);
-            System.out.println("Table eliminee");
-            creeUtilisateur(con);
-            System.out.println("creation OK");
+            //deleteUser(con);
+            //System.out.println("Table eliminee");
+            //createTableUser(con);
+            //System.out.println("creation OK");
             createUser(con);
             System.out.println("creation2 OK");
         } catch (ClassNotFoundException ex) {
