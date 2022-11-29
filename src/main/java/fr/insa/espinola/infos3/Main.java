@@ -18,19 +18,19 @@ along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
  */
 package fr.insa.espinola.infos3;
 
-import javafx.application.Application;
+/*import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
+*/
 /**
  *
  * @author francois
- */
+ 
 public class Main extends Application {
 
-    @Override
+  /*  @Override
     public void start(Stage stage) {
         Scene sc = new Scene(new Label("coucou"));
 //        Scene sc = new Scene(new TestFx());
@@ -45,4 +45,4 @@ public class Main extends Application {
         launch();
     }
 
-}
+}*/
