@@ -6,6 +6,7 @@ package fr.insa.espinola.infos3;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -28,16 +29,11 @@ public class Users {
         this.pass = pass;
         this.codepostal = codepostal;
     }
-    
-    
-    
+        
      public static void createTableUser(Connection con)
             throws SQLException {
-        // je veux que le schema soit entierement cree ou pas du tout
-        // je vais donc gerer explicitement une transaction
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
-            // creation des tables
             st.executeUpdate(
                     """
                     create table clients (
@@ -114,5 +110,64 @@ public class Users {
             con.setAutoCommit(true);
         }
     }
+    
+    public static void afficheTousLesUtilisateur(Connection con) throws SQLException {
+        try ( Statement st = con.createStatement()) {            
+            try ( ResultSet tlu = st.executeQuery("select id,nom,prenom,email, codepostal,pass from clients")) {
+                System.out.println("liste des utilisateurs :");
+                System.out.println("------------------------");
+                while (tlu.next()) {
+                    int id = tlu.getInt("id");
+                    String nom = tlu.getString(2);
+                    String prenom = tlu.getString(3);
+                    String email = tlu.getString(4);
+                    String codepostal = tlu.getString(5);
+                    String pass = tlu.getString("pass");
+                    String mess = id + " NOM : " + nom + " PRENOM: " + prenom + " EMAIL:  " + email + " CODE POSTAL: " + codepostal+ " PASS: " + pass ;
+                    System.out.println(mess);
+                }
+            }
+        }
+    }
+    
+    /*public static boolean idUtilisateurExiste(Connection con, int id) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from fdbutilisateur where id = ?")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+
+            return res.next();
+        }
+    }
+    public static boolean nomUtilisateurExiste(Connection con, String nom) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from fdbutilisateur where nom = ?")) {
+            pst.setString(1, nom);
+            ResultSet res = pst.executeQuery();
+            return res.next();
+        }
+    }
+    public static int choisiUtilisateur(Connection con) throws SQLException {
+        boolean correspond = false;
+        int id = -1;
+        while (!correspond) {
+            System.out.println("------- choix d'un utilisateur");
+            afficheTousLesUtilisateur(con);
+            System.out.println("donnez l'identificateur de l'utilisateur :");
+            id= Lire.i();
+            correspond = idUtilisateurExiste(con, id);
+            if (!correspond) {
+                System.out.println("id invalide");
+            }
+        }
+        return id;
+    }*/
    
 }
+
+
+/* 1: iniciar secion o crear usuario
+   2a: questionarion
+   2b: incio de sesion : pass y mail
+   3: pagina principal
+*/

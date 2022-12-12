@@ -6,6 +6,7 @@ package fr.insa.espinola.infos3;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -16,7 +17,7 @@ import java.time.Instant;
  * @author Sophia
  */
 public class Objects {
-        public static void createTableObject(Connection con)
+    public static void createTableObject(Connection con)
             throws SQLException {
         // je veux que le schema soit entierement cree ou pas du tout
         // je vais donc gerer explicitement une transaction
@@ -48,11 +49,10 @@ public class Objects {
         }
     }
 
-        
     public static void deleteTableObject(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
-        try ( Statement st = con.createStatement()) { // elimination des tables
+        try ( Statement st = con.createStatement()) {
             st.executeUpdate(
                     """
                     drop table Object 
@@ -67,8 +67,7 @@ public class Objects {
             con.setAutoCommit(true);
         }
     }
-  
-    
+
     public static void createObject(Connection con) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 """
@@ -83,8 +82,8 @@ public class Objects {
             System.out.println("categorie");
             Integer categorie = Lire.i();
             System.out.println("debut");
-            Timestamp debut=  Timestamp.from(Instant.now());
-            System.out.println("fin");  // lo tengo que corregir
+            Timestamp debut = Timestamp.from(Instant.now());
+            System.out.println("fin");  /////////////////////////////////////////////////////////////////////////////// lo tengo que corregir
             String fin = Lire.S();
             System.out.println("prixbase");
             Integer prixbase = Lire.i();
@@ -99,11 +98,31 @@ public class Objects {
             con.setAutoCommit(false);
             con.commit();
             con.setAutoCommit(true);
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             con.rollback();
             throw ex;
         } finally {
             con.setAutoCommit(true);
+        }
+    }
+    
+    public static void afficheTousLesObjets(Connection con) throws SQLException {
+        try ( Statement st = con.createStatement()) {
+            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbas from clients")) {
+                System.out.println("liste des utilisateurs :");
+                System.out.println("------------------------");
+                while (tlu.next()) {
+                    int id = tlu.getInt("id");
+                    String titre = tlu.getString(2);
+                    String description = tlu.getString(3);
+                    Integer categorie = tlu.getInt(4);
+                    Timestamp debut = tlu.getTimestamp(5);
+                    Timestamp fin = tlu.getTimestamp("pass");
+                    Integer prixbase = tlu.getInt(7);
+                    String mess = id + " TITRE : " + titre + " DESCRIPTION: " + description + " CATEGORIE:  " + categorie + " CODE DEBUT: " + debut + " FIN: " + fin + " PRIXBASE: " + prixbase;
+                    System.out.println(mess);
+                }
+            }
         }
     }
 }

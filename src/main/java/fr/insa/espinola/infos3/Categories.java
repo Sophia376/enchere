@@ -11,7 +11,17 @@ package fr.insa.espinola.infos3;
 public class Categories {
     private String nom; 
 
-    public Categories() {
+    public String getNom() {
+        return nom;
     }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public Categories(String nom) {
+        this.nom = nom;
+    }
+
     
 }
