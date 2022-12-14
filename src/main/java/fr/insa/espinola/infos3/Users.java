@@ -130,38 +130,16 @@ public class Users {
         }
     }
     
-    /*public static boolean idUtilisateurExiste(Connection con, int id) throws SQLException {
+    public static boolean passUtilisateurExiste(Connection con, String pass1, String mail1) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
-                "select id from fdbutilisateur where id = ?")) {
-            pst.setInt(1, id);
+                "select pass from Clients where Email = ?  and pass=? ")) {
+            pst.setString(1, mail1);
+            pst.setString(2, pass1);
+            
             ResultSet res = pst.executeQuery();
 
             return res.next();
-        }
-    }
-    public static boolean nomUtilisateurExiste(Connection con, String nom) throws SQLException {
-        try ( PreparedStatement pst = con.prepareStatement(
-                "select id from fdbutilisateur where nom = ?")) {
-            pst.setString(1, nom);
-            ResultSet res = pst.executeQuery();
-            return res.next();
-        }
-    }
-    public static int choisiUtilisateur(Connection con) throws SQLException {
-        boolean correspond = false;
-        int id = -1;
-        while (!correspond) {
-            System.out.println("------- choix d'un utilisateur");
-            afficheTousLesUtilisateur(con);
-            System.out.println("donnez l'identificateur de l'utilisateur :");
-            id= Lire.i();
-            correspond = idUtilisateurExiste(con, id);
-            if (!correspond) {
-                System.out.println("id invalide");
-            }
-        }
-        return id;
-    }*/
+        }}
    
 }
 
