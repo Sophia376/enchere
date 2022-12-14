@@ -45,8 +45,17 @@ public class GestionbD {
         try {
             Connection con = defautConnect();
             afficheTousLesUtilisateur(con);
-           // idUtilisateurExiste(con,7);
-            //choisiUtilisateur(con);
+            System.out.println("avez vous un compte?   oui:1, non:0");
+            int c= Lire.i();
+            if (c==0){
+               createUser(con); 
+            }
+            if (c==1){
+                System.out.println("MAIL : ");
+                String nom1= Lire.S();
+                
+                
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GestionbD.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {

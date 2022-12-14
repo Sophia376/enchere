@@ -166,8 +166,14 @@ public class Users {
 }
 
 
-/* 1: iniciar sesion o crear usuario
-   2a: questionarion
-   2b: incio de sesion : pass y mail
+/* 
+
+
+   1: iniciar sesion o crear usuario
+       2a: questionario
+       2b: incio de sesion : pass y mail
    3: pagina principal
+
+
+
 */
