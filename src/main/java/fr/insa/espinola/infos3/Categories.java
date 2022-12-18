@@ -38,7 +38,7 @@ public class Categories {
                     create table Category (
                         id integer not null primary key
                         generated always as identity,
-                        nom varchar(30) not null
+                        nom varchar(30) not null unique,
                     )
                     """);
 
@@ -94,4 +94,26 @@ public class Categories {
         }
     }
 
+    /*public static void searchCategory(Connection con) throws SQLException {                    // creo que me tendria que devolver todos los objetos con la categoria seleccionada
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                insert into Category (nom)
+                values (?)
+                    """)) {
+
+            System.out.println("Nom");
+            String nom = Lire.S();
+
+            pst.setString(1, nom);
+            pst.executeUpdate();
+            con.setAutoCommit(false);
+            con.commit();
+            con.setAutoCommit(true);
+        } catch (SQLException ex) {
+            con.rollback();
+            throw ex;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }*/
 }
