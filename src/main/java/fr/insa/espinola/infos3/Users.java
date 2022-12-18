@@ -15,7 +15,7 @@ import java.sql.Statement;
  * @author Sophia
  */
 public class Users {
-    
+
     private String nom;
     private String prenom;
     private String email;
@@ -29,8 +29,8 @@ public class Users {
         this.pass = pass;
         this.codepostal = codepostal;
     }
-        
-     public static void createTableUser(Connection con)
+
+    public static void createTableUser(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
@@ -75,7 +75,7 @@ public class Users {
             con.setAutoCommit(true);
         }
     }
-    
+
     public static void createUser(Connection con) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 """
@@ -103,16 +103,35 @@ public class Users {
             con.setAutoCommit(false);
             con.commit();
             con.setAutoCommit(true);
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             con.rollback();
             throw ex;
         } finally {
             con.setAutoCommit(true);
         }
     }
-    
-    public static void afficheTousLesUtilisateur(Connection con) throws SQLException {
-        try ( Statement st = con.createStatement()) {            
+
+    /*public static void deleteUser(Connection con)
+            throws SQLException {
+        con.setAutoCommit(false);
+        try ( Statement st = con.createStatement()) { // elimination des tables
+            st.executeUpdate(
+                    """
+                    drop table Clients 
+                    """);
+
+            con.commit();
+            con.setAutoCommit(true);
+        } catch (SQLException ex) {
+            con.rollback();
+            throw ex;
+        } finally {
+            con.setAutoCommit(true);
+        }
+    }*/
+
+    public static void ShowUsers(Connection con) throws SQLException {
+        try ( Statement st = con.createStatement()) {
             try ( ResultSet tlu = st.executeQuery("select id,nom,prenom,email, codepostal,pass from clients")) {
                 System.out.println("liste des utilisateurs :");
                 System.out.println("------------------------");
@@ -123,35 +142,23 @@ public class Users {
                     String email = tlu.getString(4);
                     String codepostal = tlu.getString(5);
                     String pass = tlu.getString("pass");
-                    String mess = id + " NOM : " + nom + " PRENOM: " + prenom + " EMAIL:  " + email + " CODE POSTAL: " + codepostal+ " PASS: " + pass ;
+                    String mess = id + " NOM : " + nom + " PRENOM: " + prenom + " EMAIL:  " + email + " CODE POSTAL: " + codepostal + " PASS: " + pass;
                     System.out.println(mess);
                 }
             }
         }
     }
-    
-    public static boolean passUtilisateurExiste(Connection con, String pass1, String mail1) throws SQLException {
+
+    public static boolean VerifyConnection(Connection con, String pass1, String mail1) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 "select pass from Clients where Email = ?  and pass=? ")) {
             pst.setString(1, mail1);
             pst.setString(2, pass1);
-            
+
             ResultSet res = pst.executeQuery();
 
             return res.next();
-        }}
-   
+        }
+    }
+
 }
-
-
-/* 
-
-
-   1: iniciar sesion o crear usuario
-       2a: questionario
-       2b: incio de sesion : pass y mail
-   3: pagina principal
-
-
-
-*/
