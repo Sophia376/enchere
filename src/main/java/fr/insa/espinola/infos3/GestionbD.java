@@ -4,6 +4,9 @@
  */
 package fr.insa.espinola.infos3;
 
+import static fr.insa.espinola.infos3.Categories.createCategory;
+import static fr.insa.espinola.infos3.Categories.createTableCategory;
+import static fr.insa.espinola.infos3.Categories.deleteTableCategory;
 import static fr.insa.espinola.infos3.Users.createUser;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -41,6 +44,11 @@ public class GestionbD {
         try {
             Connection con = defautConnect();
             ShowUsers(con);
+            int i=0;
+            while ( i<=5){
+                createCategory(con);
+                i=i+1;
+            }
             System.out.println("avez vous un compte?   oui:1, non:0");
             int c = Lire.i();
             if (c == 0) {
