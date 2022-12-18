@@ -4,19 +4,14 @@
  */
 package fr.insa.espinola.infos3;
 
-import static fr.insa.espinola.infos3.Users.afficheTousLesUtilisateur;
-import static fr.insa.espinola.infos3.Users.createTableUser;
 import static fr.insa.espinola.infos3.Users.createUser;
-import static fr.insa.espinola.infos3.Users.deleteTableUser;
-import static fr.insa.espinola.infos3.Users.passUtilisateurExiste;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static fr.insa.espinola.infos3.Users.ShowUsers;
+import static fr.insa.espinola.infos3.Users.VerifyConnection;
 
 /**
  *
@@ -43,9 +38,9 @@ public class GestionbD {
     }
 
     public static void main(String[] args) {
-       try {
+        try {
             Connection con = defautConnect();
-            afficheTousLesUtilisateur(con);
+            ShowUsers(con);
             System.out.println("avez vous un compte?   oui:1, non:0");
             int c = Lire.i();
             if (c == 0) {
@@ -57,7 +52,7 @@ public class GestionbD {
                 System.out.println("PASS : ");
                 String pass1 = Lire.S();
 
-                if (passUtilisateurExiste(con, pass1, mail1) == true) {
+                if (VerifyConnection(con, pass1, mail1) == true) {
                     System.out.println("Bien");
                 } else {
                     System.out.println("Le pass ou le mail est incorrect");

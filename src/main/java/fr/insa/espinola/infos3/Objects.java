@@ -17,6 +17,7 @@ import java.time.Instant;
  * @author Sophia
  */
 public class Objects {
+
     public static void createTableObject(Connection con)
             throws SQLException {
         // je veux que le schema soit entierement cree ou pas du tout
@@ -105,8 +106,8 @@ public class Objects {
             con.setAutoCommit(true);
         }
     }
-    
-    public static void afficheTousLesObjets(Connection con) throws SQLException {
+
+    public static void ShowObjets(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
             try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbas from clients")) {
                 System.out.println("liste des utilisateurs :");
@@ -125,4 +126,5 @@ public class Objects {
             }
         }
     }
+
 }
