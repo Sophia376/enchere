@@ -84,7 +84,7 @@ public class Encheres {
                         quand timestamp without time zone not null,
                         montant integer not null,
                         sur integer not null,
-                        de integer not null,
+                        de integer not null
                     )
                     """);
 

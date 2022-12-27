@@ -116,7 +116,7 @@ public class Objets {
                         categorie integer not null,
                         proposepar integer not null,
                         debut timestamp without time zone not null,
-                        fin timestamp without time zone not null,
+                        fin timestamp without time zone not null
                     )
                     """);
 

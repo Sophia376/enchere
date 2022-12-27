@@ -54,7 +54,7 @@ public class Categories {
                     create table Categories (
                         id integer not null primary key
                         generated always as identity,
-                        nom varchar(30) not null unique,
+                        nom varchar(30) not null unique
                     )
                     """);
 

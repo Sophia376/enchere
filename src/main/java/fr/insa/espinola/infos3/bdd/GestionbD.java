@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 public class GestionbD {
     
-        public static class SGBD {
+    public static class SGBD {
 
         private String name;
         private String autoGenerateKeys;
@@ -64,7 +64,7 @@ public class GestionbD {
     public static final SGBD PostgresqlSGBD = new SGBD("PostgresQL","generated always as identity");
 
     public static SGBD curSGBD = PostgresqlSGBD;
-
+    
     public static Connection connectGeneralPostGres(String host,
             int port, String database,
             String user, String pass)
@@ -83,20 +83,114 @@ public class GestionbD {
         return connectGeneralPostGres("localhost", 5439, "postgres", "postgres", "pass");
     }
     
-    public static void creeSchema(Connection con)
+
+    
+    public static void CreerSchema(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
-            Clients.CreerTableClients(con);
-            Objets.CreerTableObjets(con);
-            Encheres.creerTableEncheres(con);
-            Categories.creerTableCategories(con);
+            Optional<String> ordrePourCodage = curSGBD.sqlOrderChangeCharsetToUTF8InCurrentDatabase();
+            if (ordrePourCodage.isPresent()) {
+                st.executeUpdate(ordrePourCodage.get());
+            }
+            
+            st.executeUpdate(
+                    """
+                    create table Clients (
+                        id integer not null primary key
+                        generated always as identity,
+                        nom varchar(30) not null,
+                        prenom varchar(30) not null,
+                        email varchar(30) not null unique,
+                        codepostal varchar(30) not null,
+                        pass varchar(30) not null
+                    )
+                    """);
+            
+            st.executeUpdate(
+                    """
+                    create table Categories (
+                        id integer not null primary key
+                        generated always as identity,
+                        nom varchar(30) not null unique
+                    )
+                    """);
+           
+            
+            st.executeUpdate(
+                    """
+                    create table Encheres (
+                        id integer not null primary key
+                        generated always as identity,
+                        quand timestamp without time zone not null,
+                        montant integer not null,
+                        sur integer not null,
+                        de integer not null
+                    )
+                    """);
+           
+            st.executeUpdate(
+                    """
+                    create table Objets (
+                        id integer not null primary key
+                        generated always as identity,
+                        titre varchar(100) not null,
+                        description varchar(200) not null,
+                        prixbase integer not null,
+                        categorie integer not null,
+                        proposepar integer not null,
+                        debut timestamp without time zone not null,
+                        fin timestamp without time zone not null
+                    )
+                    """);
+            
+            st.executeUpdate(
+                    """
+                    alter table encheres
+                        add constraint fk_encheres_de
+                        foreign key (de) references clients(id)
+                    """);
+            
+            st.executeUpdate(
+                    """
+                    alter table encheres
+                        add constraint fk_encheres_sur
+                        foreign key (sur) references objets(id)
+                    """);
+            
+            st.executeUpdate(
+                    """
+                    alter table objets
+                        add constraint fk_objets_proposepar
+                        foreign key (proposepar) references clients(id)
+                    """);
+            
+            st.executeUpdate(
+                    """
+                    alter table objets
+                        add constraint fk_objets_categorie
+                        foreign key (categorie) references categories(id)
+                    """);            
+            
+            con.commit();
+            con.setAutoCommit(true);
+            
+        } catch (SQLException ex) {
+            con.rollback();
+            throw ex;
+        } finally {
+            // je reviens à la gestion par défaut : une transaction pour
+            // chaque ordre SQL
+            con.setAutoCommit(true);
         }
     }
+    
     public static void main(String[] args) {
         try {
             
             Connection con = defautConnect();
+            //Clients.SupprimerTableClients(con);
+            CreerSchema(con);
             /*AfficherClients(con);
             int i=0;
             while ( i<=5){
