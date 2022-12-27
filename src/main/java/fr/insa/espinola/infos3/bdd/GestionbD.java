@@ -179,9 +179,73 @@ public class GestionbD {
             con.rollback();
             throw ex;
         } finally {
-            // je reviens à la gestion par défaut : une transaction pour
-            // chaque ordre SQL
             con.setAutoCommit(true);
+        }
+    }
+    
+    public static void SupprimerSchema(Connection con) throws SQLException {
+        try ( Statement st = con.createStatement()) {
+            try {
+                st.executeUpdate(
+                        """
+                    alter table encheres
+                        drop constraint fk_encheres_de
+                    """);
+                System.out.println("contrainte fk_enchere_de supp");
+            } catch (SQLException ex) {
+            }try {
+                st.executeUpdate(
+                        """
+                    alter table encheres
+                        drop constraint fk_encheres_sur
+                    """);
+                System.out.println("contrainte fk_encheres_sur supp");
+            } catch (SQLException ex) {
+            }try {
+                st.executeUpdate(
+                     """
+                    alter table objets
+                        drop constraint fk_objets_proposepar
+                    """);
+                System.out.println("contrainte fk_objets_proposepar supp");
+            } catch (SQLException ex) {
+            }try {
+                st.executeUpdate(
+                        """
+                    alter table objets
+                        drop constraint fk_objets_categorie
+                    """);
+                System.out.println("contrainte fk_objets_categorie supp");
+            } catch (SQLException ex) {
+            }try {
+                st.executeUpdate(
+                        """
+                    drop table clients
+                    """);
+                System.out.println("table clients supp");
+            } catch (SQLException ex) {
+            }try {
+                st.executeUpdate(
+                        """
+                    drop table encheres
+                    """);
+                System.out.println("table encheres supp");
+            } catch (SQLException ex) {
+            }try {
+                st.executeUpdate(
+                        """
+                    drop table categories
+                    """);
+                System.out.println("table categories supp");
+            } catch (SQLException ex) {
+            }try {
+                st.executeUpdate(
+                        """
+                    drop table objets
+                    """);
+                System.out.println("table objets supp");
+            } catch (SQLException ex) {
+            }
         }
     }
     
@@ -190,7 +254,7 @@ public class GestionbD {
             
             Connection con = defautConnect();
             //Clients.SupprimerTableClients(con);
-            CreerSchema(con);
+            SupprimerSchema(con);
             /*AfficherClients(con);
             int i=0;
             while ( i<=5){
