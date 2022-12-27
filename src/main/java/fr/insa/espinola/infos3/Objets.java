@@ -16,7 +16,7 @@ import java.time.Instant;
  *
  * @author Sophia
  */
-public class Objects {
+public class Objets {
     
     private int id;
     private String titre;
@@ -26,7 +26,7 @@ public class Objects {
     private int prixbase;
     private int proposer;
 
-    public Objects(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer) {
+    public Objets(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer) {
         this.id = id;
         this.titre = titre;
         this.description = description;
@@ -97,7 +97,7 @@ public class Objects {
         return "Objects{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", debut=" + debut + ", fin=" + fin + ", prixbase=" + prixbase + ", proposer=" + proposer + '}';
     }
     
-    public static void createTableObject(Connection con)
+    public static void CreerTableObjets(Connection con)
             throws SQLException {
         // je veux que le schema soit entierement cree ou pas du tout
         // je vais donc gerer explicitement une transaction
@@ -129,7 +129,7 @@ public class Objects {
         }
     }
 
-    public static void deleteTableObject(Connection con)
+    public static void SupprimerTableObjets(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
@@ -148,7 +148,7 @@ public class Objects {
         }
     }
 
-    public static void createObject(Connection con) throws SQLException {
+    public static void CreerObjet(Connection con) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 """
                 insert into Object (titre,description,categorie, debut, fin,prixbase)
@@ -186,7 +186,7 @@ public class Objects {
         }
     }
 
-    public static void ShowObjets(Connection con) throws SQLException {
+    public static void AfficherObjets(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
             try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbas from clients")) {
                 System.out.println("liste des utilisateurs :");

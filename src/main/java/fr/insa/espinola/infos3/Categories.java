@@ -44,13 +44,13 @@ public class Categories {
         this.nom = nom;
     }
 
-    public static void createTableCategory(Connection con)
+    public static void creerTableCategories(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
             st.executeUpdate(
                     """
-                    create table Category (
+                    create table Categories (
                         id integer not null primary key
                         generated always as identity,
                         nom varchar(30) not null unique,
@@ -67,13 +67,13 @@ public class Categories {
         }
     }
 
-    public static void deleteTableCategory(Connection con)
+    public static void SupprimerTableCategories(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) { // elimination des tables
             st.executeUpdate(
                     """
-                    drop table Category 
+                    drop table Categories 
                     """);
 
             con.commit();
@@ -86,10 +86,10 @@ public class Categories {
         }
     }
 
-    public static void createCategory(Connection con) throws SQLException {
+    public static void CreerCategorie(Connection con) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 """
-                insert into Category (nom)
+                insert into Categories (nom)
                 values (?)
                     """)) {
 

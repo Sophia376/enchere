@@ -4,17 +4,15 @@
  */
 package fr.insa.espinola.infos3;
 
-import static fr.insa.espinola.infos3.Categories.createCategory;
-import static fr.insa.espinola.infos3.Categories.createTableCategory;
-import static fr.insa.espinola.infos3.Categories.deleteTableCategory;
-import static fr.insa.espinola.infos3.Users.createUser;
+import static fr.insa.espinola.infos3.Categories.CreerCategorie;
+import static fr.insa.espinola.infos3.Clients.AfficherClients;
+import static fr.insa.espinola.infos3.Clients.CreerClient;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static fr.insa.espinola.infos3.Users.ShowUsers;
-import static fr.insa.espinola.infos3.Users.VerifyConnection;
+import static fr.insa.espinola.infos3.Clients.VerifyConnection;
 
 /**
  *
@@ -43,16 +41,16 @@ public class GestionbD {
     public static void main(String[] args) {
         try {
             Connection con = defautConnect();
-            ShowUsers(con);
+            AfficherClients(con);
             int i=0;
             while ( i<=5){
-                createCategory(con);
+                CreerCategorie(con);
                 i=i+1;
             }
             System.out.println("avez vous un compte?   oui:1, non:0");
             int c = Lire.i();
             if (c == 0) {
-                createUser(con);
+                CreerClient(con);
             }
             if (c == 1) {
                 System.out.println("MAIL : ");

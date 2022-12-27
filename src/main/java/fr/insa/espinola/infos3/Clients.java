@@ -14,7 +14,7 @@ import java.sql.Statement;
  *
  * @author Sophia
  */
-public class Users {
+public class Clients {
 
     private String nom;
     private String prenom;
@@ -22,7 +22,7 @@ public class Users {
     private String pass;
     private String codepostal;
 
-    public Users(String nom, String prenom, String email, String pass, String codepostal) {
+    public Clients(String nom, String prenom, String email, String pass, String codepostal) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
@@ -75,7 +75,7 @@ public class Users {
         return "Users{" + "nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", pass=" + pass + ", codepostal=" + codepostal + '}';
     }
     
-    public static void createTableUser(Connection con)
+    public static void CreerTableClients(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) {
@@ -102,7 +102,7 @@ public class Users {
         }
     }
     
-    public static void deleteTableUser(Connection con)
+    public static void SupprimerTableClients(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
         try ( Statement st = con.createStatement()) { // elimination des tables
@@ -121,7 +121,7 @@ public class Users {
         }
     }
 
-    public static void createUser(Connection con) throws SQLException {
+    public static void CreerClient(Connection con) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 """
                 insert into Clients (nom,prenom, email, codepostal,pass)
@@ -175,7 +175,7 @@ public class Users {
         }
     }*/
 
-    public static void ShowUsers(Connection con) throws SQLException {
+    public static void AfficherClients(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
             try ( ResultSet tlu = st.executeQuery("select id,nom,prenom,email, codepostal,pass from clients")) {
                 System.out.println("liste des utilisateurs :");
