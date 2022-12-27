@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with CoursBeuvron.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.insa.espinola.infos3;
+package fr.insa.espinola.infos3.Interface;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;

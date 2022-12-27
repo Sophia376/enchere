@@ -2,17 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package fr.insa.espinola.infos3;
+package fr.insa.espinola.infos3.bdd;
 
-import static fr.insa.espinola.infos3.Categories.CreerCategorie;
-import static fr.insa.espinola.infos3.Clients.AfficherClients;
-import static fr.insa.espinola.infos3.Clients.CreerClient;
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static fr.insa.espinola.infos3.Clients.VerifyConnection;
 
 /**
  *
@@ -37,11 +36,19 @@ public class GestionbD {
             throws ClassNotFoundException, SQLException {
         return connectGeneralPostGres("localhost", 5439, "postgres", "postgres", "pass");
     }
-
+    
+    public static void creeSchema(Connection con)
+            throws SQLException {
+        con.setAutoCommit(false);
+        try ( Statement st = con.createStatement()) {
+            
+        }
+    }
     public static void main(String[] args) {
         try {
+            
             Connection con = defautConnect();
-            AfficherClients(con);
+            /*AfficherClients(con);
             int i=0;
             while ( i<=5){
                 CreerCategorie(con);
@@ -63,8 +70,10 @@ public class GestionbD {
                 } else {
                     System.out.println("Le pass ou le mail est incorrect");
                 }
+             
 
             }
+            */
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(GestionbD.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
