@@ -17,7 +17,86 @@ import java.time.Instant;
  * @author Sophia
  */
 public class Objects {
+    
+    private int id;
+    private String titre;
+    private String description;
+    private Timestamp debut;
+    private Timestamp fin;
+    private int prixbase;
+    private int proposer;
 
+    public Objects(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer) {
+        this.id = id;
+        this.titre = titre;
+        this.description = description;
+        this.debut = debut;
+        this.fin = fin;
+        this.prixbase = prixbase;
+        this.proposer = proposer;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Timestamp getDebut() {
+        return debut;
+    }
+
+    public void setDebut(Timestamp debut) {
+        this.debut = debut;
+    }
+
+    public Timestamp getFin() {
+        return fin;
+    }
+
+    public void setFin(Timestamp fin) {
+        this.fin = fin;
+    }
+
+    public int getPrixbase() {
+        return prixbase;
+    }
+
+    public void setPrixbase(int prixbase) {
+        this.prixbase = prixbase;
+    }
+
+    public int getProposer() {
+        return proposer;
+    }
+
+    public void setProposer(int proposer) {
+        this.proposer = proposer;
+    }
+
+    @Override
+    public String toString() {
+        return "Objects{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", debut=" + debut + ", fin=" + fin + ", prixbase=" + prixbase + ", proposer=" + proposer + '}';
+    }
+    
     public static void createTableObject(Connection con)
             throws SQLException {
         // je veux que le schema soit entierement cree ou pas du tout

@@ -16,7 +16,22 @@ import java.sql.Statement;
 public class Categories {
 
     private String nom;
+    private int id;
 
+    public Categories(String nom, int id) {
+        this.nom = nom;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    
     public String getNom() {
         return nom;
     }

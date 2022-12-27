@@ -30,6 +30,51 @@ public class Users {
         this.codepostal = codepostal;
     }
 
+    public String getNom() {
+        return nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public String getCodepostal() {
+        return codepostal;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public void setCodepostal(String codepostal) {
+        this.codepostal = codepostal;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" + "nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", pass=" + pass + ", codepostal=" + codepostal + '}';
+    }
+    
     public static void createTableUser(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
@@ -56,7 +101,7 @@ public class Users {
             con.setAutoCommit(true);
         }
     }
-
+    
     public static void deleteTableUser(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
