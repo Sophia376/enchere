@@ -27,8 +27,9 @@ public class Objets {
     private int prixbase;
     private int proposer;
     private int categorie;
+    private int prix;
 
-    public Objets(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer, int categorie) {
+    public Objets(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer, int categorie, int prix) {
         this.id = id;
         this.titre = titre;
         this.description = description;
@@ -37,6 +38,7 @@ public class Objets {
         this.prixbase = prixbase;
         this.proposer = proposer;
         this.categorie = categorie;
+        this.prix = prix;
     }
 
     public int getCategorie() {
@@ -119,7 +121,7 @@ public class Objets {
             // creation des tables
             st.executeUpdate(
                     """
-                    create table Object (
+                    create table Objets (
                         id integer not null primary key
                         generated always as identity,
                         titre varchar(100) not null,
@@ -127,6 +129,7 @@ public class Objets {
                         prixbase integer not null,
                         categorie integer not null,
                         proposepar integer not null,
+                        prix integer not null,
                         debut timestamp without time zone not null,
                         fin timestamp without time zone not null
                     )
@@ -148,7 +151,7 @@ public class Objets {
         try ( Statement st = con.createStatement()) {
             st.executeUpdate(
                     """
-                    drop table Object 
+                    drop table Objets 
                     """);
 
             con.commit();
@@ -171,17 +174,18 @@ public class Objets {
         int prixbase = ConsoleFdB.entreeInt("Prix de base :");
         int categorie = ConsoleFdB.entreeInt("Categorie :");
         int proposepar = ConsoleFdB.entreeInt("Propose par :");
+        int prix = prixbase;
 
-        CreerObjet(con, titre, description, debut, fin, prixbase, proposepar, categorie);
+        CreerObjet(con, titre, description, debut, fin, prixbase, proposepar, categorie, prix);
     }
 
-    public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar, int categorie)
+    public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar, int categorie, int prix)
             throws SQLException {
         con.setAutoCommit(false);
         
         try ( PreparedStatement pst = con.prepareStatement(
                 """
-            insert into objets (titre,description,debut,fin,prixbase,proposepar) values (?,?,?,?,?,?,?)
+            insert into objets (titre,description,debut,fin,prixbase,proposepar,categorie) values (?,?,?,?,?,?,?,?)
             """, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, titre);
             pst.setString(2, description);
@@ -190,6 +194,7 @@ public class Objets {
             pst.setInt(5, prixbase);
             pst.setInt(6, proposepar);
             pst.setInt(7, categorie);
+            pst.setInt(8, prix);
             pst.executeUpdate();
             con.commit();
             try ( ResultSet rid = pst.getGeneratedKeys()) {
@@ -218,7 +223,8 @@ public class Objets {
                     Timestamp debut = tlu.getTimestamp(5);
                     Timestamp fin = tlu.getTimestamp(6);
                     Integer prixbase = tlu.getInt(7);
-                    String mess = id + " TITRE : " + titre + " DESCRIPTION: " + description + " CATEGORIE:  " + categorie + " CODE DEBUT: " + debut + " FIN: " + fin + " PRIXBASE: " + prixbase;
+                    Integer prix = tlu.getInt(8);
+                    String mess = id + " TITRE : " + titre + " DESCRIPTION: " + description + " CATEGORIE:  " + categorie + " CODE DEBUT: " + debut + " FIN: " + fin + " PRIXBASE: " + prixbase + " PRIX: " + prix;
                     System.out.println(mess);
                 }
             }
