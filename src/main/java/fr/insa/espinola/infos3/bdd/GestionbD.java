@@ -103,8 +103,8 @@ public class GestionbD {
                         id integer not null primary key
                         generated always as identity,
                         nom varchar(30) not null,
-                        prenom varchar(30) not null,
-                        email varchar(30) not null unique,
+                        prenom varchar(50) not null,
+                        email varchar(100) not null unique,
                         codepostal varchar(30) not null,
                         pass varchar(30) not null
                     )
@@ -269,22 +269,21 @@ public class GestionbD {
         } catch (SQLException ex) {
         }
         CreerSchema(con);
-        List<Integer> utilisateurs = new ArrayList<>();
+        
         try {
-            utilisateurs.add(Clients.CreerClient(con, "Auvray", "Nicolas", "nicolas.auvray50@gmail.com", "67270", "pass"));
-            utilisateurs.add(Clients.CreerClient(con, "Espinola", "Sophia", "sophia.espinola@insa-strasbourg.fr", "67000", "pass"));
-            utilisateurs.add(Clients.CreerClient(con, "Lareyre", "Jean-Laurent", "jean-laurent.lareyre@insa-strasbourg.fr", "67000", "pass"));
+            Clients.CreerClient(con, "Auvray", "Nicolas", "nicolas.auvray50@gmail.com", "67270", "pass");
+            Clients.CreerClient(con, "Espinola", "Sophia", "sophia.espinola@insa-strasbourg.fr", "67000", "pass");
+            Clients.CreerClient(con, "Lareyre", "Jean-Laurent", "jean-laurent.lareyre@insa-strasbourg.fr", "67000", "pass");
         } catch (Clients.EmailExisteDejaException ex) {
             throw new Error(ex);
         }
-        List<Integer> categories = new ArrayList<>();
-        categories.add(Categories.CreerCategorie(con, "Multimédia"));
-        categories.add(Categories.CreerCategorie(con, "Meuble"));
-                
-        List<Integer> objets = new ArrayList<>();
-        objets.add(Objets.CreerObjet(con, "PS5", "console de jeu nouvelle génération", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 10:00:00"), 550, 1, 1));
-        objets.add(Objets.CreerObjet(con, "Etagere", "Petite étagère 3 tiroirs", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 11:00:00"), 50, 2, 2));
-        objets.add(Objets.CreerObjet(con, "Ordinateur", "Carte Graphique de ouf", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 12:00:00"), 1200, 3, 1));
+        Categories.CreerCategorie(con, "Multimédia");
+        Categories.CreerCategorie(con, "Meuble");
+               
+        
+        Objets.CreerObjet(con, "PS5", "console de jeu nouvelle génération", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 10:00:00"), 550, 1, 1);
+        Objets.CreerObjet(con, "Etagere", "Petite étagère 3 tiroirs", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 11:00:00"), 50, 2, 2);
+        Objets.CreerObjet(con, "Ordinateur", "Carte Graphique de ouf", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 12:00:00"), 1200, 3, 1);
         
         
         System.out.println("Schéma de base créé");
@@ -342,6 +341,7 @@ public class GestionbD {
         try {
             
             Connection con = defautConnect();
+            SchemaDeBase(con);
             //Clients.SupprimerTableClients(con);
             
             /*AfficherClients(con);
