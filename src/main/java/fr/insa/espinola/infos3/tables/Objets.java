@@ -185,7 +185,7 @@ public class Objets {
         
         try ( PreparedStatement pst = con.prepareStatement(
                 """
-            insert into objets (titre,description,debut,fin,prixbase,proposepar,categorie) values (?,?,?,?,?,?,?,?)
+            insert into objets (titre,description,debut,fin,prixbase,proposepar,categorie, prix) values (?,?,?,?,?,?,?,?)
             """, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, titre);
             pst.setString(2, description);
@@ -212,7 +212,7 @@ public class Objets {
 
     public static void AfficherObjets(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
-            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbase from objets")) {
+            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbase,prix from objets")) {
                 System.out.println("liste des objets :");
                 System.out.println("------------------------");
                 while (tlu.next()) {

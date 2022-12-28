@@ -8,6 +8,7 @@ package fr.insa.espinola.infos3.bdd;
 
 import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Clients;
+import fr.insa.espinola.infos3.tables.Encheres;
 import fr.insa.espinola.infos3.tables.Objets;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -341,6 +342,7 @@ public class GestionbD {
             
             Connection con = defautConnect();
             SchemaDeBase(con);
+            Encheres.AjouterEnchere(con);
             //Clients.SupprimerTableClients(con);
             
             /*AfficherClients(con);

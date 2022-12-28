@@ -4,16 +4,13 @@
  */
 package fr.insa.espinola.infos3.tables;
 
-import static fr.insa.espinola.infos3.tables.Objets.CreerObjet;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
-import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -147,17 +144,48 @@ public class Encheres {
         System.out.println("--- ajout d'une enchère");
         int idUtilisateur = Clients.ChoisiClient(con);
         int idObjet = Objets.ChoisiObjet(con);
-        try ( PreparedStatement pst = con.prepareStatement(
-                """
-                select montant from encheres
-                """)){
+        int prix = 0;
+        try ( PreparedStatement pst = con.prepareStatement("select prix from objets where id = ?")) {
+            
+            pst.setInt(1, idObjet);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                prix = res.getInt("prix");
+            }
             
         }
+        boolean ok = false;
+        while(!ok){
+            System.out.println("Le prix actuel de l'objet est à "+prix);
+            int montantSaisi = ConsoleFdB.entreeInt("Quel montant voulez-vous mettre sur cette enchère ( -1 pour annuler )");
+            if(montantSaisi == -1){
+                System.out.println("annulation");
+                ok = true;
+            }
+            else if(montantSaisi > prix){
+                ok = true;
+                CreerEnchere(con, Timestamp.valueOf(LocalDateTime.now()),montantSaisi, idObjet, idUtilisateur);
+                con.setAutoCommit(false);
+                try ( PreparedStatement pst1 = con.prepareStatement("update objets set prix = ? where id = ?")) {
+                    pst1.setInt(1, montantSaisi);
+                    pst1.setInt(2, idObjet);
+                    pst1.executeUpdate();
+            
+            
+            
+                    con.commit(); // je retourne dans le mode par defaut de gestion des transaction : chaque ordre au SGBD sera considere comme une transaction independante
+                    con.setAutoCommit(true);
+                } catch (SQLException ex) { // quelque chose s'est mal passe j'annule la transaction
+                    con.rollback(); // puis je renvoie l'exeption pour qu'elle puisse eventuellement etre geree (message a  l'utilisateur...)
+                    throw ex;
+                } finally { // je reviens a  la gestion par defaut : une transaction pour chaque ordre SQL
+                    con.setAutoCommit(true);
+                }
+            }else{
+                System.out.println("Le montant saisi n'est pas assez élevé");
+            }   
+        }
         
-        
-        
-
-        CreerEnchere(con, Timestamp.valueOf(LocalDateTime.now()),500, idObjet, idUtilisateur);
     }
     
     public static void AfficherEncheres(Connection con) throws SQLException {
