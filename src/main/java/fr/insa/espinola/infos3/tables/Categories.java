@@ -7,6 +7,7 @@ package fr.insa.espinola.infos3.tables;
 import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -107,6 +108,21 @@ public class Categories {
             throw ex;
         } finally {
             con.setAutoCommit(true);
+        }
+    }
+    
+    public static void AfficherCategories(Connection con) throws SQLException {
+        try ( Statement st = con.createStatement()) {
+            try ( ResultSet tlu = st.executeQuery("select * from categories")) {
+                System.out.println("liste des categories :");
+                System.out.println("------------------------");
+                while (tlu.next()) {
+                    int id = tlu.getInt("id");
+                    String nom = tlu.getString(2);
+                    String mess = id + " NOM : " + nom;
+                    System.out.println(mess);
+                }
+            }
         }
     }
 

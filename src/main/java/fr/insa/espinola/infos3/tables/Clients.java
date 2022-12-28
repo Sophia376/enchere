@@ -4,6 +4,7 @@
  */
 package fr.insa.espinola.infos3.tables;
 
+import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -121,60 +122,68 @@ public class Clients {
             con.setAutoCommit(true);
         }
     }
+    
+    public static class EmailExisteDejaException extends Exception {
+    }
+    
+    public static void DemandeNouveauClient(Connection con) throws SQLException {
+        boolean existe = true;
+        while (existe) {
+            System.out.println("--- creation nouvel utilisateur");
+            String nom = ConsoleFdB.entreeString("Nom :");
+            String prenom = ConsoleFdB.entreeString("Prenom :");
+            String email = ConsoleFdB.entreeString("Email :");
+            String code_postal = ConsoleFdB.entreeString("Code postal :");
+            String pass = ConsoleFdB.entreeString("Pass :");
+            try {
+                CreerClient(con, nom, prenom, email, code_postal, pass);
+                existe = false;
+            } catch (EmailExisteDejaException ex) {
+                System.out.println("cet email est déjà utilisé");
+            }
+        }
+    }
+    
+    public static int CreerClient(Connection con, String nom, String prenom, String email, String code_postal, String pass)
+            throws SQLException, EmailExisteDejaException {
+        con.setAutoCommit(false);
+        try ( PreparedStatement chercheEmail = con.prepareStatement(
+                "select id from clients where email = ?")) {
+            chercheEmail.setString(1, email);
+            ResultSet testEmail = chercheEmail.executeQuery();
+            if (testEmail.next()) {
+                throw new EmailExisteDejaException();
+            }
+            try ( PreparedStatement pst = con.prepareStatement(
+                    """
+                insert into clients (nom,prenom,email,code_postal,pass) values (?,?,?,?,?)
+                """, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                pst.setString(1, nom);
+                pst.setString(2, prenom);
+                pst.setString(3, email);
+                pst.setString(4, code_postal);
+                pst.setString(5, pass);
+                pst.executeUpdate();
+                con.commit();
 
-    public static void CreerClient(Connection con) throws SQLException {
-        try ( PreparedStatement pst = con.prepareStatement(
-                """
-                insert into Clients (nom,prenom, email, codepostal,pass)
-                values (?,?,?,?,?)
-                    """)) {
-
-            System.out.println("Nom");
-            String nom = Lire.S();
-            System.out.println("Prenom");
-            String prenom = Lire.S();
-            System.out.println("Email");
-            String email = Lire.S();
-            System.out.println("Code postal");
-            String codepostal = Lire.S();
-            System.out.println("Pass");
-            String pass = Lire.S();
-
-            pst.setString(1, nom);
-            pst.setString(2, prenom);
-            pst.setString(3, email);
-            pst.setString(4, codepostal);
-            pst.setString(5, pass);
-            pst.executeUpdate();
-            con.setAutoCommit(false);
-            con.commit();
-            con.setAutoCommit(true);
-        } catch (SQLException ex) {
+                // je peux alors récupérer les clés créées comme un result set :
+                try ( ResultSet rid = pst.getGeneratedKeys()) {
+                    // et comme ici je suis sur qu'il y a une et une seule clé, je
+                    // fait un simple next 
+                    rid.next();
+                    // puis je récupère la valeur de la clé créé qui est dans la
+                    // première colonne du ResultSet
+                    int id = rid.getInt(1);
+                    return id;
+                }
+            }
+        } catch (Exception ex) {
             con.rollback();
             throw ex;
         } finally {
             con.setAutoCommit(true);
         }
     }
-
-    /*public static void deleteUser(Connection con)
-            throws SQLException {
-        con.setAutoCommit(false);
-        try ( Statement st = con.createStatement()) { // elimination des tables
-            st.executeUpdate(
-                    """
-                    drop table Clients 
-                    """);
-
-            con.commit();
-            con.setAutoCommit(true);
-        } catch (SQLException ex) {
-            con.rollback();
-            throw ex;
-        } finally {
-            con.setAutoCommit(true);
-        }
-    }*/
 
     public static void AfficherClients(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
