@@ -4,6 +4,8 @@
  */
 package fr.insa.espinola.infos3.tables;
 
+import static fr.insa.espinola.infos3.tables.Clients.CreerClient;
+import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -148,38 +151,42 @@ public class Objets {
             con.setAutoCommit(true);
         }
     }
+    
+    public static void DemandeNouvelObjet(Connection con) throws SQLException {
 
-    public static void CreerObjet(Connection con) throws SQLException {
+        System.out.println("--- creation nouvel objet");
+        String titre = ConsoleFdB.entreeString("Titre :");
+        String description = ConsoleFdB.entreeString("Description :");
+        Timestamp debut = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp fin = Timestamp.valueOf(ConsoleFdB.entreeString("Fin (aaaa-mm-jj hh:mm:ss) : "));
+        int prixbase = ConsoleFdB.entreeInt("Prix de base :");
+        int proposepar = ConsoleFdB.entreeInt("Propose par :");
+
+        CreerObjet(con, titre, description, debut, fin, prixbase, proposepar);
+    }
+
+    public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar)
+            throws SQLException {
+        con.setAutoCommit(false);
+        
         try ( PreparedStatement pst = con.prepareStatement(
                 """
-                insert into Object (titre,description,categorie, debut, fin,prixbase)
-                values (?,?,?,?,?,?)
-                    """)) {
-
-            System.out.println("titre");
-            String titre = Lire.S();
-            System.out.println("description");
-            String description = Lire.S();
-            System.out.println("categorie");
-            Integer categorie = Lire.i();
-            System.out.println("debut");
-            Timestamp debut = Timestamp.from(Instant.now());
-            System.out.println("fin");  /////////////////////////////////////////////////////////////////////////////// lo tengo que corregir
-            String fin = Lire.S();
-            System.out.println("prixbase");
-            Integer prixbase = Lire.i();
-
+            insert into objets (titre,description,debut,fin,prixbase,proposepar) values (?,?,?,?,?,?)
+            """, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, titre);
             pst.setString(2, description);
-            pst.setInt(3, categorie);
-            pst.setTimestamp(4, debut);
-            pst.setString(5, fin);
-            pst.setInt(6, prixbase);
+            pst.setTimestamp(3, debut);
+            pst.setTimestamp(4, fin);
+            pst.setInt(5, prixbase);
+            pst.setInt(6, proposepar);
             pst.executeUpdate();
-            con.setAutoCommit(false);
             con.commit();
-            con.setAutoCommit(true);
-        } catch (SQLException ex) {
+            try ( ResultSet rid = pst.getGeneratedKeys()) {
+                rid.next();
+                int id = rid.getInt(1);
+                return id;
+            }
+        } catch (Exception ex) {
             con.rollback();
             throw ex;
         } finally {
@@ -189,7 +196,7 @@ public class Objets {
 
     public static void AfficherObjets(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
-            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbas from clients")) {
+            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbase from objets")) {
                 System.out.println("liste des utilisateurs :");
                 System.out.println("------------------------");
                 while (tlu.next()) {
@@ -198,7 +205,7 @@ public class Objets {
                     String description = tlu.getString(3);
                     Integer categorie = tlu.getInt(4);
                     Timestamp debut = tlu.getTimestamp(5);
-                    Timestamp fin = tlu.getTimestamp("pass");
+                    Timestamp fin = tlu.getTimestamp(6);
                     Integer prixbase = tlu.getInt(7);
                     String mess = id + " TITRE : " + titre + " DESCRIPTION: " + description + " CATEGORIE:  " + categorie + " CODE DEBUT: " + debut + " FIN: " + fin + " PRIXBASE: " + prixbase;
                     System.out.println(mess);

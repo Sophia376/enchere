@@ -291,7 +291,7 @@ public class GestionbD {
         boolean ok = false;
         int id = -1;
         while(!ok){
-            System.out.println("---------------choix d'une categorie");
+            System.out.println("----------- ----choix d'une categorie");
             Categories.AfficherCategories(con);
             id = ConsoleFdB.entreeEntier("donnez l'identificateur de la categorie :");
             ok = idCategorieExiste(con, id);
