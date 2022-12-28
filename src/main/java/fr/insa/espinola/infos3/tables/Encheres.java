@@ -4,6 +4,8 @@
  */
 package fr.insa.espinola.infos3.tables;
 
+import static fr.insa.espinola.infos3.tables.Objets.CreerObjet;
+import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -117,27 +120,16 @@ public class Encheres {
         }
     }
     
-    public static void CreerEnchere(Connection con) throws SQLException {
+    public static void CreerEnchere(Connection con, Timestamp quand, int montant, int sur, int de) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 """
                 insert into Encheres (quand, montant, sur, de )
                 values (?,?,?,?)
-                    """)) {
-
-            System.out.println("Quand");
-            Timestamp quand = Timestamp.from(Instant.now());
-            System.out.println("Montant");
-            int montant = Lire.i();
-            System.out.println("sur");
-            int sur = Lire.i();
-            System.out.println("de");
-            int de = Lire.i();
-                       
+                    """ , PreparedStatement.RETURN_GENERATED_KEYS)) {
             pst.setTimestamp(1, quand);
             pst.setInt(2, montant);
             pst.setInt(3, sur);
-            pst.setInt(4, de);
-                      
+            pst.setInt(4, de);                   
             pst.executeUpdate();
             con.setAutoCommit(false);
             con.commit();
@@ -148,6 +140,24 @@ public class Encheres {
         } finally {
             con.setAutoCommit(true);
         }
+    }
+    
+    public static void AjouterEnchere(Connection con) throws SQLException {
+
+        System.out.println("--- ajout d'une enchère");
+        int idUtilisateur = Clients.ChoisiClient(con);
+        int idObjet = Objets.ChoisiObjet(con);
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select montant from encheres
+                """)){
+            
+        }
+        
+        
+        
+
+        CreerEnchere(con, Timestamp.valueOf(LocalDateTime.now()),500, idObjet, idUtilisateur);
     }
     
     public static void AfficherEncheres(Connection con) throws SQLException {

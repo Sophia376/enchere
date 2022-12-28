@@ -87,8 +87,8 @@ public class Clients {
                         id integer not null primary key
                         generated always as identity,
                         nom varchar(30) not null,
-                        prenom varchar(30) not null,
-                        email varchar(30) not null unique,
+                        prenom varchar(50) not null,
+                        email varchar(100) not null unique,
                         codepostal varchar(30) not null,
                         pass varchar(30) not null
                     )
@@ -133,10 +133,10 @@ public class Clients {
             String nom = ConsoleFdB.entreeString("Nom :");
             String prenom = ConsoleFdB.entreeString("Prenom :");
             String email = ConsoleFdB.entreeString("Email :");
-            String code_postal = ConsoleFdB.entreeString("Code postal :");
+            String codepostal = ConsoleFdB.entreeString("Code postal :");
             String pass = ConsoleFdB.entreeString("Pass :");
             try {
-                CreerClient(con, nom, prenom, email, code_postal, pass);
+                CreerClient(con, nom, prenom, email, codepostal, pass);
                 existe = false;
             } catch (EmailExisteDejaException ex) {
                 System.out.println("cet email est déjà utilisé");
@@ -144,7 +144,7 @@ public class Clients {
         }
     }
     
-    public static int CreerClient(Connection con, String nom, String prenom, String email, String code_postal, String pass)
+    public static int CreerClient(Connection con, String nom, String prenom, String email, String codepostal, String pass)
             throws SQLException, EmailExisteDejaException {
         con.setAutoCommit(false);
         try ( PreparedStatement chercheEmail = con.prepareStatement(
@@ -156,12 +156,12 @@ public class Clients {
             }
             try ( PreparedStatement pst = con.prepareStatement(
                     """
-                insert into clients (nom,prenom,email,code_postal,pass) values (?,?,?,?,?)
+                insert into clients (nom,prenom,email,codepostal,pass) values (?,?,?,?,?)
                 """, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 pst.setString(1, nom);
                 pst.setString(2, prenom);
                 pst.setString(3, email);
-                pst.setString(4, code_postal);
+                pst.setString(4, codepostal);
                 pst.setString(5, pass);
                 pst.executeUpdate();
                 con.commit();

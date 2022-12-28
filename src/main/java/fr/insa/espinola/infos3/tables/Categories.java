@@ -5,13 +5,11 @@
 package fr.insa.espinola.infos3.tables;
 
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
-import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 
 /**
  *
