@@ -5,7 +5,6 @@
 package fr.insa.espinola.infos3.tables;
 
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
-import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -228,7 +227,21 @@ public class Clients {
         }
         return id;
     }
-
+    
+    public static String ConversionIdClient(Connection con, int id) throws SQLException{
+        String email = "Michel";
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select email from Clients where id = ? ")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                email = res.getString("email");
+            }
+            
+        }
+        return email;
+    }
+    
     public static boolean VerifyConnection(Connection con, String pass1, String mail1) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 "select pass from Clients where Email = ?  and pass=? ")) {

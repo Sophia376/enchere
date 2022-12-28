@@ -161,7 +161,7 @@ public class Encheres {
             if(montantSaisi == -1){
                 System.out.println("annulation");
                 ok = true;
-            }
+            }   
             else if(montantSaisi > prix){
                 ok = true;
                 CreerEnchere(con, Timestamp.valueOf(LocalDateTime.now()),montantSaisi, idObjet, idUtilisateur);
@@ -199,10 +199,12 @@ public class Encheres {
                     int montant = tlu.getInt(3);
                     int sur = tlu.getInt(4);
                     int de = tlu.getInt(5);
-                    String mess = id + " Quadn : " + quand + " MONTANT: " + montant + " SUR:  " + sur + " DE " + de;
+                    String mess = id + " QUAND : " + quand + " MONTANT: " + montant + " SUR:  " + Objets.ConversionIdObjet(con, sur) + " DE " + Clients.ConversionIdClient(con, de);
                     System.out.println(mess);
                 }
             }
         }
     }
+    
+    
 }

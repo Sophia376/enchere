@@ -343,6 +343,7 @@ public class GestionbD {
             Connection con = defautConnect();
             SchemaDeBase(con);
             Encheres.AjouterEnchere(con);
+            Encheres.AfficherEncheres(con);
             //Clients.SupprimerTableClients(con);
             
             /*AfficherClients(con);

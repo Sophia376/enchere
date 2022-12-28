@@ -151,6 +151,20 @@ public class Categories {
         }
         return id;
     }
+    
+    public static String ConversionIdCategorie(Connection con, int id) throws SQLException{
+        String nom = "Meubles";
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select nom from categories where id = ? ")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                nom = res.getString("nom");
+            }
+            
+        }
+        return nom;
+    }
 
     /*public static void searchCategory(Connection con) throws SQLException {                    // creo que me tendria que devolver todos los objetos con la categoria seleccionada
         try ( PreparedStatement pst = con.prepareStatement(

@@ -212,7 +212,7 @@ public class Objets {
 
     public static void AfficherObjets(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
-            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbase,prix from objets")) {
+            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,proposepar,prixbase,prix from objets")) {
                 System.out.println("liste des objets :");
                 System.out.println("------------------------");
                 while (tlu.next()) {
@@ -222,9 +222,10 @@ public class Objets {
                     Integer categorie = tlu.getInt(4);
                     Timestamp debut = tlu.getTimestamp(5);
                     Timestamp fin = tlu.getTimestamp(6);
-                    Integer prixbase = tlu.getInt(7);
-                    Integer prix = tlu.getInt(8);
-                    String mess = id + " TITRE : " + titre + " DESCRIPTION: " + description + " CATEGORIE:  " + categorie + " CODE DEBUT: " + debut + " FIN: " + fin + " PRIXBASE: " + prixbase + " PRIX: " + prix;
+                    Integer proposepar = tlu.getInt(7);
+                    Integer prixbase = tlu.getInt(8);
+                    Integer prix = tlu.getInt(9);
+                    String mess = id + " TITRE : " + titre + " DESCRIPTION: " + description + " CATEGORIE:  " + Categories.ConversionIdCategorie(con, categorie) + " CODE DEBUT: " + debut + " FIN: " + fin + " PRIXBASE: " + prixbase + "PROPOSE PAR :" + Clients.ConversionIdClient(con, proposepar) + " PRIX: " + prix;
                     System.out.println(mess);
                 }
             }
@@ -254,6 +255,20 @@ public class Objets {
             }
         }
         return id;
+    }
+    
+    public static String ConversionIdObjet(Connection con, int id) throws SQLException{
+        String titre = "PS5";
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select titre from Objets where id = ? ")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                titre = res.getString("titre");
+            }
+            
+        }
+        return titre;
     }
 
 }
