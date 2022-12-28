@@ -8,13 +8,13 @@ package fr.insa.espinola.infos3.bdd;
 
 import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Clients;
-import fr.insa.espinola.infos3.utils.ConsoleFdB;
+import fr.insa.espinola.infos3.tables.Objets;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -252,58 +252,16 @@ public class GestionbD {
         }
     }
     
-    public static boolean idClientExiste(Connection con, int id) throws SQLException {
-        try ( PreparedStatement pst = con.prepareStatement(
-                "select id from clients where id = ?")) {
-            pst.setInt(1, id);
-            ResultSet res = pst.executeQuery();
-
-            return res.next();
-        }
-    }
-    
-    public static boolean idCategorieExiste(Connection con, int id) throws SQLException {
-        try ( PreparedStatement pst = con.prepareStatement(
-                "select id from categories where id = ?")) {
-            pst.setInt(1, id);
-            ResultSet res = pst.executeQuery();
-
-            return res.next();
-        }
-    }
-    
-    public static int ChoisiClient(Connection con) throws SQLException{
-        boolean ok = false;
-        int id = -1;
-        while(!ok){
-            System.out.println("---------------choix d'un utilisateur");
-            Clients.AfficherClients(con);
-            id = ConsoleFdB.entreeEntier("donnez l'identificateur de l'utilisateur :");
-            ok = idClientExiste(con, id);
-            if (!ok) {
-                System.out.println("id inexistant");
-            }
-        }
-        return id;
-    }
-    
-    public static int ChoisiCategorie(Connection con) throws SQLException{
-        boolean ok = false;
-        int id = -1;
-        while(!ok){
-            System.out.println("----------- ----choix d'une categorie");
-            Categories.AfficherCategories(con);
-            id = ConsoleFdB.entreeEntier("donnez l'identificateur de la categorie :");
-            ok = idCategorieExiste(con, id);
-            if (!ok) {
-                System.out.println("id inexistant");
-            }
-        }
-        return id;
-    }
     
     
-    /*
+    
+    
+        
+    
+    
+    
+    
+    
     public static void SchemaDeBase(Connection con) throws SQLException {
         // j'essaye d'abord de tout supprimer
         try {
@@ -311,25 +269,28 @@ public class GestionbD {
         } catch (SQLException ex) {
         }
         CreerSchema(con);
-        List<Integer> ids = new ArrayList<>();
+        List<Integer> utilisateurs = new ArrayList<>();
         try {
-            ids.add(CreerClient(con, "toto", "p1", 1));
-            ids.add(CreerClient(con, "bob", "p2", 2));
-            ids.add(CreerClient(con, "bill", "p3", 2));
-        } catch (NomExisteDejaException ex) {
+            utilisateurs.add(Clients.CreerClient(con, "Auvray", "Nicolas", "nicolas.auvray50@gmail.com", "67270", "pass"));
+            utilisateurs.add(Clients.CreerClient(con, "Espinola", "Sophia", "sophia.espinola@insa-strasbourg.fr", "67000", "pass"));
+            utilisateurs.add(Clients.CreerClient(con, "Lareyre", "Jean-Laurent", "jean-laurent.lareyre@insa-strasbourg.fr", "67000", "pass"));
+        } catch (Clients.EmailExisteDejaException ex) {
             throw new Error(ex);
         }
-        // toto aime bob et bill
-        createAime(con, ids.get(0), ids.get(1));
-        createAime(con, ids.get(0), ids.get(2));
-        // bob aime bill
-        createAime(con, ids.get(1), ids.get(2));
-        // bill aime toto
-        createAime(con, ids.get(2), ids.get(1));
-        System.out.println("initial data added");
+        List<Integer> categories = new ArrayList<>();
+        categories.add(Categories.CreerCategorie(con, "Multimédia"));
+        categories.add(Categories.CreerCategorie(con, "Meuble"));
+                
+        List<Integer> objets = new ArrayList<>();
+        objets.add(Objets.CreerObjet(con, "PS5", "console de jeu nouvelle génération", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 10:00:00"), 550, 1, 1));
+        objets.add(Objets.CreerObjet(con, "Etagere", "Petite étagère 3 tiroirs", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 11:00:00"), 50, 2, 2));
+        objets.add(Objets.CreerObjet(con, "Ordinateur", "Carte Graphique de ouf", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 12:00:00"), 1200, 3, 1));
+        
+        
+        System.out.println("Schéma de base créé");
     }
     
-    
+    /*
     public static void menu(Connection con) {
         int rep = -1;
         while (rep != 0) {
@@ -382,12 +343,7 @@ public class GestionbD {
             
             Connection con = defautConnect();
             //Clients.SupprimerTableClients(con);
-            CreerSchema(con);
-            Categories.CreerCategorie(con);
-            Categories.CreerCategorie(con);
-            Categories.CreerCategorie(con);
-            ChoisiCategorie(con);
-            SupprimerSchema(con);
+            
             /*AfficherClients(con);
             int i=0;
             while ( i<=5){

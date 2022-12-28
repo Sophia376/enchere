@@ -203,6 +203,31 @@ public class Clients {
             }
         }
     }
+    
+    public static boolean idClientExiste(Connection con, int id) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from clients where id = ?")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+
+            return res.next();
+        }
+    }
+    
+    public static int ChoisiClient(Connection con) throws SQLException{
+        boolean ok = false;
+        int id = -1;
+        while(!ok){
+            System.out.println("---------------choix d'un utilisateur");
+            Clients.AfficherClients(con);
+            id = ConsoleFdB.entreeEntier("donnez l'identificateur de l'utilisateur :");
+            ok = idClientExiste(con, id);
+            if (!ok) {
+                System.out.println("id inexistant");
+            }
+        }
+        return id;
+    }
 
     public static boolean VerifyConnection(Connection con, String pass1, String mail1) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(

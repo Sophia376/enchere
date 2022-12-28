@@ -4,16 +4,13 @@
  */
 package fr.insa.espinola.infos3.tables;
 
-import static fr.insa.espinola.infos3.tables.Clients.CreerClient;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
-import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 /**
@@ -29,8 +26,9 @@ public class Objets {
     private Timestamp fin;
     private int prixbase;
     private int proposer;
+    private int categorie;
 
-    public Objets(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer) {
+    public Objets(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer, int categorie) {
         this.id = id;
         this.titre = titre;
         this.description = description;
@@ -38,6 +36,15 @@ public class Objets {
         this.fin = fin;
         this.prixbase = prixbase;
         this.proposer = proposer;
+        this.categorie = categorie;
+    }
+
+    public int getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(int categorie) {
+        this.categorie = categorie;
     }
 
     public int getId() {
@@ -98,8 +105,10 @@ public class Objets {
 
     @Override
     public String toString() {
-        return "Objects{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", debut=" + debut + ", fin=" + fin + ", prixbase=" + prixbase + ", proposer=" + proposer + '}';
+        return "Objets{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", debut=" + debut + ", fin=" + fin + ", prixbase=" + prixbase + ", proposer=" + proposer + ", categorie=" + categorie + '}';
     }
+
+    
     
     public static void CreerTableObjets(Connection con)
             throws SQLException {
@@ -160,18 +169,19 @@ public class Objets {
         Timestamp debut = Timestamp.valueOf(LocalDateTime.now());
         Timestamp fin = Timestamp.valueOf(ConsoleFdB.entreeString("Fin (aaaa-mm-jj hh:mm:ss) : "));
         int prixbase = ConsoleFdB.entreeInt("Prix de base :");
+        int categorie = ConsoleFdB.entreeInt("Categorie :");
         int proposepar = ConsoleFdB.entreeInt("Propose par :");
 
-        CreerObjet(con, titre, description, debut, fin, prixbase, proposepar);
+        CreerObjet(con, titre, description, debut, fin, prixbase, proposepar, categorie);
     }
 
-    public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar)
+    public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar, int categorie)
             throws SQLException {
         con.setAutoCommit(false);
         
         try ( PreparedStatement pst = con.prepareStatement(
                 """
-            insert into objets (titre,description,debut,fin,prixbase,proposepar) values (?,?,?,?,?,?)
+            insert into objets (titre,description,debut,fin,prixbase,proposepar) values (?,?,?,?,?,?,?)
             """, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, titre);
             pst.setString(2, description);
@@ -179,6 +189,7 @@ public class Objets {
             pst.setTimestamp(4, fin);
             pst.setInt(5, prixbase);
             pst.setInt(6, proposepar);
+            pst.setInt(7, categorie);
             pst.executeUpdate();
             con.commit();
             try ( ResultSet rid = pst.getGeneratedKeys()) {
@@ -197,7 +208,7 @@ public class Objets {
     public static void AfficherObjets(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
             try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,prixbase from objets")) {
-                System.out.println("liste des utilisateurs :");
+                System.out.println("liste des objets :");
                 System.out.println("------------------------");
                 while (tlu.next()) {
                     int id = tlu.getInt("id");
@@ -212,6 +223,31 @@ public class Objets {
                 }
             }
         }
+    }
+    
+    public static boolean idObjetExiste(Connection con, int id) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from objets where id = ?")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+
+            return res.next();
+        }
+    }
+    
+    public static int ChoisiObjet(Connection con) throws SQLException{
+        boolean ok = false;
+        int id = -1;
+        while(!ok){
+            System.out.println("---------------choix d'un objet");
+            Objets.AfficherObjets(con);
+            id = ConsoleFdB.entreeEntier("donnez l'identificateur de l'objet :");
+            ok = idObjetExiste(con, id);
+            if (!ok) {
+                System.out.println("id inexistant");
+            }
+        }
+        return id;
     }
 
 }

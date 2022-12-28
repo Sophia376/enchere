@@ -4,12 +4,14 @@
  */
 package fr.insa.espinola.infos3.tables;
 
+import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import fr.insa.espinola.infos3.utils.Lire;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 /**
  *
@@ -88,22 +90,23 @@ public class Categories {
         }
     }
 
-    public static void CreerCategorie(Connection con) throws SQLException {
+    public static int CreerCategorie(Connection con, String nom)
+            throws SQLException {
+        con.setAutoCommit(false);
+        
         try ( PreparedStatement pst = con.prepareStatement(
                 """
-                insert into Categories (nom)
-                values (?)
-                    """)) {
-
-            System.out.println("Nom");
-            String nom = Lire.S();
-
+            insert into categories (nom) values (?)
+            """, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, nom);
             pst.executeUpdate();
-            con.setAutoCommit(false);
             con.commit();
-            con.setAutoCommit(true);
-        } catch (SQLException ex) {
+            try ( ResultSet rid = pst.getGeneratedKeys()) {
+                rid.next();
+                int id = rid.getInt(1);
+                return id;
+            }
+        } catch (Exception ex) {
             con.rollback();
             throw ex;
         } finally {
@@ -124,6 +127,31 @@ public class Categories {
                 }
             }
         }
+    }
+    
+    public static boolean idCategorieExiste(Connection con, int id) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from categories where id = ?")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+
+            return res.next();
+        }
+    }
+    
+    public static int ChoisiCategorie(Connection con) throws SQLException{
+        boolean ok = false;
+        int id = -1;
+        while(!ok){
+            System.out.println("----------- ----choix d'une categorie");
+            Categories.AfficherCategories(con);
+            id = ConsoleFdB.entreeEntier("donnez l'identificateur de la categorie :");
+            ok = idCategorieExiste(con, id);
+            if (!ok) {
+                System.out.println("id inexistant");
+            }
+        }
+        return id;
     }
 
     /*public static void searchCategory(Connection con) throws SQLException {                    // creo que me tendria que devolver todos los objetos con la categoria seleccionada
