@@ -8,12 +8,15 @@ package fr.insa.espinola.infos3.bdd;
 
 import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Clients;
-import fr.insa.espinola.infos3.tables.Encheres;
-import fr.insa.espinola.infos3.tables.Objets;
+import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -249,11 +252,141 @@ public class GestionbD {
         }
     }
     
+    public static boolean idClientExiste(Connection con, int id) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from clients where id = ?")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+
+            return res.next();
+        }
+    }
+    
+    public static boolean idCategorieExiste(Connection con, int id) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from categories where id = ?")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+
+            return res.next();
+        }
+    }
+    
+    public static int ChoisiClient(Connection con) throws SQLException{
+        boolean ok = false;
+        int id = -1;
+        while(!ok){
+            System.out.println("---------------choix d'un utilisateur");
+            Clients.AfficherClients(con);
+            id = ConsoleFdB.entreeEntier("donnez l'identificateur de l'utilisateur :");
+            ok = idClientExiste(con, id);
+            if (!ok) {
+                System.out.println("id inexistant");
+            }
+        }
+        return id;
+    }
+    
+    public static int ChoisiCategorie(Connection con) throws SQLException{
+        boolean ok = false;
+        int id = -1;
+        while(!ok){
+            System.out.println("---------------choix d'une categorie");
+            Categories.AfficherCategories(con);
+            id = ConsoleFdB.entreeEntier("donnez l'identificateur de la categorie :");
+            ok = idCategorieExiste(con, id);
+            if (!ok) {
+                System.out.println("id inexistant");
+            }
+        }
+        return id;
+    }
+    
+    
+    /*
+    public static void SchemaDeBase(Connection con) throws SQLException {
+        // j'essaye d'abord de tout supprimer
+        try {
+            SupprimerSchema(con);
+        } catch (SQLException ex) {
+        }
+        CreerSchema(con);
+        List<Integer> ids = new ArrayList<>();
+        try {
+            ids.add(CreerClient(con, "toto", "p1", 1));
+            ids.add(CreerClient(con, "bob", "p2", 2));
+            ids.add(CreerClient(con, "bill", "p3", 2));
+        } catch (NomExisteDejaException ex) {
+            throw new Error(ex);
+        }
+        // toto aime bob et bill
+        createAime(con, ids.get(0), ids.get(1));
+        createAime(con, ids.get(0), ids.get(2));
+        // bob aime bill
+        createAime(con, ids.get(1), ids.get(2));
+        // bill aime toto
+        createAime(con, ids.get(2), ids.get(1));
+        System.out.println("initial data added");
+    }
+    
+    
+    public static void menu(Connection con) {
+        int rep = -1;
+        while (rep != 0) {
+            System.out.println("Menu BdD Encheres");
+            System.out.println("=============");
+            System.out.println("1) créer/recréer la BdD initiale");
+            System.out.println("2) liste des utilisateurs");
+            System.out.println("3) liste des liens 'Aime'");
+            System.out.println("4) ajouter un utilisateur");
+            System.out.println("5) ajouter un lien 'Aime'");
+            System.out.println("6) ajouter n utilisateurs aléatoires");
+            System.out.println("0) quitter");
+            rep = ConsoleFdB.entreeEntier("Votre choix : ");
+            try {
+                if (rep == 1) {
+                    recreeTout(con);
+                } else if (rep == 2) {
+                    afficheTousLesUtilisateur(con);
+                } else if (rep == 3) {
+                    afficheAmours(con);
+                } else if (rep == 4) {
+                    demandeNouvelUtilisateur(con);
+                } else if (rep == 5) {
+                    demandeNouvelAime(con);
+                } else if (rep == 6) {
+                    System.out.println("création d'utilisateurs 'aléatoires'");
+                    int combien = ConsoleFdB.entreeEntier("combien d'utilisateur : ");
+                    for (int i = 0; i < combien; i++) {
+                        boolean exist = true;
+                        while (exist) {
+                            String nom = "U" + ((int) (Math.random() * 10000));
+                            try {
+                                createUtilisateur(con, nom, "P" + ((int) (Math.random() * 10000)), 2);
+                                exist = false;
+                            } catch (NomExisteDejaException ex) {
+                            }
+                        }
+
+                    }
+                }
+            } catch (SQLException ex) {
+                throw new Error(ex);
+            }
+        }
+    }
+    */
+    
     public static void main(String[] args) {
         try {
             
             Connection con = defautConnect();
             //Clients.SupprimerTableClients(con);
+            CreerSchema(con);
+            Categories.CreerCategorie(con);
+            Categories.CreerCategorie(con);
+            Categories.CreerCategorie(con);
+            ChoisiCategorie(con);
             SupprimerSchema(con);
             /*AfficherClients(con);
             int i=0;
