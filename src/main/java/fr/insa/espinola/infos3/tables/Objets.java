@@ -212,7 +212,7 @@ public class Objets {
 
     public static void AfficherObjets(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
-            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,proposepar,prixbase,prix from objets")) {
+            try ( ResultSet tlu = st.executeQuery("select id,titre,description,categorie, debut,fin,proposepar,prixbase,prix from objets order by id")) {
                 System.out.println("liste des objets :");
                 System.out.println("------------------------");
                 while (tlu.next()) {

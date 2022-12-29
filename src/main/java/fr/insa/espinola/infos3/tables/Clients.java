@@ -187,7 +187,7 @@ public class Clients {
 
     public static void AfficherClients(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
-            try ( ResultSet tlu = st.executeQuery("select id,nom,prenom,email, codepostal,pass from clients")) {
+            try ( ResultSet tlu = st.executeQuery("select id,nom,prenom,email, codepostal,pass from clients order by id")) {
                 System.out.println("liste des utilisateurs :");
                 System.out.println("------------------------");
                 while (tlu.next()) {
