@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 /**
  *
@@ -240,6 +241,62 @@ public class Clients {
             
         }
         return email;
+    }
+    
+    public static String DernierEncherisseur(Connection con, int idObjet) throws SQLException{
+        String email = "toto@google.com";
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select email 
+                    from clients
+                        join encheres on clients.id = encheres.de
+                        join objets on encheres.sur = objets.id
+                where(select prix from objets where objets.id = ?) = encheres.montant
+                """)){
+            pst.setInt(1, idObjet);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                email = res.getString("email");
+                // System.out.println(email);
+            }
+            
+        }
+        return email;
+    }
+    
+    public static void BilanClient(Connection con, int idClient) throws SQLException{
+        System.out.println("Bilan du Client " + ConversionIdClient(con, idClient));
+        System.out.println("-----------------------");
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select objets.id, titre, categorie,prixbase,debut,fin 
+                    from Objets
+                        join Encheres on encheres.sur = objets.id
+                        join Clients on encheres.de = clients.id
+                    where clients.id = ?
+                
+                """)) {
+            pst.setInt(1, idClient);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                int idObjet = res.getInt("id");
+                String dernier = DernierEncherisseur(con , idObjet);
+                String titre = res.getString("titre");
+                String categorie = Categories.ConversionIdCategorie(con, res.getInt("categorie"));
+                int prixbase = res.getInt("prixbase");
+                Timestamp debut = res.getTimestamp("debut");
+                Timestamp fin = res.getTimestamp("fin");
+                if(dernier.equals(ConversionIdClient(con, idClient))){
+                    System.out.println("Vous êtes le dernier à avoir enchéri sur :");
+                    System.out.println("Titre :" + titre + ", Catégorie :" + categorie + ", Prix de base : " + prixbase + ", Début :" + debut + ", Fin :" + fin);
+                }else{
+                    System.out.println(dernier + " est le dernier à avoir enchéri sur :");
+                    System.out.println("Titre :" + titre + ", Catégorie :" + categorie + ", Prix de base : " + prixbase + ", Début :" + debut + ", Fin :" + fin);
+                }
+                
+            }
+            
+        }
     }
     
     public static boolean VerifyConnection(Connection con, String pass1, String mail1) throws SQLException {

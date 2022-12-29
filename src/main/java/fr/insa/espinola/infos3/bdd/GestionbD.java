@@ -282,7 +282,7 @@ public class GestionbD {
                
         
         Objets.CreerObjet(con, "PS5", "console de jeu nouvelle génération", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 10:00:00"), 550, 1, 1, 550);
-        Objets.CreerObjet(con, "Etagere", "Petite étagère 3 tiroirs", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 11:00:00"), 50, 2, 2, 50);
+        Objets.CreerObjet(con, "Etagere", "Petite étagère 3 tiroirs", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 11:00:00"), 50, 1, 2, 50);
         Objets.CreerObjet(con, "Ordinateur", "Carte Graphique de ouf", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 12:00:00"), 1200, 3, 1, 1200);
         
         
@@ -343,7 +343,10 @@ public class GestionbD {
             Connection con = defautConnect();
             SchemaDeBase(con);
             Encheres.AjouterEnchere(con);
-            Encheres.AfficherEncheres(con);
+            Encheres.AjouterEnchere(con);
+            Encheres.AjouterEnchere(con);
+            //Clients.DernierEncherisseur(con, 1);
+            Clients.BilanClient(con, 1);
             //Clients.SupprimerTableClients(con);
             
             /*AfficherClients(con);
