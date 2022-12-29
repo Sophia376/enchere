@@ -142,7 +142,7 @@ public class Categories {
         int id = -1;
         while(!ok){
             System.out.println("----------- ----choix d'une categorie");
-            Categories.AfficherCategories(con);
+            AfficherCategories(con);
             id = ConsoleFdB.entreeEntier("donnez l'identificateur de la categorie :");
             ok = idCategorieExiste(con, id);
             if (!ok) {
