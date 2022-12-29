@@ -1,15 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package fr.insa.espinola.infos3.tables;
 
+import static fr.insa.espinola.infos3.tables.Objets.CreerObjet;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -110,6 +110,14 @@ public class Categories {
         } finally {
             con.setAutoCommit(true);
         }
+    }
+    
+    public static void DemandeNouvelleCategorie(Connection con) throws SQLException {
+
+        System.out.println("--- Création d'une nouvelle catégorie :");
+        String nom = ConsoleFdB.entreeString("Nom :");
+
+        CreerCategorie(con, nom);
     }
     
     public static void AfficherCategories(Connection con) throws SQLException {

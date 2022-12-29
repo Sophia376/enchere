@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package fr.insa.espinola.infos3.bdd;
 
 
@@ -304,57 +301,41 @@ public class GestionbD {
             System.out.println("6) liste des Enchères");
             System.out.println("7) liste des Catégories");
             System.out.println("8) ajouter un nouvel utilisateur");
-            System.out.println("9) ajouter n utilisateurs aléatoires");
-            System.out.println("10) ajouter une nouvelle catégorie");
-            System.out.println("11) ajouter une nouvelle enchère");
-            System.out.println("12) ajouter un nouvel objet");
-            System.out.println("13) bilan d'un utilisateur");
+            System.out.println("9) ajouter une nouvelle catégorie");
+            System.out.println("10) ajouter une nouvelle enchère");
+            System.out.println("11) ajouter un nouvel objet");
+            System.out.println("12) bilan d'un utilisateur");
             System.out.println("0) quitter");
             rep = ConsoleFdB.entreeEntier("Votre choix : ");
             try {
-                switch(rep){ 
-                    case 1:
-                        SchemaDeBase(con);
-                    case 2:
-                        CreerSchema(con);
-                    case 3:
-                        SupprimerSchema(con);
-                    case 4:
-                        Clients.AfficherClients(con);
-                    case 5:
-                        Objets.AfficherObjets(con);
-                    case 6:
-                        Encheres.AfficherEncheres(con);
-                    case 7:
-                        Categories.AfficherCategories(con);
-                    case 8:
-                        Clients.AfficherClients(con);
-                    case 9:
-                        System.out.println("création d'utilisateurs 'aléatoires'");
-                        int combien = ConsoleFdB.entreeEntier("combien d'utilisateur : ");
-                        for (int i = 0; i < combien; i++) {
-                            boolean exist = true;
-                            while (exist) {
-                                String nom = "U" + ((int) (Math.random() * 10000));
-                                /*
-                                try {
-                                    //createUtilisateur(con, nom, "P" + ((int) (Math.random() * 10000)), 2);
-                                    exist = false;
-                                } catch (NomExisteDejaException ex) {
-                                }
-                                */
-                            }
-
-                        }
-                    case 10:
-                        //Categories.DemandeCategories(con);
-                    case 11:
-                        Encheres.AjouterEnchere(con);
-                    case 12:
-                        Objets.DemandeNouvelObjet(con);
-                    case 13:
-                        //int idClient = ConsoleFdB.entreeEntier(s)
-                        //Clients.BilanClient(con, idClient);
+                if(rep == 1){
+                    SchemaDeBase(con);
+                }else if(rep == 2){
+                    CreerSchema(con);
+                }else if(rep == 3){
+                    SupprimerSchema(con);
+                }else if(rep == 4){
+                    Clients.AfficherClients(con);
+                }else if(rep == 5){
+                    Objets.AfficherObjets(con);
+                }else if(rep == 6){
+                    Encheres.AfficherEncheres(con);
+                }else if(rep == 7){
+                    Categories.AfficherCategories(con);
+                }else if(rep == 8){
+                    Clients.DemandeNouveauClient(con);
+                }else if(rep == 9){
+                    Categories.DemandeNouvelleCategorie(con);
+                }else if(rep == 10){
+                    Encheres.AjouterEnchere(con);
+                }else if(rep == 11){
+                    Objets.DemandeNouvelObjet(con);
+                }else if(rep == 12){
+                    Clients.BilanClient(con);
+                }else if(rep == 0){
+                    System.out.println("On quitte le menu");
+                }else{
+                    System.out.println("Saisie incorrecte");
                 }
             } catch (SQLException ex) {
                 throw new Error(ex);
@@ -367,13 +348,16 @@ public class GestionbD {
         try {
             
             Connection con = defautConnect();
+            //SchemaDeBase(con);
+            menu(con);
+            /*
             SchemaDeBase(con);
             Encheres.AjouterEnchere(con);
             Encheres.AjouterEnchere(con);
             Encheres.AjouterEnchere(con);
             Clients.BilanClient(con, 1);
             
-            /*AfficherClients(con);
+            AfficherClients(con);
             int i=0;
             while ( i<=5){
                 CreerCategorie(con);

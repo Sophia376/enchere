@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package fr.insa.espinola.infos3.tables;
 
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
@@ -17,19 +14,28 @@ import java.sql.Timestamp;
  * @author Sophia
  */
 public class Clients {
-
+    private int id;
     private String nom;
     private String prenom;
     private String email;
     private String pass;
     private String codepostal;
 
-    public Clients(String nom, String prenom, String email, String pass, String codepostal) {
+    public Clients(int id, String nom, String prenom, String email, String pass, String codepostal) {
+        this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.pass = pass;
         this.codepostal = codepostal;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNom() {
@@ -214,6 +220,16 @@ public class Clients {
         }
     }
     
+    public static boolean EmailClientExiste(Connection con, String email) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select email from clients where email = ?")) {
+            pst.setString(1, email);
+            ResultSet res = pst.executeQuery();
+
+            return res.next();
+        }
+    }
+    
     public static int ChoisiClient(Connection con) throws SQLException{
         boolean ok = false;
         int id = -1;
@@ -225,6 +241,20 @@ public class Clients {
             if (!ok) {
                 System.out.println("id inexistant");
             }
+        }
+        return id;
+    }
+    
+    public static int ConversionEmailClient(Connection con, String email) throws SQLException{
+        int id = -1;
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from Clients where email = ? ")) {
+            pst.setString(1, email);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                id = res.getInt("email");
+            }
+            
         }
         return id;
     }
@@ -264,7 +294,8 @@ public class Clients {
         return email;
     }
     
-    public static void BilanClient(Connection con, int idClient) throws SQLException{
+    public static void BilanClient(Connection con) throws SQLException{
+        int idClient = ChoisiClient(con);
         System.out.println("Bilan du Client " + ConversionIdClient(con, idClient));
         System.out.println("-----------------------");
         try ( PreparedStatement pst = con.prepareStatement(
