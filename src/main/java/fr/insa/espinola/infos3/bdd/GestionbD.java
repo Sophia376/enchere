@@ -10,6 +10,7 @@ import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Clients;
 import fr.insa.espinola.infos3.tables.Encheres;
 import fr.insa.espinola.infos3.tables.Objets;
+import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -289,53 +290,78 @@ public class GestionbD {
         System.out.println("Schéma de base créé");
     }
     
-    /*
-    public static void menu(Connection con) {
+    
+    public static void menu(Connection con) throws SQLException {
         int rep = -1;
         while (rep != 0) {
             System.out.println("Menu BdD Encheres");
             System.out.println("=============");
-            System.out.println("1) créer/recréer la BdD initiale");
-            System.out.println("2) liste des utilisateurs");
-            System.out.println("3) liste des liens 'Aime'");
-            System.out.println("4) ajouter un utilisateur");
-            System.out.println("5) ajouter un lien 'Aime'");
-            System.out.println("6) ajouter n utilisateurs aléatoires");
+            System.out.println("1) créer/recréer le Schéma initial");
+            System.out.println("2) créer un Schéma vide");
+            System.out.println("3) supprimer le Schéma");
+            System.out.println("4) liste des Utilisateurs");
+            System.out.println("5) liste des Objets");
+            System.out.println("6) liste des Enchères");
+            System.out.println("7) liste des Catégories");
+            System.out.println("8) ajouter un nouvel utilisateur");
+            System.out.println("9) ajouter n utilisateurs aléatoires");
+            System.out.println("10) ajouter une nouvelle catégorie");
+            System.out.println("11) ajouter une nouvelle enchère");
+            System.out.println("12) ajouter un nouvel objet");
+            System.out.println("13) bilan d'un utilisateur");
             System.out.println("0) quitter");
             rep = ConsoleFdB.entreeEntier("Votre choix : ");
             try {
-                if (rep == 1) {
-                    recreeTout(con);
-                } else if (rep == 2) {
-                    afficheTousLesUtilisateur(con);
-                } else if (rep == 3) {
-                    afficheAmours(con);
-                } else if (rep == 4) {
-                    demandeNouvelUtilisateur(con);
-                } else if (rep == 5) {
-                    demandeNouvelAime(con);
-                } else if (rep == 6) {
-                    System.out.println("création d'utilisateurs 'aléatoires'");
-                    int combien = ConsoleFdB.entreeEntier("combien d'utilisateur : ");
-                    for (int i = 0; i < combien; i++) {
-                        boolean exist = true;
-                        while (exist) {
-                            String nom = "U" + ((int) (Math.random() * 10000));
-                            try {
-                                createUtilisateur(con, nom, "P" + ((int) (Math.random() * 10000)), 2);
-                                exist = false;
-                            } catch (NomExisteDejaException ex) {
+                switch(rep){ 
+                    case 1:
+                        SchemaDeBase(con);
+                    case 2:
+                        CreerSchema(con);
+                    case 3:
+                        SupprimerSchema(con);
+                    case 4:
+                        Clients.AfficherClients(con);
+                    case 5:
+                        Objets.AfficherObjets(con);
+                    case 6:
+                        Encheres.AfficherEncheres(con);
+                    case 7:
+                        Categories.AfficherCategories(con);
+                    case 8:
+                        Clients.AfficherClients(con);
+                    case 9:
+                        System.out.println("création d'utilisateurs 'aléatoires'");
+                        int combien = ConsoleFdB.entreeEntier("combien d'utilisateur : ");
+                        for (int i = 0; i < combien; i++) {
+                            boolean exist = true;
+                            while (exist) {
+                                String nom = "U" + ((int) (Math.random() * 10000));
+                                /*
+                                try {
+                                    //createUtilisateur(con, nom, "P" + ((int) (Math.random() * 10000)), 2);
+                                    exist = false;
+                                } catch (NomExisteDejaException ex) {
+                                }
+                                */
                             }
-                        }
 
-                    }
+                        }
+                    case 10:
+                        //Categories.DemandeCategories(con);
+                    case 11:
+                        Encheres.AjouterEnchere(con);
+                    case 12:
+                        Objets.DemandeNouvelObjet(con);
+                    case 13:
+                        //int idClient = ConsoleFdB.entreeEntier(s)
+                        //Clients.BilanClient(con, idClient);
                 }
             } catch (SQLException ex) {
                 throw new Error(ex);
             }
         }
     }
-    */
+    
     
     public static void main(String[] args) {
         try {
@@ -345,9 +371,7 @@ public class GestionbD {
             Encheres.AjouterEnchere(con);
             Encheres.AjouterEnchere(con);
             Encheres.AjouterEnchere(con);
-            //Clients.DernierEncherisseur(con, 1);
             Clients.BilanClient(con, 1);
-            //Clients.SupprimerTableClients(con);
             
             /*AfficherClients(con);
             int i=0;
