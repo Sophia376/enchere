@@ -5,13 +5,13 @@
 package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.TextAlignment;
 
 /**
  *
@@ -26,26 +26,27 @@ public class VBoxBienvenue extends VBox {
         this.main = main;
         this.boutons = new HBoxBoutons(this.main);
         this.logo = new HBoxLogo(this.main);
-        this.setSpacing(80);
-        this.setPadding(new javafx.geometry.Insets(70,200,47,290));
+        this.setSpacing(100);
+        this.setPadding(new javafx.geometry.Insets(150,200,15,330));
         
-        Label titre = new Label("                  Bienvenue sur le site : Enchères2000");
+        Label titre = new Label("                     Bienvenue sur Enchères2000");
         Font font = Font.font("Baskerville",FontWeight.BOLD,  35);
         titre.setTextFill(Color.web("#000000"));
         titre.setFont(font);
+        titre.setAlignment(Pos.BASELINE_CENTER);
         
-        TextArea taMoche = new TextArea("Cette interface en javaFX est la traduction quasi à l'identique\n"
-                + "d'une interface web faite en vaadin\n"
-                + "==> elle n'était déjà pas très belle en vaadin,\n"
-                + "==> on pourrait faire moins moche et plus adapté à JavaFX");
-        taMoche.setEditable(false);
-        taMoche.setMaxWidth(200);
-        taMoche.setPadding(new javafx.geometry.Insets(0,50,0,0));
-        Label label = new Label("       Veuillez vous connecter si vous possédez déjà un compte ou vous inscrire si vous êtes un nouvel utilisateur");
+        Label slogan = new Label("           \"Achetez-le pas cher, vendez-le aux enchères\" ");
+        Font font2 = Font.font("Baskerville",FontPosture.ITALIC,  35);
+        slogan.setTextFill(Color.web("#666666"));
+        slogan.setFont(font2);
+        slogan.setAlignment(Pos.CENTER);
+        
+        Label label = new Label("Veuillez vous connecter si vous possédez déjà un compte ou vous inscrire si vous êtes un nouvel utilisateur");
         Font font1 = Font.font("Baskerville",FontWeight.BOLD,  20);
         label.setTextFill(Color.web("#000000"));
         label.setFont(font1);
-        this.getChildren().addAll(titre, taMoche,label,this.boutons, this.logo);
+        label.setAlignment(Pos.CENTER);
+        this.getChildren().addAll(titre, slogan,label,this.boutons, this.logo);
     }
     
     

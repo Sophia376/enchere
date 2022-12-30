@@ -23,6 +23,7 @@ public class HBoxLogo extends HBox{
         InputStream complet = this.getClass().getResourceAsStream("LogoINSA.png");
         ImageView imageView = new ImageView(new Image(complet));
         this.getChildren().add(imageView);
+        
     }
     
 }

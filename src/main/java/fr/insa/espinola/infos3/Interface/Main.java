@@ -16,7 +16,7 @@ public class Main extends Application {
         stage.setWidth(1200);
         stage.setHeight(600);
         stage.setScene(sc);
-        stage.setTitle("Site d'enchere de ouf");
+        stage.setTitle("Encheres2000");
           stage.show();
     }
 

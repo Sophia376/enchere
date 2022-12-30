@@ -5,11 +5,8 @@
 package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
-import java.io.InputStream;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 /**
@@ -34,8 +31,13 @@ public class HBoxBoutons extends HBox{
         this.inscription.setToggleGroup(tg);
         this.connexion.setToggleGroup(tg);
         
+        
         this.connexion.setOnAction((event) -> {
             this.main.setPagePrincipale(new Connexion(this.main));
+        });
+        
+        this.inscription.setOnAction((event) -> {
+            this.main.setPagePrincipale(new Inscription(this.main));
         });
         
         this.getChildren().addAll(this.inscription, this.connexion);
