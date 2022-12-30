@@ -10,9 +10,13 @@ import fr.insa.espinola.infos3.bdd.GestionbD;
 import java.sql.SQLException;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
 
 /**
  *
@@ -34,6 +38,7 @@ public class VuePrincipale extends BorderPane {
         this.pageAccueil = new ScrollPane();
         this.setCenter(this.pageAccueil);
         JavaFXUtils.addSimpleBorder(this.pageAccueil);
+        
          try {
             this.utilisateurs.setConBdD(GestionbD.defautConnect());
             this.setPageAccueil(new AffichageBienvenue(this));
