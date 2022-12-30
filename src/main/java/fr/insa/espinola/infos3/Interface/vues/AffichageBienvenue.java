@@ -42,22 +42,19 @@ public class AffichageBienvenue extends VBox{
                 + "==> elle n'était déjà pas très belle en vaadin,\n"
                 + "==> on pourrait faire moins moche et plus adapté à JavaFX");
         taMoche.setEditable(false);
-        
+        Image image1 = new Image("https://img.freepik.com/photos-premium/fond-motifs-geometriques-pastel_53876-149767.jpg?w=1060");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
+            this.setBackground(new Background(new BackgroundImage(image1,
+             BackgroundRepeat.NO_REPEAT,
+            BackgroundRepeat.NO_REPEAT,
+             BackgroundPosition.CENTER,
+             bSize)));
         InputStream complet = this.getClass().getResourceAsStream("LogoINSA.png");
-        ImageView imageView = new ImageView(new Image(complet));
+        ImageView imageView = new ImageView(new Image(complet));                      
         
-        Image image1 = new Image("LogoINSA.png");
-        
-        
-        this.setBackground(new Background(new BackgroundImage(image1,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundRepeat.NO_REPEAT,
-            BackgroundPosition.CENTER,
-            bSize)));
-               
+              
         this.getChildren().addAll(titre, taMoche, this.boutons, imageView);
-
+            
         
         
     }

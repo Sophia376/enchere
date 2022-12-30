@@ -39,13 +39,18 @@ public class VuePrincipale extends BorderPane {
         this.setCenter(this.pageAccueil);
         JavaFXUtils.addSimpleBorder(this.pageAccueil);
         
+        
+        
          try {
             this.utilisateurs.setConBdD(GestionbD.defautConnect());
             this.setPageAccueil(new AffichageBienvenue(this));
             
+            
         } catch (ClassNotFoundException | SQLException ex) {
             this.setPageAccueil(new BugBdD(this));
         }
+         
+        
         
     }
 
