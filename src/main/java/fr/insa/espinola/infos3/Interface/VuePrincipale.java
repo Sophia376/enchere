@@ -25,29 +25,29 @@ import javafx.scene.layout.BorderPane;
 public class VuePrincipale extends BorderPane {
     
     private Utilisateurs utilisateurs;
-    private ScrollPane pageAccueil;
+    private ScrollPane pagePrincipale;
 
     
-    public void setPageAccueil(Node c) {
-        this.pageAccueil.setContent(c);
+    public void setPagePrincipale(Node c) {
+        this.pagePrincipale.setContent(c);
     }
     
     public VuePrincipale() {
         
         this.utilisateurs = new Utilisateurs();
-        this.pageAccueil = new ScrollPane();
-        this.setCenter(this.pageAccueil);
-        JavaFXUtils.addSimpleBorder(this.pageAccueil);
+        this.pagePrincipale = new ScrollPane();
+        this.setCenter(this.pagePrincipale);
+        JavaFXUtils.addSimpleBorder(this.pagePrincipale);
         
         
         
          try {
             this.utilisateurs.setConBdD(GestionbD.defautConnect());
-            this.setPageAccueil(new AffichageBienvenue(this));
+            this.setPagePrincipale(new AffichageBienvenue(this));
             
             
         } catch (ClassNotFoundException | SQLException ex) {
-            this.setPageAccueil(new BugBdD(this));
+            this.setPagePrincipale(new BugBdD(this));
         }
          
         

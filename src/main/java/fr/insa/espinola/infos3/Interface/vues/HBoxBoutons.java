@@ -5,8 +5,11 @@
 package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import java.io.InputStream;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 /**
@@ -14,13 +17,14 @@ import javafx.scene.layout.HBox;
  * @author nicol
  */
 public class HBoxBoutons extends HBox{
-    private VuePrincipale vuePrincipale;
+    private VuePrincipale main;
     private ToggleButton inscription;
     private ToggleButton connexion;
 
     public HBoxBoutons(VuePrincipale vuePrincipale) {
-        this.setSpacing(50);
-        this.vuePrincipale = vuePrincipale;
+        this.setSpacing(200);
+        this.setPadding(new javafx.geometry.Insets(0,0,0,200));
+        this.main = vuePrincipale;
         this.inscription = new ToggleButton("S'inscrire");
         this.inscription.setPrefSize(125,50);
         this.connexion = new ToggleButton("Se connecter");
@@ -29,6 +33,10 @@ public class HBoxBoutons extends HBox{
         ToggleGroup tg = new ToggleGroup();  
         this.inscription.setToggleGroup(tg);
         this.connexion.setToggleGroup(tg);
+        
+        this.connexion.setOnAction((event) -> {
+            this.main.setPagePrincipale(new Connexion(this.main));
+        });
         
         this.getChildren().addAll(this.inscription, this.connexion);
     }

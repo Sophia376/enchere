@@ -13,7 +13,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         Scene sc = new Scene(new VuePrincipale());
         //Scene sc = new Scene(new VuePrincipale());
-        stage.setWidth(800);
+        stage.setWidth(1200);
         stage.setHeight(600);
         stage.setScene(sc);
         stage.setTitle("Site d'enchere de ouf");

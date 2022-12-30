@@ -10,6 +10,8 @@ import fr.insa.espinola.infos3.tables.Objets;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -250,7 +252,20 @@ public class GestionbD {
         }
     }
     
-    
+    public static Optional<Clients> login(Connection con, String email, String pass) throws SQLException {
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id, nom, prenom, codepostal from clients where email = ? and pass = ?")) {
+
+            pst.setString(1, email);
+            pst.setString(2, pass);
+            ResultSet res = pst.executeQuery();
+            if (res.next()) {
+                return Optional.of(new Clients(res.getInt("id"),res.getString("nom"), res.getString("prenom"), email, pass, res.getString("codepostal")));
+            } else {
+                return Optional.empty();
+            }
+        }
+    }
     
     
     
