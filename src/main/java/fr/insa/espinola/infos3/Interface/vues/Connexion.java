@@ -27,14 +27,22 @@ public class Connexion extends GridPane{
     private TextField email;
     private PasswordField pass;
     private ToggleButton seconnecter;
+    private ToggleButton retour;
     
     public Connexion(VuePrincipale main){
         this.main = main;
         this.email = new TextField();
         this.pass = new PasswordField();
         this.seconnecter = new ToggleButton("Se connecter");
+        this.retour = new ToggleButton("Retour");
+        
+        this.retour.setOnAction((event) -> {
+            this.main.setPagePrincipale(new AffichageBienvenue(this.main));
+        });
         
         int lig = 0;
+        this.add(this.retour, 0, lig);
+        lig++;
         this.add(new Label("email : "), 0, lig);
         this.add(this.email, 1, lig);
         lig ++;
@@ -60,7 +68,9 @@ public class Connexion extends GridPane{
                 JavaFXUtils.showErrorInAlert("Email ou mot de passe invalide");
             } else {
                 this.main.getUtilisateurs().setUtilisateur(utilisateur);
-                this.main.setPagePrincipale(new AffichageBienvenue(this.main));
+                this.main.setPagePrincipale(new VBoxEncheres(this.main));
+                this.main.setGauche(new VBoxGauche(this.main));
+                this.main.setDroite(new VBoxDroite(this.main));
             }
         } catch (SQLException ex) {
             JavaFXUtils.showErrorInAlert("Problème interne : " + ex.getLocalizedMessage());

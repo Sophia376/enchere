@@ -30,6 +30,7 @@ public class Inscription extends GridPane{
     private TextField codepostal;
     private PasswordField pass;
     private ToggleButton valider;
+    private ToggleButton retour;
     
     public Inscription(VuePrincipale main){
         this.main = main;
@@ -39,6 +40,12 @@ public class Inscription extends GridPane{
         this.pass = new PasswordField();
         this.codepostal = new TextField("code postal");
         this.valider = new ToggleButton("Valider");
+        this.retour = new ToggleButton("Retour");
+        
+        this.retour.setOnAction((event) -> {
+            this.main.setPagePrincipale(new AffichageBienvenue(this.main));
+        });
+        
         this.valider.setOnAction((event) -> {
             Connection con = this.main.getUtilisateurs().getConBdD();
             String nom = this.nom.getText();
@@ -60,6 +67,8 @@ public class Inscription extends GridPane{
             }
         });
         int lig = 0;
+        this.add(this.retour, 0, lig);
+        lig++;
         this.add(new Label("Nom : "), 0, lig);
         this.add(this.nom, 1, lig);
         lig++;
@@ -76,8 +85,8 @@ public class Inscription extends GridPane{
         this.add(this.codepostal, 1, lig);
         
         lig++;
-        this.add(this.valider, 0, lig, 6, 5);
-        lig++;
+        this.add(this.valider, 0, lig);
+        
     }
     
     

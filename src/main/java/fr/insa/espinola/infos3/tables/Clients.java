@@ -259,8 +259,23 @@ public class Clients {
         return id;
     }
     
+    public static String ConversionEmailNPClient(Connection con, String email) throws SQLException{
+        String nomprenom = "Personne";
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select nom, prenom from Clients where email = ? ")) {
+            pst.setString(1, email);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                String nom = res.getString("nom");
+                String prenom = res.getString("prenom");
+                nomprenom = prenom + " " + nom;
+            }
+            
+        }
+        return nomprenom;
+    }
     public static String ConversionIdClient(Connection con, int id) throws SQLException{
-        String email = "Michel";
+        String email = "Personne";
         try ( PreparedStatement pst = con.prepareStatement(
                 "select email from Clients where id = ? ")) {
             pst.setInt(1, id);
@@ -271,6 +286,22 @@ public class Clients {
             
         }
         return email;
+    }
+    
+    public static String ConversionNomPrenomClient(Connection con, int id) throws SQLException{
+        String nomprenom = "Michel";
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select nom, prenom from Clients where id = ? ")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+            while(res.next()){
+                String nom = res.getString("nom");
+                String prenom = res.getString("prenom");
+                nomprenom = prenom + " " + nom;
+            }
+            
+        }
+        return nomprenom;
     }
     
     public static String DernierEncherisseur(Connection con, int idObjet) throws SQLException{
@@ -329,6 +360,7 @@ public class Clients {
             
         }
     }
+    
     
     public static boolean VerifyConnection(Connection con, String pass1, String mail1) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(

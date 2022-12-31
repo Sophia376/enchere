@@ -32,6 +32,14 @@ public class VuePrincipale extends BorderPane {
         this.pagePrincipale.setContent(c);
     }
     
+    public void setDroite(Node c) {
+        this.setRight(c);
+    }
+    
+    public void setGauche(Node c) {
+        this.setLeft(c);
+    }
+       
     public VuePrincipale() {
         
         this.utilisateurs = new Utilisateurs();

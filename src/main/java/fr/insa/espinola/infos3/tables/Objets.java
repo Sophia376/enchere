@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -80,6 +82,14 @@ public class Objets {
 
     public Timestamp getFin() {
         return fin;
+    }
+
+    public int getPrix() {
+        return prix;
+    }
+
+    public void setPrix(int prix) {
+        this.prix = prix;
     }
 
     public void setFin(Timestamp fin) {
@@ -266,6 +276,29 @@ public class Objets {
             
         }
         return titre;
+    }
+    
+    public static List<Objets> tousLesObjets(Connection con) throws SQLException {
+        List<Objets> res = new ArrayList<>();
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select * from objets order by id asc")) {
+
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Objets(rs.getInt("id"),
+                            rs.getString("titre"),
+                            rs.getString("description"),
+                            rs.getTimestamp("debut"),
+                            rs.getTimestamp("fin"),
+                            rs.getInt("prixbase"),
+                            rs.getInt("proposepar"),
+                            rs.getInt("categorie"),
+                            rs.getInt("prix")
+                    ));
+                }
+                return res;
+            }
+        }
     }
 
 }
