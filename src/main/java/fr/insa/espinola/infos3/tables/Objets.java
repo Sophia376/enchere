@@ -1,6 +1,8 @@
-
 package fr.insa.espinola.infos3.tables;
 
+import static fr.insa.espinola.infos3.tables.Clients.ChoisiClient;
+import static fr.insa.espinola.infos3.tables.Clients.ConversionIdClient;
+import static fr.insa.espinola.infos3.tables.Clients.DernierEncherisseur;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +19,7 @@ import java.util.List;
  * @author Sophia
  */
 public class Objets {
-    
+
     private int id;
     private String titre;
     private String description;
@@ -117,8 +119,6 @@ public class Objets {
         return "Objets{" + "id=" + id + ", titre=" + titre + ", description=" + description + ", debut=" + debut + ", fin=" + fin + ", prixbase=" + prixbase + ", proposer=" + proposer + ", categorie=" + categorie + '}';
     }
 
-    
-    
     public static void CreerTableObjets(Connection con)
             throws SQLException {
         // je veux que le schema soit entierement cree ou pas du tout
@@ -170,7 +170,7 @@ public class Objets {
             con.setAutoCommit(true);
         }
     }
-    
+
     public static void DemandeNouvelObjet(Connection con) throws SQLException {
 
         System.out.println("--- creation nouvel objet");
@@ -189,7 +189,7 @@ public class Objets {
     public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar, int categorie, int prix)
             throws SQLException {
         con.setAutoCommit(false);
-        
+
         try ( PreparedStatement pst = con.prepareStatement(
                 """
             insert into objets (titre,description,debut,fin,prixbase,proposepar,categorie, prix) values (?,?,?,?,?,?,?,?)
@@ -238,7 +238,7 @@ public class Objets {
             }
         }
     }
-    
+
     public static boolean idObjetExiste(Connection con, int id) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 "select id from objets where id = ?")) {
@@ -248,11 +248,11 @@ public class Objets {
             return res.next();
         }
     }
-    
-    public static int ChoisiObjet(Connection con) throws SQLException{
+
+    public static int ChoisiObjet(Connection con) throws SQLException {
         boolean ok = false;
         int id = -1;
-        while(!ok){
+        while (!ok) {
             System.out.println("---------------choix d'un objet");
             Objets.AfficherObjets(con);
             id = ConsoleFdB.entreeEntier("donnez l'identificateur de l'objet :");
@@ -263,21 +263,21 @@ public class Objets {
         }
         return id;
     }
-    
-    public static String ConversionIdObjet(Connection con, int id) throws SQLException{
+
+    public static String ConversionIdObjet(Connection con, int id) throws SQLException {
         String titre = "PS5";
         try ( PreparedStatement pst = con.prepareStatement(
                 "select titre from Objets where id = ? ")) {
             pst.setInt(1, id);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 titre = res.getString("titre");
             }
-            
+
         }
         return titre;
     }
-    
+
     public static List<Objets> tousLesObjets(Connection con) throws SQLException {
         List<Objets> res = new ArrayList<>();
         try ( PreparedStatement pst = con.prepareStatement(
@@ -298,6 +298,40 @@ public class Objets {
                 }
                 return res;
             }
+        }
+    }
+
+    public static List<Objets> objetsUtilisateur(Connection con) throws SQLException {
+
+        List<Objets> res = new ArrayList<>();
+        int idClient = Clients.ChoisiClient(con);
+        System.out.println("Objets publiés par le Client " + ConversionIdClient(con, idClient));
+        System.out.println("-----------------------");
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select * 
+                    from Objets
+                        join Clients on Objets.proposepar = clients.id
+                    where clients.id = ?
+                
+                """)) {
+            pst.setInt(1, idClient);
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Objets(rs.getInt("id"),
+                            rs.getString("titre"),
+                            rs.getString("description"),
+                            rs.getTimestamp("debut"),
+                            rs.getTimestamp("fin"),
+                            rs.getInt("prixbase"),
+                            rs.getInt("proposepar"),
+                            rs.getInt("categorie"),
+                            rs.getInt("prix")
+                    ));
+                }
+                return res;
+            }
+
         }
     }
 

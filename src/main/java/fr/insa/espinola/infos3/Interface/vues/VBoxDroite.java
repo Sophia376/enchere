@@ -4,6 +4,7 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import java.util.Optional;
 import javafx.scene.control.ToggleButton;
@@ -36,11 +37,10 @@ public class VBoxDroite extends VBox {
             this.main.setPagePrincipale(new PublierObjet(this.main));
         });
         this.getChildren().add(this.propose);
-        
-        
+
         this.supprimer = new ToggleButton("Supprimer un Objet");
         this.supprimer.setOnAction((event) -> {
-        //    this.main.setPagePrincipale(new SupprimerObjet(this.main));
+            this.main.setPagePrincipale(new SupprimerObjet(this.main));
         });
         this.getChildren().add(this.supprimer);
     }

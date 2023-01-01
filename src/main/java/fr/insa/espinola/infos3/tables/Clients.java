@@ -1,4 +1,3 @@
-
 package fr.insa.espinola.infos3.tables;
 
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
@@ -14,6 +13,7 @@ import java.sql.Timestamp;
  * @author Sophia
  */
 public class Clients {
+
     private int id;
     private String nom;
     private String prenom;
@@ -82,7 +82,7 @@ public class Clients {
     public String toString() {
         return "Users{" + "nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", pass=" + pass + ", codepostal=" + codepostal + '}';
     }
-    
+
     public static void CreerTableClients(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
@@ -109,7 +109,7 @@ public class Clients {
             con.setAutoCommit(true);
         }
     }
-    
+
     public static void SupprimerTableClients(Connection con)
             throws SQLException {
         con.setAutoCommit(false);
@@ -128,10 +128,10 @@ public class Clients {
             con.setAutoCommit(true);
         }
     }
-    
+
     public static class EmailExisteDejaException extends Exception {
     }
-    
+
     public static void DemandeNouveauClient(Connection con) throws SQLException {
         boolean existe = true;
         while (existe) {
@@ -149,7 +149,7 @@ public class Clients {
             }
         }
     }
-    
+
     public static int CreerClient(Connection con, String nom, String prenom, String email, String codepostal, String pass)
             throws SQLException, EmailExisteDejaException {
         con.setAutoCommit(false);
@@ -209,7 +209,7 @@ public class Clients {
             }
         }
     }
-    
+
     public static boolean idClientExiste(Connection con, int id) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 "select id from clients where id = ?")) {
@@ -219,7 +219,7 @@ public class Clients {
             return res.next();
         }
     }
-    
+
     public static boolean EmailClientExiste(Connection con, String email) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 "select email from clients where email = ?")) {
@@ -229,11 +229,11 @@ public class Clients {
             return res.next();
         }
     }
-    
-    public static int ChoisiClient(Connection con) throws SQLException{
+
+    public static int ChoisiClient(Connection con) throws SQLException {
         boolean ok = false;
         int id = -1;
-        while(!ok){
+        while (!ok) {
             System.out.println("---------------choix d'un utilisateur");
             Clients.AfficherClients(con);
             id = ConsoleFdB.entreeEntier("donnez l'identificateur de l'utilisateur :");
@@ -244,67 +244,68 @@ public class Clients {
         }
         return id;
     }
-    
-    public static int ConversionEmailClient(Connection con, String email) throws SQLException{
+
+    public static int ConversionEmailClient(Connection con, String email) throws SQLException {
         int id = -1;
         try ( PreparedStatement pst = con.prepareStatement(
                 "select id from Clients where email = ? ")) {
             pst.setString(1, email);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 id = res.getInt("email");
             }
-            
+
         }
         return id;
     }
-    
-    public static String ConversionEmailNPClient(Connection con, String email) throws SQLException{
+
+    public static String ConversionEmailNPClient(Connection con, String email) throws SQLException {
         String nomprenom = "Personne";
         try ( PreparedStatement pst = con.prepareStatement(
                 "select nom, prenom from Clients where email = ? ")) {
             pst.setString(1, email);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 String nom = res.getString("nom");
                 String prenom = res.getString("prenom");
                 nomprenom = prenom + " " + nom;
             }
-            
+
         }
         return nomprenom;
     }
-    public static String ConversionIdClient(Connection con, int id) throws SQLException{
+
+    public static String ConversionIdClient(Connection con, int id) throws SQLException {
         String email = "Personne";
         try ( PreparedStatement pst = con.prepareStatement(
                 "select email from Clients where id = ? ")) {
             pst.setInt(1, id);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 email = res.getString("email");
             }
-            
+
         }
         return email;
     }
-    
-    public static String ConversionNomPrenomClient(Connection con, int id) throws SQLException{
+
+    public static String ConversionNomPrenomClient(Connection con, int id) throws SQLException {
         String nomprenom = "Michel";
         try ( PreparedStatement pst = con.prepareStatement(
                 "select nom, prenom from Clients where id = ? ")) {
             pst.setInt(1, id);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 String nom = res.getString("nom");
                 String prenom = res.getString("prenom");
                 nomprenom = prenom + " " + nom;
             }
-            
+
         }
         return nomprenom;
     }
-    
-    public static String DernierEncherisseur(Connection con, int idObjet) throws SQLException{
+
+    public static String DernierEncherisseur(Connection con, int idObjet) throws SQLException {
         String email = "toto@google.com";
         try ( PreparedStatement pst = con.prepareStatement(
                 """
@@ -313,19 +314,19 @@ public class Clients {
                         join encheres on clients.id = encheres.de
                         join objets on encheres.sur = objets.id
                 where(select prix from objets where objets.id = ?) = encheres.montant
-                """)){
+                """)) {
             pst.setInt(1, idObjet);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 email = res.getString("email");
                 // System.out.println(email);
             }
-            
+
         }
         return email;
     }
-    
-    public static void BilanClient(Connection con) throws SQLException{
+
+    public static void BilanClient(Connection con) throws SQLException {
         int idClient = ChoisiClient(con);
         System.out.println("Bilan du Client " + ConversionIdClient(con, idClient));
         System.out.println("-----------------------");
@@ -340,28 +341,27 @@ public class Clients {
                 """)) {
             pst.setInt(1, idClient);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 int idObjet = res.getInt("id");
-                String dernier = DernierEncherisseur(con , idObjet);
+                String dernier = DernierEncherisseur(con, idObjet);
                 String titre = res.getString("titre");
                 String categorie = Categories.ConversionIdCategorie(con, res.getInt("categorie"));
                 int prixbase = res.getInt("prixbase");
                 Timestamp debut = res.getTimestamp("debut");
                 Timestamp fin = res.getTimestamp("fin");
-                if(dernier.equals(ConversionIdClient(con, idClient))){
+                if (dernier.equals(ConversionIdClient(con, idClient))) {
                     System.out.println("Vous êtes le dernier à avoir enchéri sur :");
                     System.out.println("Titre :" + titre + ", Catégorie :" + categorie + ", Prix de base : " + prixbase + ", Début :" + debut + ", Fin :" + fin);
-                }else{
+                } else {
                     System.out.println(dernier + " est le dernier à avoir enchéri sur :");
                     System.out.println("Titre :" + titre + ", Catégorie :" + categorie + ", Prix de base : " + prixbase + ", Début :" + debut + ", Fin :" + fin);
                 }
-                
+
             }
-            
+
         }
     }
-    
-    
+
     public static boolean VerifyConnection(Connection con, String pass1, String mail1) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 "select pass from Clients where Email = ?  and pass=? ")) {
