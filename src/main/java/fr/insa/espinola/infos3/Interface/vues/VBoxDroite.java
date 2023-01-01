@@ -5,7 +5,6 @@
 package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
-import fr.insa.espinola.infos3.Interface.vues.PublierObjet;
 import java.util.Optional;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
@@ -19,6 +18,7 @@ public class VBoxDroite extends VBox {
     private VuePrincipale main;
     private ToggleButton deconnexion;
     private ToggleButton propose;
+    private ToggleButton supprimer;
 
     public VBoxDroite(VuePrincipale main) {
         this.main = main;
@@ -38,6 +38,15 @@ public class VBoxDroite extends VBox {
         this.setSpacing(20);
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
         this.getChildren().add(this.propose);
+        
+        
+        this.supprimer = new ToggleButton("Supprimer un Objet");
+        this.propose.setOnAction((event) -> {
+ //           this.main.setPagePrincipale(new SupprimerObjet(this.main));
+        });
+        this.setSpacing(20);
+        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
+        this.getChildren().add(this.supprimer);
     }
 
     public void Deconnexion() {

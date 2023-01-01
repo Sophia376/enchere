@@ -6,7 +6,6 @@ package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
-import fr.insa.espinola.infos3.bdd.GestionbD;
 import fr.insa.espinola.infos3.tables.Clients;
 import java.sql.Connection;
 import java.sql.SQLException;
