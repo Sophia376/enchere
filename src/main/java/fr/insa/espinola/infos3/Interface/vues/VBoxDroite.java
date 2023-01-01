@@ -35,17 +35,13 @@ public class VBoxDroite extends VBox {
         this.propose.setOnAction((event) -> {
             this.main.setPagePrincipale(new PublierObjet(this.main));
         });
-        this.setSpacing(20);
-        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
         this.getChildren().add(this.propose);
         
         
         this.supprimer = new ToggleButton("Supprimer un Objet");
-        this.propose.setOnAction((event) -> {
- //           this.main.setPagePrincipale(new SupprimerObjet(this.main));
+        this.supprimer.setOnAction((event) -> {
+        //    this.main.setPagePrincipale(new SupprimerObjet(this.main));
         });
-        this.setSpacing(20);
-        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
         this.getChildren().add(this.supprimer);
     }
 

@@ -4,18 +4,24 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Objets;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
 
 /**
  *
  * @author Sophia
  */
-public class SupprimerObjet {
-        private VuePrincipale main;
+public class SupprimerObjet extends GridPane{
+    private VuePrincipale main;
 
     private TextField titre;
     private TextField description;
@@ -30,8 +36,9 @@ public class SupprimerObjet {
     private Objets objet;
 
     public SupprimerObjet(VuePrincipale main) {
+        /*
         this.main = main;
-        /*this.titre = new TextField("titre");
+        this.titre = new TextField("titre");
         this.description = new TextField("description");
         this.fin = new TextField("fin: ");
         this.prixbase = new TextField("prixbase");
@@ -94,6 +101,7 @@ public class SupprimerObjet {
 
         lig++;
         this.add(this.valider, 0, lig);
-*/
+        */
     }
+
 }
