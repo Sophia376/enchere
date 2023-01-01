@@ -40,7 +40,7 @@ public class PublierObjet extends GridPane {
         this.main = main;
         this.titre = new TextField("titre");
         this.description = new TextField("description");
-        this.fin = new TextField("fin: ");
+        this.fin = new TextField("fin: 2018-09-01 09:01:15 ");
         this.prixbase = new TextField("prixbase");
         this.categorie = new TextField("categorie");
         this.proposer = new TextField("id utilisateur");
