@@ -18,7 +18,7 @@ public class VBoxGauche extends VBox{
 
     public VBoxGauche(VuePrincipale main) {
         this.main = main;
-        this.choixcategorie = new ToggleButton("Choisir une catégorie");
+        this.choixcategorie = new ToggleButton("Choisir une catégorie");   //faire un menu button
         this.choixcategorie.setOnAction((event) -> {
             this.choixCategorie();
         });
