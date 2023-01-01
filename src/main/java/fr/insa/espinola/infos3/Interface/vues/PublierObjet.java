@@ -68,7 +68,9 @@ public class PublierObjet extends GridPane {
                 int id = Objets.CreerObjet(con, titre, description, debut, fin1, prixbase, proposer1, categorie, prix1);
                 this.objet = new Objets(id, titre, description, debut, fin1, prixbase, proposer1, categorie, prix1);
                 JavaFXUtils.showInfoInAlert("Objet  " + titre + " créé");
-                this.main.setPagePrincipale(new AffichageBienvenue(this.main));   //je dois le changer pour revenir dans la page  n
+                this.main.setPagePrincipale(new VBoxEncheres(this.main));   
+                this.main.setGauche(new VBoxGauche(this.main));
+                this.main.setDroite(new VBoxDroite(this.main));
             } catch (SQLException ex) {
                 JavaFXUtils.showErrorInAlert("Problème BdD : " + ex.getLocalizedMessage());
             }
