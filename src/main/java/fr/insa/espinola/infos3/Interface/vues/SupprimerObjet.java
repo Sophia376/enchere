@@ -15,6 +15,20 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
+import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import fr.insa.espinola.infos3.tables.Objets;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Optional;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.GridPane;
 
 /**
  *
@@ -23,22 +37,19 @@ import javafx.scene.layout.GridPane;
 public class SupprimerObjet extends GridPane {
 
     private VuePrincipale main;
-    private ToggleButton valider;
     private ToggleButton retour;
 
     public SupprimerObjet(VuePrincipale main) {
         this.main = main;
-        this.valider = new ToggleButton("Valider");
         this.retour = new ToggleButton("Retour");
 
-        this.retour.setOnAction((event) -> {
+       this.retour.setOnAction((event) -> {
             this.main.setPagePrincipale(new VBoxEncheres(this.main));
         });
 
-        this.valider.setOnAction((event) -> {
-            Connection con = this.main.getUtilisateurs().getConBdD();
-
-        });
+       int lig = 0;
+        this.add(this.retour, 0, lig);
+        lig++;
 
     }
 }
