@@ -171,6 +171,27 @@ public class Objets {
         }
     }
 
+    public static void SupprimerObjets(Connection con, int id1)
+            throws SQLException {
+        con.setAutoCommit(false);
+        try ( Statement st = con.createStatement()) {
+            st.executeUpdate(
+                    """
+                    delete from Objets 
+                    where id= ?;
+                    """);
+
+            con.commit();
+            con.setAutoCommit(true);
+        } catch (SQLException ex) {
+            con.rollback();
+            throw ex;
+        } finally {
+            con.setAutoCommit(true);
+        }
+        
+    }
+
     public static void DemandeNouvelObjet(Connection con) throws SQLException {
 
         System.out.println("--- creation nouvel objet");
@@ -301,12 +322,12 @@ public class Objets {
         }
     }
 
-    public static List<Objets> objetsUtilisateur(Connection con) throws SQLException {
+    public static List<Objets> objetsUtilisateur(Connection con, int id1) throws SQLException {
 
         List<Objets> res = new ArrayList<>();
-        int idClient = Clients.ChoisiClient(con);
-        System.out.println("Objets publiés par le Client " + ConversionIdClient(con, idClient));
+        /*  System.out.println("Objets publiés par le Client " + ConversionIdClient(con, id1));
         System.out.println("-----------------------");
+         */
         try ( PreparedStatement pst = con.prepareStatement(
                 """
                 select * 
@@ -315,7 +336,7 @@ public class Objets {
                     where clients.id = ?
                 
                 """)) {
-            pst.setInt(1, idClient);
+            pst.setInt(1, id1);
             try ( ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
                     res.add(new Objets(rs.getInt("id"),

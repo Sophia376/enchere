@@ -27,6 +27,7 @@ public class VBoxAllEncheres extends VBox{
         } catch (SQLException ex) {
             this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
         }
+        
         int taille = this.objets.size();
         for(int i = 0; i < taille; i++){
             this.getChildren().add(new AfficherObjet(this.main,this.objets.get(i)));

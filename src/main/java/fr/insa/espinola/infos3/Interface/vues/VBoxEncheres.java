@@ -28,11 +28,11 @@ public class VBoxEncheres extends VBox{
             this.allEncheres.setContent(new VBoxAllEncheres(this.main));
         });
         
-        this.persoObjets.setContent(new MesObjets(this.main));
-        this.persoEncheres = new Tab("Mes objets ");
-        this.persoEncheres.setOnSelectionChanged((t) -> {
-            this.persoEncheres.setContent(new MesObjets(this.main));
+        this.persoObjets = new Tab("Mes objets");
+        this.persoObjets.setOnSelectionChanged((t) -> {
+            this.persoObjets.setContent(new MesObjets(this.main));
         });
+        
         
         this.allEncheres.setContent(new VBoxAllEncheres(this.main));
         this.persoEncheres = new Tab("Mes enchères ");

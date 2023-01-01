@@ -15,23 +15,25 @@ import javafx.scene.layout.VBox;
  *
  * @author Sophia
  */
-public class MesObjets extends VBox{
-   private VuePrincipale main;
+public class MesObjets extends VBox {
+
+    private VuePrincipale main;
     private List<Objets> objets;
-    
+
     public MesObjets(VuePrincipale main) {
         this.main = main;
         this.setSpacing(50);
-        try{
-            this.objets = Objets.objetsUtilisateur(this.main.getUtilisateurs().getConBdD());
+        int id1 = this.main.getUtilisateurs().getUtilisateurID();
+        try {
+            this.objets = Objets.objetsUtilisateur(this.main.getUtilisateurs().getConBdD(), id1);
         } catch (SQLException ex) {
             this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
         }
-        
+
         int taille = this.objets.size();
-        for(int i = 0; i < taille; i++){
-            this.getChildren().add(new AfficherObjet(this.main,this.objets.get(i)));
+        for (int i = 0; i < taille; i++) {
+            this.getChildren().add(new AfficherObjetPerso(this.main, this.objets.get(i)));
         }
-        this.setPadding(new javafx.geometry.Insets(20,20,20,200));
-    } 
+        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 200));
+    }
 }

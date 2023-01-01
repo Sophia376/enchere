@@ -19,7 +19,6 @@ public class VBoxDroite extends VBox {
     private VuePrincipale main;
     private ToggleButton deconnexion;
     private ToggleButton propose;
-    private ToggleButton supprimer;
 
     public VBoxDroite(VuePrincipale main) {
         this.main = main;
@@ -38,11 +37,6 @@ public class VBoxDroite extends VBox {
         });
         this.getChildren().add(this.propose);
 
-        this.supprimer = new ToggleButton("Supprimer un Objet");
-        this.supprimer.setOnAction((event) -> {
-            this.main.setPagePrincipale(new SupprimerObjet(this.main));
-        });
-        this.getChildren().add(this.supprimer);
     }
 
     public void Deconnexion() {
