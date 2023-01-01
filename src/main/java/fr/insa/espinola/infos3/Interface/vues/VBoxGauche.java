@@ -20,14 +20,17 @@ public class VBoxGauche extends VBox{
         this.main = main;
         this.choixcategorie = new ToggleButton("Choisir une catégorie");
         this.choixcategorie.setOnAction((event) -> {
-           // this.Deconnexion();
+            this.choixCategorie();
         });
         this.setSpacing(20);
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
         this.getChildren().add(this.choixcategorie);
+    }
+    public void choixCategorie() {
+       // this.main.getUtilisateurs().setUtilisateur(Optional.empty());
         
-        this.setSpacing(20);
-        this.setPadding(new javafx.geometry.Insets(20,20,20,20));
-        this.getChildren().add(this.choixcategorie);
+        this.main.setPagePrincipale(new AffichageBienvenue(this.main));
+        this.main.setGauche(new Vide(main));
+        this.main.setDroite(new Vide(main));
     }
 }
