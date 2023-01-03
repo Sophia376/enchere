@@ -24,16 +24,19 @@ public class AfficherObjetPerso extends GridPane {
     private VuePrincipale main;
     private Objets objet;
     private ToggleButton supprimer;
-
-    public AfficherObjetPerso(VuePrincipale main, Objets objet) {
+    private VBoxEncheres vboxencheres;
+    
+    public AfficherObjetPerso(VuePrincipale main, Objets objet, VBoxEncheres vboxencheres) {
 
         this.main = main;
+        this.vboxencheres = vboxencheres;
         this.objet = objet;
 
         this.supprimer = new ToggleButton("Supprimer");
         this.supprimer.setOnAction((event) -> {
             try {                
                 Objets.SupprimerObjets(this.main.getUtilisateurs().getConBdD(), this.objet.getId());
+                vboxencheres.getPersoObjets().setContent(new MesObjets(this.main, this.vboxencheres));
             } catch (SQLException ex) {
                 this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
             }            

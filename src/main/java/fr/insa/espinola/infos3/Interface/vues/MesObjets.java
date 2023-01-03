@@ -19,9 +19,11 @@ public class MesObjets extends VBox {
 
     private VuePrincipale main;
     private List<Objets> objets;
+    private VBoxEncheres vboxencheres;
 
-    public MesObjets(VuePrincipale main) {
+    public MesObjets(VuePrincipale main, VBoxEncheres vboxencheres) {
         this.main = main;
+        this.vboxencheres = vboxencheres;
         this.setSpacing(50);
         int id1 = this.main.getUtilisateurs().getUtilisateurID();
         try {
@@ -32,7 +34,7 @@ public class MesObjets extends VBox {
 
         int taille = this.objets.size();
         for (int i = 0; i < taille; i++) {
-            this.getChildren().add(new AfficherObjetPerso(this.main, this.objets.get(i)));
+            this.getChildren().add(new AfficherObjetPerso(this.main, this.objets.get(i), this.vboxencheres));
         }
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 200));
     }

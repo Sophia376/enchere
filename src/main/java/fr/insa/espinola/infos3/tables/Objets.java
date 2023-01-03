@@ -174,13 +174,12 @@ public class Objets {
     public static void SupprimerObjets(Connection con, int id1)
             throws SQLException {
         con.setAutoCommit(false);
-        try ( Statement st = con.createStatement()) {
-            st.executeUpdate(
-                    """
+        try ( PreparedStatement pst = con.prepareStatement("""
                     delete from Objets 
                     where id= ?;
-                    """);
-
+                    """)) {
+            pst.setInt(1, id1);
+            pst.executeUpdate();
             con.commit();
             con.setAutoCommit(true);
         } catch (SQLException ex) {

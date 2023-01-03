@@ -6,13 +6,17 @@ package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Objets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Optional;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -31,54 +35,56 @@ public class PublierObjet extends GridPane {
     private TextField description;
     private Timestamp debut;
     private Timestamp fin;
-    private String c_debut;
     private String c_fin;
     private TextField prixbase;
-    private TextField categorie;
+    private ToggleButton categorie;
     private ToggleButton valider;
+    private ToggleButton date_fin;
     private ToggleButton retour;
     private Objets objet;
+    private int idcategorie;
 
     public PublierObjet(VuePrincipale main) {
         this.main = main;
         this.titre = new TextField("titre");
         this.description = new TextField("description");
-        this.prixbase = new TextField("prixbase");
-        this.categorie = new TextField("categorie");
+        this.prixbase = new TextField("0");
+        this.categorie = new ToggleButton("Choisir une catégorie");
+        this.date_fin = new ToggleButton("Choisir une Date de fin");
         this.valider = new ToggleButton("Valider");
         this.retour = new ToggleButton("Retour");
-
+        this.idcategorie = -1;
         this.retour.setOnAction((event) -> {
             this.main.setPagePrincipale(new VBoxEncheres(this.main));
         });
         
+        this.categorie.setOnAction((event) -> {
+            this.idcategorie = ChoisiCategorie();
+        });
+        
+        this.fin = Timestamp.valueOf("0000-01-01 00:00:00");
+        
+        this.date_fin.setOnAction((event) -> {
+            while(this.debut.after(this.fin)){
+                this.EntreeDateFin();
+                if (this.debut.after(this.fin)){
+                    JavaFXUtils.showErrorInAlert("Saisir une date postérieure à la date actuelle");
+                }
+            }
+        });
+        
+        this.debut = Timestamp.valueOf(LocalDateTime.now());
         
         this.valider.setOnAction((event) -> {
             int id = -1;
             Connection con = this.main.getUtilisateurs().getConBdD();
             String titre = this.titre.getText();
             String description = this.description.getText();
-            this.c_debut = "0000-01-01 00:00:00";
-            this.c_fin = "0000-01-01 00:00:00";
-            while ((this.c_debut.equals("0000-01-01 00:00:00")) || (this.c_fin.equals("0000-01-01 00:00:00"))){
-                this.EntreeDateDebut();
-                this.EntreeDateFin();
-            }
-            int prixbase = 0;
-            int categorie = -1;
-            try{
-                prixbase = Integer.parseInt(this.prixbase.getText());
-                categorie = Integer.parseInt(this.categorie.getText());
-            }catch (Exception e){
-                JavaFXUtils.showErrorInAlert("Vous n'avez pas saisi un entier pour le prix de base");
-                
-            }
-
-            int prix1 = prixbase;
             try {
-                if((categorie != -1) && (prixbase != 0) ){
-                    id = Objets.CreerObjet(con, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), categorie, prix1);
-                    this.objet = new Objets(id, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), categorie, prix1);
+                int prixbase = Integer.parseInt(this.prixbase.getText());
+                if((this.idcategorie != -1) && (prixbase != 0) ){
+                    id = Objets.CreerObjet(con, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase);
+                    this.objet = new Objets(id, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase);
                     JavaFXUtils.showInfoInAlert("Objet  " + titre + " créé");
                     this.main.setPagePrincipale(new VBoxEncheres(this.main));   
                     this.main.setGauche(new VBoxGauche(this.main));
@@ -86,7 +92,7 @@ public class PublierObjet extends GridPane {
                 }else{
                     JavaFXUtils.showErrorInAlert("Vous avez fait une ou plusieurs erreurs de saisie");
                 }
-            } catch (SQLException ex) {
+            }catch (SQLException ex) {
                 JavaFXUtils.showErrorInAlert("Problème BdD : " + ex.getLocalizedMessage());
             }
         });
@@ -105,62 +111,31 @@ public class PublierObjet extends GridPane {
         this.add(new Label("Catégorie : "), 0, lig);
         this.add(this.categorie, 1, lig);
         lig++;
+        this.add(new Label("Date de fin : "), 0, lig);
+        this.add(this.date_fin, 1, lig);
+        lig++;
         this.add(this.valider, 0, lig);
     }
     
-    public void EntreeDateDebut(){
-        Dialog<ButtonType> date = new Dialog<ButtonType>();
-        date.setTitle("Saisie d'une date de début");
-        date.setHeaderText("Saisir la date que vous souhaitez");
-        Label annee = new Label("Quelle Année ? ");
-        TextField ann = new TextField("aaaa");
-        Label mois = new Label("Quel Mois ? ");
-        TextField moi = new TextField("mm");
-        Label jour = new Label("Quel Jour ? ");
-        TextField jou = new TextField("jj");
-        Label heures = new Label("A quelle Heure ?");
-        TextField heu = new TextField("hh");
-        Label minutes = new Label("A combien de Minutes ?");
-        TextField min = new TextField("mm");
-        Label secondes = new Label("A combien de Secondes ?");
-        TextField sec = new TextField("ss");
-        GridPane infos = new GridPane();
-        infos.add(annee, 1, 1);
-        infos.add(ann, 2, 1);
-        infos.add(mois, 1, 2);
-        infos.add(moi, 2, 2);
-        infos.add(jour, 1, 3);
-        infos.add(jou, 2, 3);
-        infos.add(heures, 1, 4);
-        infos.add(heu, 2, 4);
-        infos.add(minutes, 1, 5);
-        infos.add(min, 2, 5);
-        infos.add(secondes, 1, 6);
-        infos.add(sec, 2, 6);
-        date.getDialogPane().setContent(infos);
-        
-        ButtonType saisie = new ButtonType("Valider", ButtonBar.ButtonData.OK_DONE);
-        date.getDialogPane().getButtonTypes().add(saisie);
-        Optional<ButtonType> p = date.showAndWait();
-        p.ifPresent(r -> {
-            try{
-                this.c_debut = ann.getText() + "-" + moi.getText() + "-" + jou.getText() + " " + heu.getText() + ":" + min.getText() + ":" +sec.getText();
-                this.debut = Timestamp.valueOf(c_debut) ;
-            }catch (Exception e){
-                JavaFXUtils.showErrorInAlert("Saisir des entiers valides :\n"
-                        + "aaaa pour l'année\n"
-                        + "mm pour le mois de 01 à 12\n"
-                        + "jj pour le jour de 01 à 31\n"
-                        + "hh pour l'heure de 00 à 24\n"
-                        + "mm pour les minutes de 00 à 59\n"
-                        + "ss pour les secondes de 00 à 59");
-                
-            }
-            
-            
-            
-        });
-        
+    public int ChoisiCategorie(){
+        int idcategorie = -1;
+        ArrayList<Categories> categories = new ArrayList();
+        try{
+            categories = Categories.ToutesLesCategories(this.main.getUtilisateurs().getConBdD());
+        }catch (SQLException ex) {
+            this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
+        }
+        ChoiceDialog dialog = new ChoiceDialog(categories.get(0), categories);  
+        dialog.setTitle("Choix d'une catégorie");
+        dialog.setHeaderText("Choisir la catégorie de votre objet");
+
+        Optional<Categories> saisie = dialog.showAndWait();
+
+        if (saisie.isPresent()) {
+            Categories categorieSaisie = saisie.get();
+            idcategorie = categorieSaisie.getId();
+        }
+        return idcategorie;
     }
     
     public void EntreeDateFin(){

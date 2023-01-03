@@ -4,12 +4,22 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Clients;
+import fr.insa.espinola.infos3.tables.Encheres;
 import fr.insa.espinola.infos3.tables.Objets;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -30,6 +40,7 @@ public class AfficherObjet extends GridPane{
         
         this.encherir = new ToggleButton("Enchérir");       
         this.encherir.setOnAction((event) -> {
+            Encherir();
         });
         try{
             int lig = 0;
@@ -58,6 +69,41 @@ public class AfficherObjet extends GridPane{
             this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
         }
         
+    }
+    
+    public void Encherir(){
+        
+        Timestamp quand = Timestamp.valueOf(LocalDateTime.now());
+        
+        
+        Dialog<ButtonType> enchere = new Dialog<ButtonType>();
+        enchere.setTitle("Enchérir");
+        enchere.setHeaderText("Saisir le montant de votre enchère");
+        Label mont = new Label("Montant : ");
+        TextField mon = new TextField();
+        GridPane prix = new GridPane();
+        prix.add(mont, 1, 1);
+        prix.add(mon, 2, 1);
+        enchere.getDialogPane().setContent(prix);
+        ButtonType saisie = new ButtonType("Valider", ButtonBar.ButtonData.OK_DONE);
+        enchere.getDialogPane().getButtonTypes().add(saisie);
+        Optional<ButtonType> p = enchere.showAndWait();
+        p.ifPresent(r -> {
+            Connection con = this.main.getUtilisateurs().getConBdD();
+            try{
+                int montant = Integer.parseInt(mon.getText());
+                if (montant > this.objet.getPrix()){
+                    Encheres.CreerEnchere(con, quand, montant, this.objet.getId(), this.main.getUtilisateurs().getUtilisateurID());
+                    this.objet.setPrix(montant);
+                    this.main.setPagePrincipale(new VBoxEncheres(this.main));
+                }else{
+                    JavaFXUtils.showErrorInAlert("Le montant saisie doit être supérieur à celui actuel");
+                }
+
+            }catch(Exception e){
+                JavaFXUtils.showErrorInAlert("Vous avez fait une erreur de saisie");
+            }
+        });
     }
     
     

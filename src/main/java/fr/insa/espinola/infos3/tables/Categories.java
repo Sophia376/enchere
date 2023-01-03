@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -44,6 +46,11 @@ public class Categories {
 
     public Categories(String nom) {
         this.nom = nom;
+    }
+
+    @Override
+    public String toString() {
+        return id + " : " + nom;
     }
 
     public static void creerTableCategories(Connection con)
@@ -160,6 +167,21 @@ public class Categories {
         return id;
     }
     
+    public static ArrayList<Categories> ToutesLesCategories(Connection con) throws SQLException {
+        ArrayList<Categories> res = new ArrayList<>();
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select * from categories order by id asc")) {
+
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Categories(rs.getString("nom"),
+                            rs.getInt("id")
+                    ));
+                }
+                return res;
+            }
+        }
+    }
     public static String ConversionIdCategorie(Connection con, int id) throws SQLException{
         String nom = "Meubles";
         try ( PreparedStatement pst = con.prepareStatement(
