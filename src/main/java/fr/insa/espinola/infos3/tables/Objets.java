@@ -1,8 +1,5 @@
 package fr.insa.espinola.infos3.tables;
 
-import static fr.insa.espinola.infos3.tables.Clients.ChoisiClient;
-import static fr.insa.espinola.infos3.tables.Clients.ConversionIdClient;
-import static fr.insa.espinola.infos3.tables.Clients.DernierEncherisseur;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -188,7 +185,7 @@ public class Objets {
         } finally {
             con.setAutoCommit(true);
         }
-        
+
     }
 
     public static void DemandeNouvelObjet(Connection con) throws SQLException {
@@ -320,8 +317,8 @@ public class Objets {
             }
         }
     }
-    
-    public void NouveauPrix(Connection con, int idObjet, int montant) throws SQLException{
+
+    public void NouveauPrix(Connection con, int idObjet, int montant) throws SQLException {
         try ( Statement st = con.createStatement()) {
             st.executeQuery("update Objets set prix = " + montant + " where id = " + idObjet);
         }
@@ -355,6 +352,7 @@ public class Objets {
                             rs.getInt("prix")
                     ));
                 }
+                //System.out.println(res);
                 return res;
             }
 

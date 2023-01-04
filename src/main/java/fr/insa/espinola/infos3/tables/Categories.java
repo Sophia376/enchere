@@ -1,15 +1,11 @@
-
 package fr.insa.espinola.infos3.tables;
 
-import static fr.insa.espinola.infos3.tables.Objets.CreerObjet;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +30,7 @@ public class Categories {
     public void setId(int id) {
         this.id = id;
     }
-    
-    
+
     public String getNom() {
         return nom;
     }
@@ -98,7 +93,7 @@ public class Categories {
     public static int CreerCategorie(Connection con, String nom)
             throws SQLException {
         con.setAutoCommit(false);
-        
+
         try ( PreparedStatement pst = con.prepareStatement(
                 """
             insert into categories (nom) values (?)
@@ -118,7 +113,7 @@ public class Categories {
             con.setAutoCommit(true);
         }
     }
-    
+
     public static void DemandeNouvelleCategorie(Connection con) throws SQLException {
 
         System.out.println("--- Création d'une nouvelle catégorie :");
@@ -126,7 +121,7 @@ public class Categories {
 
         CreerCategorie(con, nom);
     }
-    
+
     public static void AfficherCategories(Connection con) throws SQLException {
         try ( Statement st = con.createStatement()) {
             try ( ResultSet tlu = st.executeQuery("select * from categories")) {
@@ -141,7 +136,7 @@ public class Categories {
             }
         }
     }
-    
+
     public static boolean idCategorieExiste(Connection con, int id) throws SQLException {
         try ( PreparedStatement pst = con.prepareStatement(
                 "select id from categories where id = ?")) {
@@ -151,11 +146,44 @@ public class Categories {
             return res.next();
         }
     }
-    
-    public static int ChoisiCategorie(Connection con) throws SQLException{
+
+    public static List<Objets> ChoisirCategorie(Connection con, int id1) throws SQLException {
+
+        List<Objets> res = new ArrayList<>();
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select * 
+                    from Objets
+                        join Categories on Objets.categorie = Categories.id
+                    where categories.id = ?
+                
+                """)) {
+            pst.setInt(1, id1);
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Objets(rs.getInt("id"),
+                            rs.getString("titre"),
+                            rs.getString("description"),
+                            rs.getTimestamp("debut"),
+                            rs.getTimestamp("fin"),
+                            rs.getInt("prixbase"),
+                            rs.getInt("proposepar"),
+                            rs.getInt("categorie"),
+                            rs.getInt("prix")
+                    ));
+                }
+                // System.out.println(res);
+                return res;
+            }
+
+        }
+
+    }
+
+    public static int ChoisiCategorie(Connection con) throws SQLException {
         boolean ok = false;
         int id = -1;
-        while(!ok){
+        while (!ok) {
             System.out.println("----------- ----choix d'une categorie");
             AfficherCategories(con);
             id = ConsoleFdB.entreeEntier("donnez l'identificateur de la categorie :");
@@ -166,7 +194,7 @@ public class Categories {
         }
         return id;
     }
-    
+
     public static ArrayList<Categories> ToutesLesCategories(Connection con) throws SQLException {
         ArrayList<Categories> res = new ArrayList<>();
         try ( PreparedStatement pst = con.prepareStatement(
@@ -182,16 +210,17 @@ public class Categories {
             }
         }
     }
-    public static String ConversionIdCategorie(Connection con, int id) throws SQLException{
+
+    public static String ConversionIdCategorie(Connection con, int id) throws SQLException {
         String nom = "Meubles";
         try ( PreparedStatement pst = con.prepareStatement(
                 "select nom from categories where id = ? ")) {
             pst.setInt(1, id);
             ResultSet res = pst.executeQuery();
-            while(res.next()){
+            while (res.next()) {
                 nom = res.getString("nom");
             }
-            
+
         }
         return nom;
     }
