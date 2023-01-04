@@ -31,7 +31,7 @@ public class VBoxEncheres extends VBox {
 
         this.persoObjets = new Tab("Mes objets");
         this.persoObjets.setOnSelectionChanged((t) -> {
-            this.persoObjets.setContent(new MesObjets(this.main, this));
+            this.persoObjets.setContent(new VBoxMesObjets(this.main, this));
         });
 
         // this.allEncheres.setContent(new VBoxAllEncheres(this.main, this));

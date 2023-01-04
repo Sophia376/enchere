@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -200,6 +202,36 @@ public class Encheres {
                     System.out.println(mess);
                 }
             }
+        }
+    }
+    
+    public static List<Encheres> encheresUtilisateur(Connection con, int idUtilisateur) throws SQLException {
+
+        List<Encheres> res = new ArrayList<>();
+        /*  System.out.println("Objets publiés par le Client " + ConversionIdClient(con, id1));
+        System.out.println("-----------------------");
+         */
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select * 
+                    from Encheres
+                        join Clients on clients.id = encheres.de
+                    where clients.id = ?
+                
+                """)) {
+            pst.setInt(1, idUtilisateur);
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Encheres(rs.getInt("id"),
+                            rs.getTimestamp("quand"),
+                            rs.getInt("montant"),
+                            rs.getInt("sur"),
+                            rs.getInt("de")
+                    ));
+                }
+                return res;
+            }
+
         }
     }
     

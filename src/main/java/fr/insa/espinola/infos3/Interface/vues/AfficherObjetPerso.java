@@ -36,7 +36,7 @@ public class AfficherObjetPerso extends GridPane {
         this.supprimer.setOnAction((event) -> {
             try {                
                 Objets.SupprimerObjets(this.main.getUtilisateurs().getConBdD(), this.objet.getId());
-                vboxencheres.getPersoObjets().setContent(new MesObjets(this.main, this.vboxencheres));
+                vboxencheres.getPersoObjets().setContent(new VBoxMesObjets(this.main, this.vboxencheres));
             } catch (SQLException ex) {
                 this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
             }            

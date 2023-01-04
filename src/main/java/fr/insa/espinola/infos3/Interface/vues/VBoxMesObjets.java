@@ -15,13 +15,13 @@ import javafx.scene.layout.VBox;
  *
  * @author Sophia
  */
-public class MesObjets extends VBox {
+public class VBoxMesObjets extends VBox {
 
     private VuePrincipale main;
     private List<Objets> objets;
     private VBoxEncheres vboxencheres;
 
-    public MesObjets(VuePrincipale main, VBoxEncheres vboxencheres) {
+    public VBoxMesObjets(VuePrincipale main, VBoxEncheres vboxencheres) {
         this.main = main;
         this.vboxencheres = vboxencheres;
         this.setSpacing(50);
