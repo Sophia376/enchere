@@ -25,7 +25,7 @@ public class VBoxEncheres extends VBox{
             
         this.allEncheres = new Tab("Toutes les enchères en cours");
         this.allEncheres.setOnSelectionChanged((t) -> {
-            this.allEncheres.setContent(new VBoxAllEncheres(this.main));
+            this.allEncheres.setContent(new VBoxAllEncheres(this.main, this));
         });
         
         this.persoObjets = new Tab("Mes objets");
@@ -34,17 +34,21 @@ public class VBoxEncheres extends VBox{
         });
         
         
-        this.allEncheres.setContent(new VBoxAllEncheres(this.main));
+        this.allEncheres.setContent(new VBoxAllEncheres(this.main, this));
         this.persoEncheres = new Tab("Mes enchères ");
         this.persoEncheres.setOnSelectionChanged((t) -> {
-            this.persoEncheres.setContent(new VBoxAllEncheres(this.main));
+            this.persoEncheres.setContent(new VBoxAllEncheres(this.main, this));
         });
         
-        this.persoEncheres.setContent(new VBoxAllEncheres(this.main));
+        this.persoEncheres.setContent(new VBoxAllEncheres(this.main, this));
         this.allTabs = new TabPane(this.allEncheres, this.persoEncheres, this.persoObjets);
         this.getChildren().addAll(this.allTabs);
         this.allTabs.getSelectionModel().select(this.allEncheres);
      }
+
+    public Tab getAllEncheres() {
+        return allEncheres;
+    }
 
     public Tab getPersoObjets() {
         return persoObjets;

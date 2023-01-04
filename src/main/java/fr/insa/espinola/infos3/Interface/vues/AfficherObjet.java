@@ -33,10 +33,11 @@ public class AfficherObjet extends GridPane{
     private VuePrincipale main;
     private Objets objet;
     private ToggleButton encherir;
-    
-    public AfficherObjet(VuePrincipale main, Objets objet) {
+    private VBoxEncheres vboxencheres;
+    public AfficherObjet(VuePrincipale main, Objets objet, VBoxEncheres vboxencheres) {
         this.main = main;
         this.objet = objet;
+        this.vboxencheres = vboxencheres;
         
         this.encherir = new ToggleButton("Enchérir");       
         this.encherir.setOnAction((event) -> {
@@ -91,18 +92,24 @@ public class AfficherObjet extends GridPane{
         p.ifPresent(r -> {
             Connection con = this.main.getUtilisateurs().getConBdD();
             try{
-                int montant = Integer.parseInt(mon.getText());
-                if (montant > this.objet.getPrix()){
-                    Encheres.CreerEnchere(con, quand, montant, this.objet.getId(), this.main.getUtilisateurs().getUtilisateurID());
-                    this.objet.setPrix(montant);
-                    this.main.setPagePrincipale(new VBoxEncheres(this.main));
-                }else{
-                    JavaFXUtils.showErrorInAlert("Le montant saisie doit être supérieur à celui actuel");
+                try{
+                    int montant = Integer.parseInt(mon.getText());
+                    if (montant > this.objet.getPrix()){
+                        Encheres.CreerEnchere(con, quand, montant, this.objet.getId(), this.main.getUtilisateurs().getUtilisateurID());
+                        this.objet.setPrix(montant);
+                        this.objet.NouveauPrix(con, this.objet.getId(), montant);
+                        
+                    }else{
+                        JavaFXUtils.showErrorInAlert("Le montant saisie doit être supérieur à celui actuel");
+                    }
+                }catch(SQLException ex){
                 }
 
             }catch(Exception e){
                 JavaFXUtils.showErrorInAlert("Vous avez fait une erreur de saisie");
             }
+            vboxencheres.getAllEncheres().setContent(new VBoxAllEncheres(this.main, this.vboxencheres));
+
         });
     }
     

@@ -320,6 +320,12 @@ public class Objets {
             }
         }
     }
+    
+    public void NouveauPrix(Connection con, int idObjet, int montant) throws SQLException{
+        try ( Statement st = con.createStatement()) {
+            st.executeQuery("update Objets set prix = " + montant + " where id = " + idObjet);
+        }
+    }
 
     public static List<Objets> objetsUtilisateur(Connection con, int id1) throws SQLException {
 

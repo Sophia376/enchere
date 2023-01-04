@@ -18,9 +18,11 @@ import javafx.scene.layout.VBox;
 public class VBoxAllEncheres extends VBox{
     private VuePrincipale main;
     private List<Objets> objets;
+    private VBoxEncheres vboxencheres;
     
-    public VBoxAllEncheres(VuePrincipale main) {
+    public VBoxAllEncheres(VuePrincipale main, VBoxEncheres vboxencheres) {
         this.main = main;
+        this.vboxencheres = vboxencheres;
         this.setSpacing(50);
         try{
             this.objets = Objets.tousLesObjets(this.main.getUtilisateurs().getConBdD());
@@ -30,7 +32,7 @@ public class VBoxAllEncheres extends VBox{
         
         int taille = this.objets.size();
         for(int i = 0; i < taille; i++){
-            this.getChildren().add(new AfficherObjet(this.main,this.objets.get(i)));
+            this.getChildren().add(new AfficherObjet(this.main,this.objets.get(i), this.vboxencheres));
         }
         this.setPadding(new javafx.geometry.Insets(20,20,20,200));
     }
