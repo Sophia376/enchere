@@ -167,7 +167,7 @@ public class Objets {
             con.setAutoCommit(true);
         }
     }
-
+    
     public static void SupprimerObjets(Connection con, int id1)
             throws SQLException {
         con.setAutoCommit(false);

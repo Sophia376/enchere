@@ -71,6 +71,37 @@ public class Encheres {
         this.de = de;
     }
     
+    public static Objets ConversionIdObjet(Connection con, int idObjet ) throws SQLException{
+        int id = -1;
+        String titre = "";
+        String description= "";
+        Timestamp debut = Timestamp.valueOf(LocalDateTime.MIN);;
+        Timestamp fin = Timestamp.valueOf(LocalDateTime.MIN);
+        int prixbase = -1;
+        int proposepar = -1;
+        int categorie = -1;
+        int prix = -1;
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select * from Objets where id = ? ")) {
+            
+            pst.setInt(1, idObjet);
+            ResultSet res = pst.executeQuery();
+            while (res.next()) {
+                id = res.getInt("id");
+                titre = res.getString("titre");
+                description = res.getString("description");
+                debut = res.getTimestamp("debut");
+                fin = res.getTimestamp("fin");
+                prixbase = res.getInt("prixbase");
+                proposepar = res.getInt("proposepar");
+                categorie = res.getInt("categorie");
+                prix = res.getInt("prix");
+           
+            }
+
+        }
+        return new Objets(id,titre,description,debut,fin,prixbase,proposepar,categorie,prix );
+    }
     public static void creerTableEncheres(Connection con)
             throws SQLException {
         con.setAutoCommit(false);

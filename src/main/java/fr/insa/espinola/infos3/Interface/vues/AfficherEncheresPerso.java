@@ -4,12 +4,20 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
-import fr.insa.espinola.infos3.tables.Categories;
-import fr.insa.espinola.infos3.tables.Clients;
 import fr.insa.espinola.infos3.tables.Encheres;
+import fr.insa.espinola.infos3.tables.Objets;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -25,38 +33,30 @@ public class AfficherEncheresPerso extends GridPane {
     private Encheres enchere;
     private ToggleButton encherir;
     private VBoxEncheres vboxencheres;
-    private AfficherObjet fct_encherir;
     
-    
-    public AfficherEncheresPerso(VuePrincipale main, Encheres enchere, VBoxEncheres vboxencheres, AfficherObjet fct_encherir) {
-        this.setHgap(50);
+    public AfficherEncheresPerso(VuePrincipale main, Encheres enchere, VBoxEncheres vboxencheres) {
+        this.setHgap(200);
         this.setVgap(50);
         this.main = main;
         this.vboxencheres = vboxencheres;
         this.enchere = enchere;
         this.encherir = new ToggleButton("Enchérir");
-        this.fct_encherir = fct_encherir;
 
-        this.encherir.setOnAction((event) -> {            
-            this.fct_encherir.Encherir();
-            vboxencheres.getPersoEncheres().setContent(new VBoxMesEncheres(this.main, this.vboxencheres, this.fct_encherir));          
+        this.encherir.setOnAction((event) -> {
+            try{
+                AfficherObjet.Encherir(this.main.getUtilisateurs().getConBdD(),Encheres.ConversionIdObjet(this.main.getUtilisateurs().getConBdD(),enchere.getSur()),this.main.getUtilisateurs().getUtilisateurID(),this.vboxencheres);
+                vboxencheres.getPersoEncheres().setContent(new VBoxMesEncheres(this.main, this.vboxencheres));
+            }catch (SQLException ex){
+                
+            }
         });
             
         //try {
             int lig = 0;
-            Label gagne = new Label("Enchères que vous gagnez");
-            Label perd = new Label("Enchères que vous perdez");
-            Label termine = new Label("Enchères terminées");
-            Font font = Font.font("Arial", FontWeight.BOLD, 11);
-            gagne.setFont(font);
-            perd.setFont(font);
-            termine.setFont(font);
-            this.add(gagne, 0, lig);
-            this.add(perd, 1, lig);
-            this.add(termine, 2, lig);
+                
             lig++;
             /*
-            this.add(new Label("Description : " + this.objet.getDescription()), 0, lig);
+            this.add(new Label("Nom de l'objet : " + this.objet.getDescription()), 0, lig);
             lig++;
             this.add(new Label("Date de début : " + this.objet.getDebut()), 0, lig);
             lig++;
@@ -78,4 +78,5 @@ public class AfficherEncheresPerso extends GridPane {
         //}
 
     }
+    
 }

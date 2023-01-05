@@ -4,11 +4,22 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Encheres;
+import fr.insa.espinola.infos3.tables.Objets;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -19,12 +30,10 @@ public class VBoxMesEncheres extends VBox{
     private VuePrincipale main;
     private List<Encheres> encheres;
     private VBoxEncheres vboxencheres;
-    private AfficherObjet fct_encherir;
 
-    public VBoxMesEncheres(VuePrincipale main, VBoxEncheres vboxencheres, AfficherObjet fct_encherir) {
+    public VBoxMesEncheres(VuePrincipale main, VBoxEncheres vboxencheres) {
         this.main = main;
         this.vboxencheres = vboxencheres;
-        this.fct_encherir = fct_encherir;
         this.setSpacing(50);
         int id1 = this.main.getUtilisateurs().getUtilisateurID();
         try {
@@ -34,11 +43,15 @@ public class VBoxMesEncheres extends VBox{
         }
 
         int taille = this.encheres.size();
+        this.getChildren().add(new HBoxTitres(this.main));
         for (int i = 0; i < taille; i++) {
-            this.getChildren().add(new AfficherEncheresPerso(this.main, this.encheres.get(i), this.vboxencheres, this.fct_encherir));
+            
+            this.getChildren().add(new AfficherEncheresPerso(this.main, this.encheres.get(i), this.vboxencheres ));
         }
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 200));
     }
 
+    
+    
     
 }

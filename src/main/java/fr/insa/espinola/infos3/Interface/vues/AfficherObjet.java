@@ -41,7 +41,8 @@ public class AfficherObjet extends GridPane{
         
         this.encherir = new ToggleButton("Enchérir");       
         this.encherir.setOnAction((event) -> {
-            Encherir();
+            Encherir(this.main.getUtilisateurs().getConBdD(), this.objet, this.main.getUtilisateurs().getUtilisateurID(), this.vboxencheres );
+            vboxencheres.getAllEncheres().setContent(new VBoxAllEncheres(this.main, this.vboxencheres));
         });
         try{
             int lig = 0;
@@ -72,7 +73,7 @@ public class AfficherObjet extends GridPane{
         
     }
     
-    public void Encherir(){
+    public static void Encherir(Connection con, Objets objet, int idclient, VBoxEncheres vboxencheres){
         
         Timestamp quand = Timestamp.valueOf(LocalDateTime.now());
         
@@ -90,14 +91,13 @@ public class AfficherObjet extends GridPane{
         enchere.getDialogPane().getButtonTypes().add(saisie);
         Optional<ButtonType> p = enchere.showAndWait();
         p.ifPresent(r -> {
-            Connection con = this.main.getUtilisateurs().getConBdD();
             try{
                 try{
                     int montant = Integer.parseInt(mon.getText());
-                    if (montant > this.objet.getPrix()){
-                        Encheres.CreerEnchere(con, quand, montant, this.objet.getId(), this.main.getUtilisateurs().getUtilisateurID());
-                        this.objet.setPrix(montant);
-                        this.objet.NouveauPrix(con, this.objet.getId(), montant);
+                    if (montant > objet.getPrix()){
+                        Encheres.CreerEnchere(con, quand, montant, objet.getId(), idclient);
+                        objet.setPrix(montant);
+                        objet.NouveauPrix(con, objet.getId(), montant);
                         
                     }else{
                         JavaFXUtils.showErrorInAlert("Le montant saisie doit être supérieur à celui actuel");
@@ -108,10 +108,15 @@ public class AfficherObjet extends GridPane{
             }catch(Exception e){
                 JavaFXUtils.showErrorInAlert("Vous avez fait une erreur de saisie");
             }
-            vboxencheres.getAllEncheres().setContent(new VBoxAllEncheres(this.main, this.vboxencheres));
+            
 
         });
     }
+
+    public Objets getObjet() {
+        return objet;
+    }
+    
     
     
 }
