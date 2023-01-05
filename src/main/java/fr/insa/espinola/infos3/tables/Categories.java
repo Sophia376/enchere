@@ -224,6 +224,46 @@ public class Categories {
         }
         return nom;
     }
+    
+    
+        public static int ConversionIdCategorie2(Connection con, String nom) throws SQLException {
+        int id = -1;
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select id from categories where nom = ? ")) {
+            pst.setString(1, nom);
+            ResultSet res = pst.executeQuery();
+            while (res.next()) {
+                id = res.getInt("id");
+            }
+
+        } System.out.println(id);
+        return id;
+    }
+    
+    
+    
+    public static int nbreCategories(Connection con) throws SQLException {
+        int res = 0;
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select * from categories order by id asc")) {
+
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res= res+1;                   
+                }
+                System.out.println(res);
+                return res;
+            }
+        }
+    }
+    
+
+    
+    
+    
+    
+    
+    
 
     /*public static void searchCategory(Connection con) throws SQLException {                    // creo que me tendria que devolver todos los objetos con la categoria seleccionada
         try ( PreparedStatement pst = con.prepareStatement(
