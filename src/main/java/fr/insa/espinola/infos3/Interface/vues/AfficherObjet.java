@@ -42,7 +42,7 @@ public class AfficherObjet extends GridPane{
         this.encherir = new ToggleButton("Enchérir");       
         this.encherir.setOnAction((event) -> {
             Encherir(this.main.getUtilisateurs().getConBdD(), this.objet, this.main.getUtilisateurs().getUtilisateurID(), this.vboxencheres );
-            vboxencheres.getAllEncheres().setContent(new VBoxAllEncheres(this.main, this.vboxencheres));
+            vboxencheres.getAllEncheres().setContent(new AllEncheres(this.main, this.vboxencheres));
         });
         try{
             int lig = 0;
