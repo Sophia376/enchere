@@ -48,7 +48,7 @@ public class VBoxMesEncheres extends VBox{
             
             this.getChildren().add(new AfficherEncheresPerso(this.main, this.encheres.get(i), this.vboxencheres ));
         }
-        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 200));
+        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 100));
     }
 
     

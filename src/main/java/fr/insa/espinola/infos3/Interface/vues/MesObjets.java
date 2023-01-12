@@ -16,31 +16,31 @@ import javafx.scene.layout.GridPane;
 
 /**
  *
- * @author nicol
+ * @author Sophia
  */
-public class AllEncheres extends GridPane{
+public class MesObjets extends GridPane {
+
     private VuePrincipale main;
     private List<Objets> objets;
     private VBoxEncheres vboxencheres;
-    
-    public AllEncheres(VuePrincipale main, VBoxEncheres vboxencheres) {
+
+    public MesObjets(VuePrincipale main, VBoxEncheres vboxencheres) {
         this.main = main;
         this.vboxencheres = vboxencheres;
         this.setHgap(100);
         this.setVgap(50);
-        try{
-            this.objets = Objets.tousLesObjets(this.main.getUtilisateurs().getConBdD());
+        
+        this.setPadding(new javafx.geometry.Insets(20,20,20,200));
+        int id1 = this.main.getUtilisateurs().getUtilisateurID();
+        try {
+            this.objets = Objets.objetsUtilisateur(this.main.getUtilisateurs().getConBdD(), id1);
         } catch (SQLException ex) {
             this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
         }
-        
-        
-        this.setPadding(new javafx.geometry.Insets(20,20,20,200));
-        
 
-            int taille = this.objets.size();
-            for(int i = 0; i < taille; i++){
-                this.add(new AfficherObjet(this.main,this.objets.get(i), this.vboxencheres), 1, i);
+        int taille = this.objets.size();
+        for (int i = 0; i < taille; i++) {
+            this.add(new AfficherObjetPerso(this.main,this.objets.get(i), this.vboxencheres), 1, i);
                 byte[] imageBytes = this.objets.get(i).getImage();
                 if (imageBytes != null){
                     Image image = new Image(new ByteArrayInputStream(imageBytes));
@@ -50,10 +50,7 @@ public class AllEncheres extends GridPane{
                     imageView.setPreserveRatio(true); // conserver le ratio de l'image
                     this.add(imageView, 0, i);
                 }
-            }
+        }
         
-        
-    
     }
-    
 }

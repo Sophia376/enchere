@@ -389,15 +389,16 @@ public class Objets {
         JFileChooser fileChooser = new JFileChooser();
         byte[] imageBytes = null;
         int returnValue = fileChooser.showOpenDialog(null);
-        if(imageBytes != null){
-            if (returnValue == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                imageBytes = new byte[(int) selectedFile.length()];
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            imageBytes = new byte[(int) selectedFile.length()];
+            if(imageBytes != null){
                 FileInputStream fis = new FileInputStream(selectedFile);
                 fis.read(imageBytes);
                 fis.close();
-
             }
+
+            
         }
         return imageBytes;
     }

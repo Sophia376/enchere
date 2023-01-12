@@ -19,7 +19,6 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
-
 /**
  *
  * @author francois

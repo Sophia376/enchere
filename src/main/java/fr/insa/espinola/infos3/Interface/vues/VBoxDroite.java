@@ -5,14 +5,18 @@
 package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import fr.insa.espinola.infos3.tables.Clients;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Optional;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 /**
  *
@@ -42,13 +46,23 @@ public class VBoxDroite extends VBox {
         this.propose.setOnAction((event) -> {
             this.main.setPagePrincipale(new PublierObjet(this.main));
         });
-        imageView.setFitWidth(50); // fixer la largeur à 200 pixels
-        imageView.setFitHeight(50); // fixer la hauteur à 200 pixels
-        imageView.setPreserveRatio(true); // conserver le ratio de l'image
-        this.getChildren().add(imageView);
-        this.getChildren().add(this.propose);
-        this.getChildren().add(this.deconnexion);
-        this.setAlignment(Pos.TOP_CENTER);
+        try{
+            
+            Label label = new Label(Clients.ConversionEmailNPClient(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurEmail()));
+            Font font = Font.font("Arial",FontWeight.BOLD,11);
+            label.setFont(font);
+            imageView.setFitWidth(50); // fixer la largeur à 200 pixels
+            imageView.setFitHeight(50); // fixer la hauteur à 200 pixels
+            imageView.setPreserveRatio(true); // conserver le ratio de l'image
+            this.getChildren().add(imageView);
+            this.getChildren().add(label);
+            this.getChildren().add(this.propose);
+            this.getChildren().add(this.deconnexion);
+            this.setAlignment(Pos.TOP_CENTER);
+        }catch (SQLException ex){
+            
+        }
+        
 
     }
 

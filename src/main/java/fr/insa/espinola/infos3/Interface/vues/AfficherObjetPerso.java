@@ -9,6 +9,8 @@ import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Clients;
 import fr.insa.espinola.infos3.tables.Objets;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
@@ -36,7 +38,7 @@ public class AfficherObjetPerso extends GridPane {
         this.supprimer.setOnAction((event) -> {
             try {                
                 Objets.SupprimerObjets(this.main.getUtilisateurs().getConBdD(), this.objet.getId());
-                vboxencheres.getPersoObjets().setContent(new VBoxMesObjets(this.main, this.vboxencheres));
+                vboxencheres.getPersoObjets().setContent(new MesObjets(this.main, this.vboxencheres));
             } catch (SQLException ex) {
                 this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
             }            
@@ -50,20 +52,32 @@ public class AfficherObjetPerso extends GridPane {
             titre.setFont(font);
             this.add(titre, 0, lig);
             lig++;
-            this.add(new Label("Description : " + this.objet.getDescription()), 0, lig);
-            lig++;
-            this.add(new Label("Date de début : " + this.objet.getDebut()), 0, lig);
-            lig++;
-            this.add(new Label("Date de fin : " + this.objet.getFin()), 0, lig);
-            lig++;
-            this.add(new Label("Prix de base : " + this.objet.getPrixbase() + "€"), 0, lig);
-            lig++;
-            this.add(new Label("Proposé par : " + Clients.ConversionNomPrenomClient(this.main.getUtilisateurs().getConBdD(), this.objet.getProposer())), 0, lig);
-            lig++;
-            this.add(new Label("Catégorie : " + Categories.ConversionIdCategorie(this.main.getUtilisateurs().getConBdD(), this.objet.getCategorie())), 0, lig);
-            lig++;
-            this.add(new Label("Montant actuel de l'enchère : " + this.objet.getPrix() + "€"), 0, lig);
-            lig++;
+            
+            if(Timestamp.valueOf(LocalDateTime.now()).before(this.objet.getFin())){
+                this.add(new Label("Description : " + this.objet.getDescription()), 0, lig);
+                lig++;
+                this.add(new Label("Date de début : " + this.objet.getDebut()), 0, lig);
+                lig++;
+                this.add(new Label("Date de fin : " + this.objet.getFin()), 0, lig);
+                lig++;
+                this.add(new Label("Catégorie : " + Categories.ConversionIdCategorie(this.main.getUtilisateurs().getConBdD(), this.objet.getCategorie())), 0, lig);
+                lig++;
+                this.add(new Label("Prix de base : " + this.objet.getPrixbase() + "€"), 0, lig);
+                lig++;
+                this.add(new Label("Montant actuel de l'enchère : " + this.objet.getPrix() + "€"), 0, lig);
+                lig++;
+                
+            }else{
+                this.add(new Label("Enchère terminée"), 0, lig);
+                lig++;
+                this.add(new Label("Prix de base : " + this.objet.getPrixbase() + "€"), 0, lig);
+                lig++;
+                this.add(new Label("Prix Final : " + this.objet.getPrix() + "€"), 0, lig);
+                lig++;
+            }
+            
+
+            
             this.add(new Label("Dernier à avoir enchéri : " + Clients.ConversionEmailNPClient(this.main.getUtilisateurs().getConBdD(), Clients.DernierEncherisseur(this.main.getUtilisateurs().getConBdD(), this.objet.getId()))), 0, lig);
             this.add(this.supprimer, 10, lig / 2);
         } catch (SQLException ex) {
