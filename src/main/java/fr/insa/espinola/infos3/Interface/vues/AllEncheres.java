@@ -18,31 +18,31 @@ import javafx.scene.layout.GridPane;
  *
  * @author nicol
  */
-public class AllEncheres extends GridPane{
+public class AllEncheres extends GridPane {
+
     private VuePrincipale main;
     private List<Objets> objets;
     private VBoxEncheres vboxencheres;
-    
+
     public AllEncheres(VuePrincipale main, VBoxEncheres vboxencheres) {
         this.main = main;
         this.vboxencheres = vboxencheres;
         this.setHgap(100);
         this.setVgap(50);
-        try{
+        try {
             this.objets = Objets.tousLesObjets(this.main.getUtilisateurs().getConBdD());
         } catch (SQLException ex) {
             this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
         }
-        
-        
-        this.setPadding(new javafx.geometry.Insets(20,20,20,200));
-        
 
+        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 200));
+
+        if (this.objets != null) {
             int taille = this.objets.size();
-            for(int i = 0; i < taille; i++){
-                this.add(new AfficherObjet(this.main,this.objets.get(i), this.vboxencheres), 1, i);
+            for (int i = 0; i < taille; i++) {
+                this.add(new AfficherObjet(this.main, this.objets.get(i), this.vboxencheres), 1, i);
                 byte[] imageBytes = this.objets.get(i).getImage();
-                if (imageBytes != null){
+                if (imageBytes != null) {
                     Image image = new Image(new ByteArrayInputStream(imageBytes));
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(300); // fixer la largeur à 200 pixels
@@ -51,9 +51,8 @@ public class AllEncheres extends GridPane{
                     this.add(imageView, 0, i);
                 }
             }
-        
-        
-    
+        }
+
     }
-    
+
 }

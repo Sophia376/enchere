@@ -54,19 +54,19 @@ public class Connexion extends GridPane {
             this.main.setPagePrincipale(new AffichageBienvenue(this.main));
         });
 
-        int lig = 50;
-        this.add(emailL, 70, lig, 1, 1);
-        this.add(this.email, 71, lig, 1, 1);
+        int lig = 0;
+        this.add(emailL, 0, lig, 1, 1);
+        this.add(this.email, 1, lig, 1, 1);
         lig++;
-        this.add(passL, 70, lig, 1, 1);
-        this.add(this.pass, 71, lig, 1, 1);
+        this.add(passL, 0, lig, 1, 1);
+        this.add(this.pass, 1, lig, 1, 1);
         lig++;
-        this.add(btnbar, 71, lig, 1, 1);
+        this.add(btnbar, 1, lig, 1, 1);
         lig++;
 
         this.setHgap(5);
         this.setVgap(5);
-        this.setPadding(new Insets(10, 10, 10, 10));
+        this.setPadding(new Insets(20, 20, 20, 20));
 
         emailL.setFont(new Font("Roboto", 20));
         passL.setFont(new Font("Roboto", 19));

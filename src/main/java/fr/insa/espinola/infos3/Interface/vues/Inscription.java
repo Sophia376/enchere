@@ -10,17 +10,27 @@ import fr.insa.espinola.infos3.tables.Clients;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
+import javafx.geometry.Insets;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 
 /**
  *
  * @author nicol
  */
-public class Inscription extends GridPane{
+public class Inscription extends GridPane {
+
     private VuePrincipale main;
 
     private TextField nom;
@@ -30,8 +40,8 @@ public class Inscription extends GridPane{
     private PasswordField pass;
     private ToggleButton valider;
     private ToggleButton retour;
-    
-    public Inscription(VuePrincipale main){
+
+    public Inscription(VuePrincipale main) {
         this.main = main;
         this.nom = new TextField("nom");
         this.prenom = new TextField("prenom");
@@ -40,11 +50,19 @@ public class Inscription extends GridPane{
         this.codepostal = new TextField("code postal");
         this.valider = new ToggleButton("Valider");
         this.retour = new ToggleButton("Retour");
-        
+        ButtonBar btnbar = new ButtonBar();
+        btnbar.getButtons().addAll(this.retour, this.valider);
+
+        Label emailL = new Label("Email : ");
+        Label nomL = new Label("Nom : ");
+        Label prenomL = new Label("Prenom : ");
+        Label passeL = new Label("Mot de passe : ");
+        Label codeL = new Label("Code Postal : ");
+
         this.retour.setOnAction((event) -> {
             this.main.setPagePrincipale(new AffichageBienvenue(this.main));
         });
-        
+
         this.valider.setOnAction((event) -> {
             Connection con = this.main.getUtilisateurs().getConBdD();
             String nom = this.nom.getText();
@@ -66,27 +84,56 @@ public class Inscription extends GridPane{
             }
         });
         int lig = 0;
-        this.add(this.retour, 0, lig);
-        lig++;
-        this.add(new Label("Nom : "), 0, lig);
+        this.add(nomL, 0, lig);
         this.add(this.nom, 1, lig);
         lig++;
-        this.add(new Label("Prénom : "), 0, lig);
+        this.add(prenomL, 0, lig);
         this.add(this.prenom, 1, lig);
         lig++;
-        this.add(new Label("Email : "), 0, lig);
+        this.add(emailL, 0, lig);
         this.add(this.email, 1, lig);
         lig++;
-        this.add(new Label("Mot de passe : "), 0, lig);
+        this.add(passeL, 0, lig);
         this.add(this.pass, 1, lig);
         lig++;
-        this.add(new Label("Code postal : "), 0, lig);
+        this.add(codeL, 0, lig);
         this.add(this.codepostal, 1, lig);
-        
         lig++;
-        this.add(this.valider, 0, lig);
-        
+        this.add(btnbar, 1, lig);
+
+        this.setHgap(5);
+        this.setVgap(5);
+        this.setPadding(new Insets(20, 20, 20, 20));
+
+        emailL.setFont(new Font("Roboto", 15));
+        passeL.setFont(new Font("Roboto", 15));
+        nomL.setFont(new Font("Roboto", 15));
+        prenomL.setFont(new Font("Roboto", 15));
+        codeL.setFont(new Font("Roboto", 15));
+
+        emailL.setStyle("-fx-text-fill: white");
+        passeL.setStyle("-fx-text-fill: white");
+        nomL.setStyle("-fx-text-fill: white");
+        prenomL.setStyle("-fx-text-fill: white");
+        codeL.setStyle("-fx-text-fill: white");
+
+        this.email.setPrefWidth(200);
+        this.pass.setPrefWidth(200);
+
+        var image = new Image("https://static.vecteezy.com/system/resources/previews/001/181/686/original/triangle-pattern-abstract-background-in-blue-vector.jpg");
+        var bgImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                new BackgroundSize(1.0, 1.0, true, true, false, false)
+        );
+
+        this.setPrefSize(main.getWidth(), main.getHeight());
+        this.setMinSize(main.getWidth(), main.getHeight());
+
+        this.setBackground(new Background(bgImage));
+
     }
-    
-    
+
 }

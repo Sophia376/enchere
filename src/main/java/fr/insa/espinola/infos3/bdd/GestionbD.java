@@ -366,8 +366,9 @@ public class GestionbD {
         try {
             
             Connection con = defautConnect();
-            //SchemaDeBase(con);
+            SchemaDeBase(con);
             menu(con);
+            
             /*
             SchemaDeBase(con);
             Encheres.AjouterEnchere(con);
