@@ -4,13 +4,14 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
-import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import java.io.InputStream;
 import java.util.Optional;
+import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.VBox;
 
 /**
@@ -47,6 +48,7 @@ public class VBoxDroite extends VBox {
         this.getChildren().add(imageView);
         this.getChildren().add(this.propose);
         this.getChildren().add(this.deconnexion);
+        this.setAlignment(Pos.TOP_CENTER);
 
     }
 

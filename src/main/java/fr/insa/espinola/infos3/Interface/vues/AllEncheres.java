@@ -45,8 +45,8 @@ public class AllEncheres extends GridPane{
                 if (imageBytes != null){
                     Image image = new Image(new ByteArrayInputStream(imageBytes));
                     ImageView imageView = new ImageView(image);
-                    imageView.setFitWidth(300); // fixer la largeur à 200 pixels
-                    imageView.setFitHeight(300); // fixer la hauteur à 200 pixels
+                    imageView.setFitWidth(200); // fixer la largeur à 200 pixels
+                    imageView.setFitHeight(200); // fixer la hauteur à 200 pixels
                     imageView.setPreserveRatio(true); // conserver le ratio de l'image
                     this.add(imageView, 0, i);
                 }

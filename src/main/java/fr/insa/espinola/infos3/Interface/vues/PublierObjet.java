@@ -100,7 +100,7 @@ public class PublierObjet extends GridPane {
             String description = this.description.getText();
             try {
                 int prixbase = Integer.parseInt(this.prixbase.getText());
-                if((this.idcategorie != -1) && (prixbase != 0) ){
+                if(this.idcategorie != -1 ){
                     id = Objets.CreerObjet(con, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase, this.image);
                     this.objet = new Objets(id, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase, this.image);
                     JavaFXUtils.showInfoInAlert("Objet  " + titre + " créé");

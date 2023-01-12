@@ -187,12 +187,14 @@ public class Objets {
     public static void SupprimerObjets(Connection con, int id1)
             throws SQLException {
         con.setAutoCommit(false);
-        try ( PreparedStatement pst = con.prepareStatement("""
-                    delete from Objets 
-                    where id= ?;
-                    """)) {
-            pst.setInt(1, id1);
-            pst.executeUpdate();
+        try (Statement st = con.createStatement()) {
+            try{
+                st.executeUpdate( "delete from encheres where sur = " + id1 );              
+            } catch (SQLException ex) {
+            
+            }try {
+                st.executeUpdate( "delete from objets where id = " + id1 );
+            }catch (SQLException ex) {}
             con.commit();
             con.setAutoCommit(true);
         } catch (SQLException ex) {
