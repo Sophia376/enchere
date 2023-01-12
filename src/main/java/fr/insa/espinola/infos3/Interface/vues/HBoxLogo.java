@@ -20,7 +20,7 @@ public class HBoxLogo extends HBox{
     
     public HBoxLogo(VuePrincipale vuePrincipale) {
         this.vuePrincipale = vuePrincipale;
-        InputStream complet = this.getClass().getResourceAsStream("LogoINSA.png");
+        InputStream complet = this.getClass().getResourceAsStream("images/LogoINSA.png");
         ImageView imageView = new ImageView(new Image(complet));
         this.getChildren().add(imageView);
         
