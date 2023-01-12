@@ -81,6 +81,7 @@ public class Encheres {
         int proposepar = -1;
         int categorie = -1;
         int prix = -1;
+        byte[] image = null;
         try ( PreparedStatement pst = con.prepareStatement(
                 "select * from Objets where id = ? ")) {
             
@@ -96,11 +97,12 @@ public class Encheres {
                 proposepar = res.getInt("proposepar");
                 categorie = res.getInt("categorie");
                 prix = res.getInt("prix");
+                image = res.getBytes("image");
            
             }
 
         }
-        return new Objets(id,titre,description,debut,fin,prixbase,proposepar,categorie,prix );
+        return new Objets(id,titre,description,debut,fin,prixbase,proposepar,categorie,prix, image );
     }
     public static void creerTableEncheres(Connection con)
             throws SQLException {

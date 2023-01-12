@@ -8,6 +8,8 @@ import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Categories;
 import fr.insa.espinola.infos3.tables.Objets;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -42,8 +44,10 @@ public class PublierObjet extends GridPane {
     private ToggleButton date_fin;
     private ToggleButton retour;
     private Objets objet;
+    private ToggleButton choix_image;
     private int idcategorie;
-
+    private byte[] image;
+    
     public PublierObjet(VuePrincipale main) {
         this.main = main;
         this.titre = new TextField("titre");
@@ -51,11 +55,24 @@ public class PublierObjet extends GridPane {
         this.prixbase = new TextField("0");
         this.categorie = new ToggleButton("Choisir une catégorie");
         this.date_fin = new ToggleButton("Choisir une Date de fin");
+        this.choix_image = new ToggleButton("Choisir une image");
         this.valider = new ToggleButton("Valider");
         this.retour = new ToggleButton("Retour");
         this.idcategorie = -1;
+        this.image = null;
+        Connection con = this.main.getUtilisateurs().getConBdD();
         this.retour.setOnAction((event) -> {
             this.main.setPagePrincipale(new VBoxEncheres(this.main));
+        });
+        
+        this.choix_image.setOnAction((event) -> {
+            try{
+                this.image = Objets.InsererImage(con);
+            }catch(SQLException  ex){
+                JavaFXUtils.showErrorInAlert("Problème BdD : " + ex.getLocalizedMessage());
+            }catch(IOException e){
+                
+            }
         });
         
         this.categorie.setOnAction((event) -> {
@@ -63,6 +80,7 @@ public class PublierObjet extends GridPane {
         });
         
         this.fin = Timestamp.valueOf("0000-01-01 00:00:00");
+        this.debut = Timestamp.valueOf(LocalDateTime.now());
         
         this.date_fin.setOnAction((event) -> {
             while(this.debut.after(this.fin)){
@@ -73,18 +91,18 @@ public class PublierObjet extends GridPane {
             }
         });
         
-        this.debut = Timestamp.valueOf(LocalDateTime.now());
+        
         
         this.valider.setOnAction((event) -> {
             int id = -1;
-            Connection con = this.main.getUtilisateurs().getConBdD();
+            
             String titre = this.titre.getText();
             String description = this.description.getText();
             try {
                 int prixbase = Integer.parseInt(this.prixbase.getText());
                 if((this.idcategorie != -1) && (prixbase != 0) ){
-                    id = Objets.CreerObjet(con, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase);
-                    this.objet = new Objets(id, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase);
+                    id = Objets.CreerObjet(con, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase, this.image);
+                    this.objet = new Objets(id, titre, description, this.debut, this.fin, prixbase, this.main.getUtilisateurs().getUtilisateurID(), this.idcategorie, prixbase, this.image);
                     JavaFXUtils.showInfoInAlert("Objet  " + titre + " créé");
                     this.main.setPagePrincipale(new VBoxEncheres(this.main));   
                     this.main.setGauche(new VBoxGauche(this.main));
@@ -110,6 +128,9 @@ public class PublierObjet extends GridPane {
         lig++;
         this.add(new Label("Catégorie : "), 0, lig);
         this.add(this.categorie, 1, lig);
+        lig++;
+        this.add(new Label("Image : "), 0, lig);
+        this.add(this.choix_image, 1, lig);
         lig++;
         this.add(new Label("Date de fin : "), 0, lig);
         this.add(this.date_fin, 1, lig);

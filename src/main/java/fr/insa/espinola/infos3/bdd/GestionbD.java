@@ -15,7 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -143,7 +145,8 @@ public class GestionbD {
                         proposepar integer not null,
                         debut timestamp without time zone not null,
                         fin timestamp without time zone not null,
-                        prix integer not null
+                        prix integer not null,
+                        image bytea
                     )
                     """);
             
@@ -294,9 +297,9 @@ public class GestionbD {
         Categories.CreerCategorie(con, "Meuble");
                
         
-        Objets.CreerObjet(con, "PS5", "console de jeu nouvelle génération", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 10:00:00"), 550, 1, 1, 550);
-        Objets.CreerObjet(con, "Etagere", "Petite étagère 3 tiroirs", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 11:00:00"), 50, 1, 2, 50);
-        Objets.CreerObjet(con, "Ordinateur", "Carte Graphique de ouf", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 12:00:00"), 1200, 3, 1, 1200);
+        Objets.CreerObjet(con, "PS5", "console de jeu nouvelle génération", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 10:00:00"), 550, 1, 1, 550, null);
+        Objets.CreerObjet(con, "Etagere", "Petite étagère 3 tiroirs", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 11:00:00"), 50, 1, 2, 50, null);
+        Objets.CreerObjet(con, "Ordinateur", "Carte Graphique de ouf", Timestamp.valueOf(LocalDateTime.now()), Timestamp.valueOf("2022-12-28 12:00:00"), 1200, 3, 1, 1200, null);
         
         
         System.out.println("Schéma de base créé");
@@ -405,4 +408,14 @@ public class GestionbD {
             Logger.getLogger(GestionbD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public static boolean EnchereTerminee(Timestamp date_fin, Timestamp date_actuelle){
+        
+        boolean terminee = false;       
+        if (date_fin.before(date_actuelle)){
+            terminee = true;
+        }
+        return terminee;
+    }
 }
+

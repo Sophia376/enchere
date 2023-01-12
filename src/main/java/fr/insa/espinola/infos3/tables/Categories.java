@@ -169,7 +169,8 @@ public class Categories {
                             rs.getInt("prixbase"),
                             rs.getInt("proposepar"),
                             rs.getInt("categorie"),
-                            rs.getInt("prix")
+                            rs.getInt("prix"),
+                            rs.getBytes("image")
                     ));
                 }
                 // System.out.println(res);

@@ -1,6 +1,11 @@
 package fr.insa.espinola.infos3.tables;
 
+import fr.insa.espinola.infos3.bdd.GestionbD;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -26,8 +32,9 @@ public class Objets {
     private int proposer;
     private int categorie;
     private int prix;
+    private byte[] image;
 
-    public Objets(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer, int categorie, int prix) {
+    public Objets(int id, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposer, int categorie, int prix, byte[] image) {
         this.id = id;
         this.titre = titre;
         this.description = description;
@@ -37,8 +44,17 @@ public class Objets {
         this.proposer = proposer;
         this.categorie = categorie;
         this.prix = prix;
+        this.image = image;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+    
     public int getCategorie() {
         return categorie;
     }
@@ -199,17 +215,18 @@ public class Objets {
         int categorie = ConsoleFdB.entreeInt("Categorie :");
         int proposepar = ConsoleFdB.entreeInt("Propose par :");
         int prix = prixbase;
+        byte[] image = null;
 
-        CreerObjet(con, titre, description, debut, fin, prixbase, proposepar, categorie, prix);
+        CreerObjet(con, titre, description, debut, fin, prixbase, proposepar, categorie, prix, image);
     }
 
-    public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar, int categorie, int prix)
+    public static int CreerObjet(Connection con, String titre, String description, Timestamp debut, Timestamp fin, int prixbase, int proposepar, int categorie, int prix, byte[] image)
             throws SQLException {
         con.setAutoCommit(false);
 
         try ( PreparedStatement pst = con.prepareStatement(
                 """
-            insert into objets (titre,description,debut,fin,prixbase,proposepar,categorie, prix) values (?,?,?,?,?,?,?,?)
+            insert into objets (titre,description,debut,fin,prixbase,proposepar,categorie, prix, image) values (?,?,?,?,?,?,?,?,?)
             """, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, titre);
             pst.setString(2, description);
@@ -219,6 +236,8 @@ public class Objets {
             pst.setInt(6, proposepar);
             pst.setInt(7, categorie);
             pst.setInt(8, prix);
+            pst.setBytes(9, image);
+            
             pst.executeUpdate();
             con.commit();
             try ( ResultSet rid = pst.getGeneratedKeys()) {
@@ -301,17 +320,21 @@ public class Objets {
                 "select * from objets order by id asc")) {
 
             try ( ResultSet rs = pst.executeQuery()) {
-                while (rs.next()) {
-                    res.add(new Objets(rs.getInt("id"),
-                            rs.getString("titre"),
-                            rs.getString("description"),
-                            rs.getTimestamp("debut"),
-                            rs.getTimestamp("fin"),
-                            rs.getInt("prixbase"),
-                            rs.getInt("proposepar"),
-                            rs.getInt("categorie"),
-                            rs.getInt("prix")
-                    ));
+                while (rs.next()) { 
+                    Timestamp fin = rs.getTimestamp("fin");
+                    if(!GestionbD.EnchereTerminee(fin, Timestamp.valueOf(LocalDateTime.now()))){
+                        res.add(new Objets(rs.getInt("id"),
+                                rs.getString("titre"),
+                                rs.getString("description"),
+                                rs.getTimestamp("debut"),
+                                fin,
+                                rs.getInt("prixbase"),
+                                rs.getInt("proposepar"),
+                                rs.getInt("categorie"),
+                                rs.getInt("prix"),
+                                rs.getBytes("image")
+                        ));
+                    }
                 }
                 return res;
             }
@@ -349,7 +372,8 @@ public class Objets {
                             rs.getInt("prixbase"),
                             rs.getInt("proposepar"),
                             rs.getInt("categorie"),
-                            rs.getInt("prix")
+                            rs.getInt("prix"),
+                            rs.getBytes("image")
                     ));
                 }
                 //System.out.println(res);
@@ -358,5 +382,21 @@ public class Objets {
 
         }
     }
+    
+    public static byte[] InsererImage(Connection con) throws SQLException, FileNotFoundException, IOException {
+        JFileChooser fileChooser = new JFileChooser();
+        byte[] imageBytes = null;
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            imageBytes = new byte[(int) selectedFile.length()];
+            FileInputStream fis = new FileInputStream(selectedFile);
+            fis.read(imageBytes);
+            fis.close();
+            
+        }
+        return imageBytes;
+    }
+
 
 }
