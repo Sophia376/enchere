@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
  *
  * @author francois
  */
+// test
 public class TestFx extends BorderPane {
 
     public TestFx() {
