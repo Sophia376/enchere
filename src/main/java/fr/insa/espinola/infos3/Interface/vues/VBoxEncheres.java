@@ -5,6 +5,8 @@
 package fr.insa.espinola.infos3.Interface.vues;
 
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import fr.insa.espinola.infos3.tables.Objets;
+import java.util.List;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
@@ -19,7 +21,9 @@ public class VBoxEncheres extends VBox {
     private Tab allEncheres;
     private Tab persoEncheres;
     private Tab persoObjets;
+    private Tab ObjetsCat1;
     private TabPane allTabs;
+    private List<Objets> objets;
 
     public VBoxEncheres(VuePrincipale main) {
         this.main = main;
@@ -40,6 +44,7 @@ public class VBoxEncheres extends VBox {
         this.persoEncheres.setOnSelectionChanged((t) -> {
             this.persoEncheres.setContent(new VBoxMesEncheres(this.main, this));
         });
+        
 
         this.allTabs = new TabPane(this.allEncheres, this.persoEncheres, this.persoObjets);
         this.getChildren().addAll(this.allTabs);

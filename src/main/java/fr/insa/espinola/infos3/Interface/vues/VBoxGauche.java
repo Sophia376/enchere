@@ -4,20 +4,19 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
-import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Categories;
-import fr.insa.espinola.infos3.tables.Objets;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.VBox;
+import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import fr.insa.espinola.infos3.tables.Objets;
+import java.sql.SQLException;
+import java.util.List;
+import javafx.scene.control.Label;
 
 /**
  *
@@ -29,6 +28,7 @@ public class VBoxGauche extends VBox {
     private int idcategorie;
     private List<Objets> objets;
     private Label l1;
+    private VBoxEncheres vboxencheres;
 
     public VBoxGauche(VuePrincipale main) throws SQLException {
         this.main = main;
@@ -39,7 +39,6 @@ public class VBoxGauche extends VBox {
         this.getChildren().add(this.l1);
 
         int i = Categories.nbreCategories(con);
-
 
         for (int v = 0; v < i; v++) {
             int idCategorie = v + 1;
@@ -53,30 +52,34 @@ public class VBoxGauche extends VBox {
                         try {
                             int idCat = Categories.ConversionIdCategorie2(con, s1);
                             objets = Categories.ChoisirCategorie(con, idCat);
-                            int taille = objets.size();
-                            for (int t = 0; t < taille; t++) {
-                                System.out.println("selected");
-                                // affiche les obje3ts choisis
-                            }
-
+                            System.out.println(objets);
+                            Choisir(objets);
                         } catch (SQLException ex) {
                             Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
                     } else {
                         l1.setText(s1 + " not selected ");
+                        Choisir2();
+
                     }
                 }
-
             };
-
+            this.setPadding(new javafx.geometry.Insets(20, 20, 20, 200));
             c.setOnAction(event);
 
             this.getChildren().add(l1);
         }
 
-        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
+        this.setPadding(
+                new javafx.geometry.Insets(20, 20, 20, 20));
+    }
 
+    public void Choisir(List<Objets> objets) {
+        this.main.setPagePrincipale(new ObjetsCat(this.main, objets));
+    }
+
+    public void Choisir2() {
+        this.main.setPagePrincipale(new VBoxEncheres(this.main));
     }
 
 }

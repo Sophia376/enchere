@@ -46,7 +46,7 @@ public class VBoxDroite extends VBox {
         this.propose.setOnAction((event) -> {
             this.main.setPagePrincipale(new PublierObjet(this.main));
         });
-        try{
+        try{ 
             
             Label label = new Label(Clients.ConversionEmailNPClient(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurEmail()));
             Font font = Font.font("Arial",FontWeight.BOLD,11);

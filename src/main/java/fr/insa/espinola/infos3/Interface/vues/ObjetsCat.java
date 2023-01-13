@@ -7,33 +7,27 @@ package fr.insa.espinola.infos3.Interface.vues;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Objets;
 import java.io.ByteArrayInputStream;
-import java.sql.SQLException;
 import java.util.List;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 /**
  *
- * @author nicol
+ * @author Sophia
  */
-public class AllEncheres extends GridPane {
+public class ObjetsCat extends GridPane {
 
     private VuePrincipale main;
     private List<Objets> objets;
     private VBoxEncheres vboxencheres;
 
-    public AllEncheres(VuePrincipale main,  VBoxEncheres vboxencheres) {
+    public ObjetsCat(VuePrincipale main, List<Objets> objets) {
         this.main = main;
         this.vboxencheres = vboxencheres;
+        this.objets = objets;
         this.setHgap(100);
         this.setVgap(50);
-        try {
-            this.objets = Objets.tousLesObjets(this.main.getUtilisateurs().getConBdD());
-        } catch (SQLException ex) {
-            this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
-        }
 
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 200));
 
@@ -53,6 +47,5 @@ public class AllEncheres extends GridPane {
             }
         }
 
-    }   
-
+    }
 }
