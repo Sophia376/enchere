@@ -1,11 +1,14 @@
 package fr.insa.espinola.infos3.tables;
 
+import fr.insa.espinola.infos3.bdd.GestionbD;
 import fr.insa.espinola.infos3.utils.ConsoleFdB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,17 +164,20 @@ public class Categories {
             pst.setInt(1, id1);
             try ( ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    res.add(new Objets(rs.getInt("id"),
-                            rs.getString("titre"),
-                            rs.getString("description"),
-                            rs.getTimestamp("debut"),
-                            rs.getTimestamp("fin"),
-                            rs.getInt("prixbase"),
-                            rs.getInt("proposepar"),
-                            rs.getInt("categorie"),
-                            rs.getInt("prix"),
-                            rs.getBytes("image")
-                    ));
+                    Timestamp fin = rs.getTimestamp("fin");
+                    if(!GestionbD.EnchereTerminee(fin, Timestamp.valueOf(LocalDateTime.now()))){
+                        res.add(new Objets(rs.getInt("id"),
+                                rs.getString("titre"),
+                                rs.getString("description"),
+                                rs.getTimestamp("debut"),
+                                fin,
+                                rs.getInt("prixbase"),
+                                rs.getInt("proposepar"),
+                                rs.getInt("categorie"),
+                                rs.getInt("prix"),
+                                rs.getBytes("image")
+                        ));
+                    }
                 }
                 // System.out.println(res);
                 return res;
