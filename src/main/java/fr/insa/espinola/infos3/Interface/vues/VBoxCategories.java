@@ -16,20 +16,20 @@ import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 /**
  *
  * @author nicol
  */
-public class VBoxCategories extends VBox{
+public class VBoxCategories extends VBox {
+
     private VuePrincipale main;
     private int idcategorie;
     private List<Objets> objets;
     private VBoxEncheres vboxencheres;
     private List<Objets> p_categories;
-    
+
     public VBoxCategories(VuePrincipale main) throws SQLException {
         this.main = main;
         this.idcategorie = -1;
@@ -50,8 +50,8 @@ public class VBoxCategories extends VBox{
                     if (c.isSelected()) {
                         try {
                             objets = Categories.ChoisirCategorie(con, idCategorie);
-                            for(int j = 0; j < objets.size(); j++){
-                                if(!(p_categories.contains(objets.get(j)))){
+                            for (int j = 0; j < objets.size(); j++) {
+                                if (!(p_categories.contains(objets.get(j)))) {
                                     //System.out.println(p_categories);
                                     p_categories.add(objets.get(j));
                                     //System.out.println(p_categories);
@@ -62,36 +62,35 @@ public class VBoxCategories extends VBox{
                             Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
-                        try{
+                        try {
                             //l1.setText(s1 + " not selected ");
                             objets = Categories.ChoisirCategorie(con, idCategorie);
-                            for(int k = 0; k < p_categories.size(); k++){
-                                for(int j = 0; j < objets.size(); j++){
-                                    if(p_categories.get(k).getId() == objets.get(j).getId() ){
+                            for (int k = 0; k < p_categories.size(); k++) {
+                                for (int j = 0; j < objets.size(); j++) {
+                                    if (p_categories.get(k).getId() == objets.get(j).getId()) {
                                         //System.out.println(p_categories);
                                         p_categories.remove(k);
                                         //System.out.println(p_categories);
                                     }
                                 }
                             }
-                        }catch(SQLException ex){
+                        } catch (SQLException ex) {
                             Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
                     }
-                    if(!(p_categories.isEmpty())){
+                    if (!(p_categories.isEmpty())) {
                         Choisir(p_categories);
-                    }else{
+                    } else {
                         Choisir2();
                     }
                 }
-                
+
             };
-            
+
             c.setOnAction(event);
         }
 
-        
         this.setSpacing(20);
     }
 
@@ -102,5 +101,5 @@ public class VBoxCategories extends VBox{
     public void Choisir2() {
         this.main.setPagePrincipale(new VBoxEncheres(this.main));
     }
-    
+
 }

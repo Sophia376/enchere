@@ -78,10 +78,6 @@ public class Connexion extends GridPane {
         this.email.setPrefWidth(200);
         this.pass.setPrefWidth(200);
 
-        /*GridPane.setHgrow(emailL, Priority.NEVER);
-        GridPane.setHgrow(passL, Priority.NEVER);
-        GridPane.setHgrow(this.email, Priority.ALWAYS);
-        GridPane.setHgrow(this.pass, Priority.ALWAYS);*/
         this.seconnecter.setOnAction((event) -> {
             this.SeConnecter();
         });

@@ -11,6 +11,12 @@ import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 /**
  *
@@ -38,9 +44,20 @@ public class VBoxGauche extends VBox {
         this.accordion.getPanes().add(pane1);
 
         this.setPadding(
-                new javafx.geometry.Insets(20, 20, 20, 20));
+                new javafx.geometry.Insets(30, 20, 20, 20));
         this.setSpacing(15);
         this.getChildren().addAll(this.barre, this.barrerecherche, this.accordion, this.prix, this.filtreprix);
+
+        var image = new Image("https://i.pinimg.com/originals/da/c4/b5/dac4b51bf09669c46c47b17f403321f7.jpg");
+        var bgImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                new BackgroundSize(1.0, 1.0, true, true, false, false)
+        );
+
+        this.setBackground(new Background(bgImage));
     }
 
 }

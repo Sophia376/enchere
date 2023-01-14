@@ -15,7 +15,8 @@ import javafx.scene.layout.VBox;
  *
  * @author nicol
  */
-public class VBoxMesEncheres extends VBox{
+public class VBoxMesEncheres extends VBox {
+
     private VuePrincipale main;
     private List<Encheres> encheres;
     private VBoxEncheres vboxencheres;
@@ -34,13 +35,10 @@ public class VBoxMesEncheres extends VBox{
         int taille = this.encheres.size();
         this.getChildren().add(new HBoxTitres(this.main));
         for (int i = 0; i < taille; i++) {
-            
-            this.getChildren().add(new AfficherEncheresPerso(this.main, this.encheres.get(i), this.vboxencheres ));
+
+            this.getChildren().add(new AfficherEncheresPerso(this.main, this.encheres.get(i), this.vboxencheres));
         }
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 100));
     }
 
-    
-    
-    
 }
