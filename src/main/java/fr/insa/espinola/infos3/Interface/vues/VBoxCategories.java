@@ -27,7 +27,6 @@ public class VBoxCategories extends VBox{
     private VuePrincipale main;
     private int idcategorie;
     private List<Objets> objets;
-    private Label l1;
     private VBoxEncheres vboxencheres;
     private List<Objets> p_categories;
     
@@ -37,8 +36,6 @@ public class VBoxCategories extends VBox{
         this.p_categories = new ArrayList();
 
         Connection con = this.main.getUtilisateurs().getConBdD();
-        this.l1 = new Label(" Filtrer par catégories ");
-        this.getChildren().add(this.l1);
 
         int i = Categories.nbreCategories(con);
 

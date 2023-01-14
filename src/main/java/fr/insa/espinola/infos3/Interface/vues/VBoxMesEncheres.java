@@ -4,22 +4,11 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
-import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Encheres;
-import fr.insa.espinola.infos3.tables.Objets;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 /**
