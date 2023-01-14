@@ -9,6 +9,7 @@ import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Objets;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,8 @@ public class VBoxGauche extends VBox {
     private List<Objets> objets1;
     private List<Objets> objets2;
 
+    private List<Objets> objets;
+
     public VBoxGauche(VuePrincipale main) throws SQLException {
         this.main = main;
         this.barre = new Label("Barre de Recherche");
@@ -46,41 +49,84 @@ public class VBoxGauche extends VBox {
         TitledPane pane1 = new TitledPane("Categories", this.vboxcategories);
         this.accordion.getPanes().add(pane1);
 
+        this.objets = new ArrayList();
+
         Connection con = this.main.getUtilisateurs().getConBdD();
 
         EventHandler<ActionEvent> event = (ActionEvent e) -> {
-            String t = barrerecherche.getText();
-            if (t != null) {
+            if (!"".equals(barrerecherche.getText())) {
+                String sd = filtreprix.getText();
+                String t = barrerecherche.getText();
                 try {
                     objets1 = Objets.objetsTitre(con, t);
                 } catch (SQLException ex) {
                     Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if (!(objets1.isEmpty())) {
-                    Choisir(objets1);
-                } else {
-                    System.out.println("nadaaaa");
+            } else {
+                try {
+                    objets1 = Objets.tousLesObjets(con);
+                } catch (SQLException ex) {
+                    Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if ((objets2 != null) && (objets1 != null)) {
-                int min = Math.min(objets1.size(), objets2.size());
-                System.out.println(min);
+                if (objets1.size() < objets2.size()) {
+                    objets = objets1;
+                    for (int j = 0; j < objets2.size(); j++) {
+                        if (!(objets.contains(objets2.get(j)))) {
+                            objets.remove(objets2.get(j));
+                        }
+                    }
+                } else {
+                    objets = objets2;
+                    for (int j = 0; j < objets1.size(); j++) {
+                        if (!(objets.contains(objets1.get(j)))) {
+                            objets.remove(objets1.get(j));
+                        }
+                    }
+                }
+            } else if ((objets1 != null) && (objets2 == null)) {
+                objets = objets1;
             }
+            Choisir(objets);
         };
         EventHandler<ActionEvent> event2 = (ActionEvent e) -> {
-            int p = Integer.parseInt(filtreprix.getText());
-            try {
-                objets2 = Objets.objetsPrix(con, p);
-            } catch (SQLException ex) {
-                Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (!(objets2.isEmpty())) {
-                Choisir(objets2);
+            int p;
+            if (!"".equals(filtreprix.getText())) {
+                String sd = filtreprix.getText();
+                p = Integer.parseInt(sd);
+                try {
+                    objets2 = Objets.objetsPrix(con, p);
+                } catch (SQLException ex) {
+                    Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                try {
+                    objets2 = Objets.tousLesObjets(con);
+                } catch (SQLException ex) {
+                    Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             if ((objets2 != null) && (objets1 != null)) {
-                int min = Math.min(objets1.size(), objets2.size());
-                System.out.println(min);
+                if (objets1.size() < objets2.size()) {
+                    objets = objets1;
+                    for (int j = 0; j < objets2.size(); j++) {
+                        if (!(objets.contains(objets2.get(j)))) {
+                            objets.remove(objets2.get(j));
+                        }
+                    }
+                } else {
+                    objets = objets2;
+                    for (int j = 0; j < objets1.size(); j++) {
+                        if (!(objets.contains(objets1.get(j)))) {
+                            objets.remove(objets1.get(j));
+                        }
+                    }
+                }
+            } else if ((objets2 != null) && (objets1 == null)) {
+                objets = objets2;
             }
+            Choisir(objets);
         };
 
         barrerecherche.setOnAction(event);
