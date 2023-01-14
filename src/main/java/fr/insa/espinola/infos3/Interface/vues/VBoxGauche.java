@@ -48,9 +48,7 @@ public class VBoxGauche extends VBox {
         this.accordion = new Accordion();
         TitledPane pane1 = new TitledPane("Categories", this.vboxcategories);
         this.accordion.getPanes().add(pane1);
-
         this.objets = new ArrayList();
-
         Connection con = this.main.getUtilisateurs().getConBdD();
 
         EventHandler<ActionEvent> event = (ActionEvent e) -> {
