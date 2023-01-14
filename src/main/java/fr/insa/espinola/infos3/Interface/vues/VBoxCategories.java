@@ -43,8 +43,6 @@ public class VBoxCategories extends VBox {
             int idCategorie = v + 1;
             CheckBox c = new CheckBox(Categories.ConversionIdCategorie(con, idCategorie));
             this.getChildren().add(c);
-            //Label l1 = new Label(Categories.ConversionIdCategorie(con, idCategorie) + " not selected");
-            //String s1 = Categories.ConversionIdCategorie(con, idCategorie);
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
                 public void handle(ActionEvent e) {
                     if (c.isSelected()) {
@@ -52,32 +50,25 @@ public class VBoxCategories extends VBox {
                             objets = Categories.ChoisirCategorie(con, idCategorie);
                             for (int j = 0; j < objets.size(); j++) {
                                 if (!(p_categories.contains(objets.get(j)))) {
-                                    //System.out.println(p_categories);
                                     p_categories.add(objets.get(j));
-                                    //System.out.println(p_categories);
                                 }
                             }
-                            //l1.setText(s1 + " selected ");
                         } catch (SQLException ex) {
                             Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         try {
-                            //l1.setText(s1 + " not selected ");
                             objets = Categories.ChoisirCategorie(con, idCategorie);
                             for (int k = 0; k < p_categories.size(); k++) {
                                 for (int j = 0; j < objets.size(); j++) {
                                     if (p_categories.get(k).getId() == objets.get(j).getId()) {
-                                        //System.out.println(p_categories);
                                         p_categories.remove(k);
-                                        //System.out.println(p_categories);
                                     }
                                 }
                             }
                         } catch (SQLException ex) {
                             Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
                     }
                     if (!(p_categories.isEmpty())) {
                         Choisir(p_categories);
@@ -85,13 +76,24 @@ public class VBoxCategories extends VBox {
                         Choisir2();
                     }
                 }
-
             };
-
             c.setOnAction(event);
         }
 
+        /*
+        var image = new Image("https://retec2000.com/Media/retectablerosypuertas/_Profiles/294eef10/4958ff96/NEGRO%20ref.421.jpg?v=637085590089472190");
+        var bgImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                new BackgroundSize(1.0, 1.0, true, true, false, false)
+        );
+        
+        this.setBackground(new Background(bgImage));
+         */
         this.setSpacing(20);
+        this.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
     }
 
     public void Choisir(List<Objets> objets) {

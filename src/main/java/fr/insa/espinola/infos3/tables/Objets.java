@@ -385,6 +385,69 @@ public class Objets {
         }
     }
     
+    public static List<Objets> objetsPrix(Connection con, int prix) throws SQLException {
+
+        List<Objets> res = new ArrayList<>();
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select * 
+                    from Objets
+                    where prix <= ?
+                
+                """)) {
+            pst.setInt(1, prix);
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Objets(rs.getInt("id"),
+                            rs.getString("titre"),
+                            rs.getString("description"),
+                            rs.getTimestamp("debut"),
+                            rs.getTimestamp("fin"),
+                            rs.getInt("prixbase"),
+                            rs.getInt("proposepar"),
+                            rs.getInt("categorie"),
+                            rs.getInt("prix"),
+                            rs.getBytes("image")
+                    ));
+                }
+                //System.out.println(res);
+                return res;
+            }
+
+        }
+    }
+     public static List<Objets> objetsTitre(Connection con, String titre) throws SQLException {
+
+        List<Objets> res = new ArrayList<>();
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select * 
+                    from Objets
+                    where titre = ?
+                
+                """)) {
+            pst.setString(1, titre);
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Objets(rs.getInt("id"),
+                            rs.getString("titre"),
+                            rs.getString("description"),
+                            rs.getTimestamp("debut"),
+                            rs.getTimestamp("fin"),
+                            rs.getInt("prixbase"),
+                            rs.getInt("proposepar"),
+                            rs.getInt("categorie"),
+                            rs.getInt("prix"),
+                            rs.getBytes("image")
+                    ));
+                }
+                //System.out.println(res);
+                return res;
+            }
+
+        }
+    }
+    
     public static byte[] InsererImage(Connection con) throws SQLException, FileNotFoundException, IOException {
         JFileChooser fileChooser = new JFileChooser();
         byte[] imageBytes = null;

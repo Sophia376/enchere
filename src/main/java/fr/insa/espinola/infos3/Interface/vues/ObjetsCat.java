@@ -19,7 +19,7 @@ import javafx.scene.layout.GridPane;
 public class ObjetsCat extends GridPane {
 
     private VuePrincipale main;
-    private List<Objets> objets;
+    private List<Objets> objets;  
     private VBoxEncheres vboxencheres;
 
     public ObjetsCat(VuePrincipale main, List<Objets> objets) {

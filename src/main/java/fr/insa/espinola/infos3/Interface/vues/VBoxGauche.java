@@ -6,17 +6,18 @@ package fr.insa.espinola.infos3.Interface.vues;
 
 import javafx.scene.layout.VBox;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import fr.insa.espinola.infos3.tables.Objets;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 
 /**
  *
@@ -31,6 +32,8 @@ public class VBoxGauche extends VBox {
     private TextField filtreprix;
     private TextField barrerecherche;
     private Accordion accordion;
+    private List<Objets> objets1;
+    private List<Objets> objets2;
 
     public VBoxGauche(VuePrincipale main) throws SQLException {
         this.main = main;
@@ -43,12 +46,52 @@ public class VBoxGauche extends VBox {
         TitledPane pane1 = new TitledPane("Categories", this.vboxcategories);
         this.accordion.getPanes().add(pane1);
 
+        Connection con = this.main.getUtilisateurs().getConBdD();
+
+        EventHandler<ActionEvent> event = (ActionEvent e) -> {
+            String t = barrerecherche.getText();
+            if (t != null) {
+                try {
+                    objets1 = Objets.objetsTitre(con, t);
+                } catch (SQLException ex) {
+                    Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if (!(objets1.isEmpty())) {
+                    Choisir(objets1);
+                } else {
+                    System.out.println("nadaaaa");
+                }
+            }
+            if ((objets2 != null) && (objets1 != null)) {
+                int min = Math.min(objets1.size(), objets2.size());
+                System.out.println(min);
+            }
+        };
+        EventHandler<ActionEvent> event2 = (ActionEvent e) -> {
+            int p = Integer.parseInt(filtreprix.getText());
+            try {
+                objets2 = Objets.objetsPrix(con, p);
+            } catch (SQLException ex) {
+                Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (!(objets2.isEmpty())) {
+                Choisir(objets2);
+            }
+            if ((objets2 != null) && (objets1 != null)) {
+                int min = Math.min(objets1.size(), objets2.size());
+                System.out.println(min);
+            }
+        };
+
+        barrerecherche.setOnAction(event);
+        filtreprix.setOnAction(event2);
+
         this.setPadding(
                 new javafx.geometry.Insets(30, 20, 20, 20));
         this.setSpacing(15);
         this.getChildren().addAll(this.barre, this.barrerecherche, this.accordion, this.prix, this.filtreprix);
 
-        var image = new Image("https://i.pinimg.com/originals/da/c4/b5/dac4b51bf09669c46c47b17f403321f7.jpg");
+        /*var image = new Image("https://retec2000.com/Media/retectablerosypuertas/_Profiles/294eef10/4958ff96/NEGRO%20ref.421.jpg?v=637085590089472190");
         var bgImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,
@@ -58,6 +101,10 @@ public class VBoxGauche extends VBox {
         );
 
         this.setBackground(new Background(bgImage));
+        this.accordion.setBackground(new Background(bgImage));*/
     }
 
+    public void Choisir(List<Objets> objets) {
+        this.main.setPagePrincipale(new ObjetsCat(this.main, objets));
+    }
 }
