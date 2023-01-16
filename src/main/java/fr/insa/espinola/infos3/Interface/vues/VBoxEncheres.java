@@ -42,7 +42,7 @@ public class VBoxEncheres extends VBox {
         
         this.persoEncheres = new Tab("Mes enchères ");
         this.persoEncheres.setOnSelectionChanged((t) -> {
-            this.persoEncheres.setContent(new VBoxMesEncheres(this.main, this));
+            this.persoEncheres.setContent(new AfficherEncheresPerso(this.main, this));
         });
         
 

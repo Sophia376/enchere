@@ -315,6 +315,48 @@ public class Objets {
         }
         return titre;
     }
+    
+    public static Timestamp ConversionFinObjet(Connection con, int id) throws SQLException {
+        Timestamp fin = Timestamp.valueOf(LocalDateTime.now());
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select fin from Objets where id = ? ")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+            while (res.next()) {
+                fin = res.getTimestamp("fin");
+            }
+
+        }
+        return fin;
+    }
+    
+    public static Timestamp ConversionDebutObjet(Connection con, int id) throws SQLException {
+        Timestamp debut = Timestamp.valueOf(LocalDateTime.now());
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select debut from Objets where id = ? ")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+            while (res.next()) {
+                debut = res.getTimestamp("debut");
+            }
+
+        }
+        return debut;
+    }
+    
+    public static int ConversionProposePar(Connection con, int id) throws SQLException {
+        int idProp = -1;
+        try ( PreparedStatement pst = con.prepareStatement(
+                "select proposepar from Objets where id = ? ")) {
+            pst.setInt(1, id);
+            ResultSet res = pst.executeQuery();
+            while (res.next()) {
+                idProp = res.getInt("proposepar");
+            }
+
+        }
+        return idProp;
+    }
 
     public static List<Objets> tousLesObjets(Connection con) throws SQLException {
         List<Objets> res = new ArrayList<>();

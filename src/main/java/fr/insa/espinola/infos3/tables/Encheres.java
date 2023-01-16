@@ -268,5 +268,35 @@ public class Encheres {
         }
     }
     
+    public static List<Encheres> DernieresEncheres(Connection con, int idUtilisateur) throws SQLException {
+
+        List<Encheres> res = new ArrayList<>();
+        try ( PreparedStatement pst = con.prepareStatement(
+                """
+                select * 
+                    from Encheres
+                        join Objets on objets.id = encheres.sur
+                        join Clients on clients.id = encheres.de
+                    where (montant = prix and clients.id = ?) 
+                
+                """)) {
+            pst.setInt(1, idUtilisateur);
+            try ( ResultSet rs = pst.executeQuery()) {
+                while (rs.next()) {
+                    res.add(new Encheres(rs.getInt("id"),
+                            rs.getTimestamp("quand"),
+                            rs.getInt("montant"),
+                            rs.getInt("sur"),
+                            rs.getInt("de")
+                    ));
+                }
+                return res;
+            }
+
+        }
+    }
+    
+    
+    
     
 }

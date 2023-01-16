@@ -4,21 +4,14 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
-import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
+import fr.insa.espinola.infos3.bdd.GestionbD;
+import fr.insa.espinola.infos3.tables.Clients;
 import fr.insa.espinola.infos3.tables.Encheres;
 import fr.insa.espinola.infos3.tables.Objets;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Optional;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import java.util.List;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -30,52 +23,55 @@ import javafx.scene.text.FontWeight;
 public class AfficherEncheresPerso extends GridPane {
 
     private VuePrincipale main;
-    private Encheres enchere;
-    private ToggleButton encherir;
     private VBoxEncheres vboxencheres;
+    private List<Encheres> encheres;
     
-    public AfficherEncheresPerso(VuePrincipale main, Encheres enchere, VBoxEncheres vboxencheres) {
-        this.setHgap(200);
-        this.setVgap(50);
+    public AfficherEncheresPerso(VuePrincipale main, VBoxEncheres vboxencheres) {
+        this.setHgap(150);
+        this.setVgap(25);
         this.main = main;
         this.vboxencheres = vboxencheres;
-        this.enchere = enchere;
-        this.encherir = new ToggleButton("Enchérir");
-
-        this.encherir.setOnAction((event) -> {
-            try{
-                AfficherObjet.Encherir(this.main.getUtilisateurs().getConBdD(),Encheres.ConversionIdObjet(this.main.getUtilisateurs().getConBdD(),enchere.getSur()),this.main.getUtilisateurs().getUtilisateurID(),this.vboxencheres);
-                vboxencheres.getPersoEncheres().setContent(new VBoxMesEncheres(this.main, this.vboxencheres));
-            }catch (SQLException ex){
-                
-            }
-        });
+        int id1 = this.main.getUtilisateurs().getUtilisateurID();
+        Label t1 = new Label("Enchères que vous gagnez");
+        Label t2 = new Label("Enchères que vous perdez");
+        Label t3 = new Label("Enchères terminées");
+        Font font = Font.font("Arial", FontWeight.BOLD, 16);
+        t1.setFont(font);
+        t2.setFont(font);
+        t3.setFont(font);
+        this.add(t1, 0, 0);
+        this.add(t2, 1, 0);
+        this.add(t3, 2, 0);
+        int lig0 = 1;
+        int lig1 = 1;
+        int lig2 = 1;
+        
+        try {
+            this.encheres = Encheres.DernieresEncheres(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurID());
+            int taille = this.encheres.size();
+            for (int i = 0; i < taille; i++) {
+                boolean termine = GestionbD.EnchereTerminee(Objets.ConversionFinObjet(this.main.getUtilisateurs().getConBdD(), this.encheres.get(i).getSur()),Objets.ConversionDebutObjet(this.main.getUtilisateurs().getConBdD(), this.encheres.get(i).getSur()));
             
-        //try {
-            int lig = 0;
-                
-            lig++;
-            /*
-            this.add(new Label("Nom de l'objet : " + this.objet.getDescription()), 0, lig);
-            lig++;
-            this.add(new Label("Date de début : " + this.objet.getDebut()), 0, lig);
-            lig++;
-            this.add(new Label("Date de fin : " + this.objet.getFin()), 0, lig);
-            lig++;
-            this.add(new Label("Prix de base : " + this.objet.getPrixbase() + "€"), 0, lig);
-            lig++;
-            this.add(new Label("Proposé par : " + Clients.ConversionNomPrenomClient(this.main.getUtilisateurs().getConBdD(), this.objet.getProposer())), 0, lig);
-            lig++;
-            this.add(new Label("Catégorie : " + Categories.ConversionIdCategorie(this.main.getUtilisateurs().getConBdD(), this.objet.getCategorie())), 0, lig);
-            lig++;
-            this.add(new Label("Montant actuel de l'enchère : " + this.objet.getPrix() + "€"), 0, lig);
-            lig++;
-            this.add(new Label("Dernier à avoir enchéri : " + Clients.ConversionEmailNPClient(this.main.getUtilisateurs().getConBdD(), Clients.DernierEncherisseur(this.main.getUtilisateurs().getConBdD(), this.objet.getId()))), 0, lig);
-            this.add(this.supprimer, 10, lig / 2);
-            */
-        //} catch (SQLException ex) {
-          //  this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
-        //}
+                boolean gagne = GestionbD.DenierEncheri(this.main.getUtilisateurs().getConBdD(), Clients.ConversionIdClient(this.main.getUtilisateurs().getConBdD(),this.encheres.get(i).getDe()), this.encheres.get(i).getSur());
+                if(termine){
+                    this.add(new AfficherEnchereTerminee(this.main, this.encheres.get(i), gagne), 2, lig2);
+                    lig2++;
+                }else{
+                    if(gagne){
+                        this.add(new AfficherEnchereGagne(this.main, this.encheres.get(i)), 0, lig0);
+                        lig0++;
+                    }else{
+                        this.add(new AfficherEncherePerd(this.main, this.encheres.get(i), this.vboxencheres), 1, lig1);
+                        lig1++;
+                    }
+                }
+            
+            }
+            
+        } catch (SQLException ex) {
+            this.getChildren().add(new Label("Problème BdD : " + ex.getLocalizedMessage()));
+        }
+        this.setPadding(new javafx.geometry.Insets(20, 20, 20, 100));
 
     }
     

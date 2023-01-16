@@ -404,4 +404,13 @@ public class GestionbD {
         }
         return terminee;
     }
+    
+    public static boolean DenierEncheri(Connection con, String email, int idObjet) throws SQLException{
+
+        boolean dernier = false;
+        if (Clients.DernierEncherisseur(con, idObjet).equals(email)) {
+            dernier = true;
+        }
+        return dernier;
+    }
 }
