@@ -53,7 +53,7 @@ public class VBoxGauche extends VBox {
 
         EventHandler<ActionEvent> event = (ActionEvent e) -> {
             if (!"".equals(barrerecherche.getText())) {
-                String sd = filtreprix.getText();
+                //String sd = filtreprix.getText();
                 String t = barrerecherche.getText();
                 try {
                     objets1 = Objets.objetsTitre(con, t);
@@ -66,7 +66,7 @@ public class VBoxGauche extends VBox {
                 } catch (SQLException ex) {
                     Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
+            }//sophia.espinola@insa-strasbourg.fr
             if ((objets2 != null) && (objets1 != null)) {
                 if (objets1.size() < objets2.size()) {
                     objets = objets1;
@@ -75,6 +75,13 @@ public class VBoxGauche extends VBox {
                             objets.remove(objets2.get(j));
                         }
                     }
+                } else if (objets1.size() == objets2.size()) {
+                    System.out.println("igual");
+                    for (int j = 0; j < objets2.size(); j++) {
+                        if (!(objets1.contains(objets2.get(j)))) {
+                            objets1.remove(objets1.get(j));
+                        }                        
+                    }objets = objets1;
                 } else {
                     objets = objets2;
                     for (int j = 0; j < objets1.size(); j++) {
@@ -86,7 +93,11 @@ public class VBoxGauche extends VBox {
             } else if ((objets1 != null) && (objets2 == null)) {
                 objets = objets1;
             }
-            Choisir(objets);
+            if (objets == null) {
+                System.out.println("nadaaaaaa");
+            } else {
+                Choisir(objets);
+            }
         };
         EventHandler<ActionEvent> event2 = (ActionEvent e) -> {
             int p;
@@ -106,13 +117,19 @@ public class VBoxGauche extends VBox {
                 }
             }
             if ((objets2 != null) && (objets1 != null)) {
-                if (objets1.size() < objets2.size()) {
+                if (objets1.size() <= objets2.size()) {
                     objets = objets1;
                     for (int j = 0; j < objets2.size(); j++) {
                         if (!(objets.contains(objets2.get(j)))) {
                             objets.remove(objets2.get(j));
                         }
                     }
+                } else if (objets1.size() == objets2.size()) {
+                    for (int j = 0; j < objets2.size(); j++) {
+                        if (!(objets1.contains(objets2.get(j)))) {
+                            objets1.remove(objets1.get(j));
+                        }
+                    }objets = objets1;
                 } else {
                     objets = objets2;
                     for (int j = 0; j < objets1.size(); j++) {
@@ -124,7 +141,11 @@ public class VBoxGauche extends VBox {
             } else if ((objets2 != null) && (objets1 == null)) {
                 objets = objets2;
             }
-            Choisir(objets);
+            if (objets == null) {
+                System.out.println("nadaaaaaa");
+            } else {
+                Choisir(objets);
+            }
         };
 
         barrerecherche.setOnAction(event);

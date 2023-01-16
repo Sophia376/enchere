@@ -423,7 +423,7 @@ public class Objets {
                 """
                 select * 
                     from Objets
-                    where titre = ?
+                    where titre LIKE '?%'
                 
                 """)) {
             pst.setString(1, titre);
