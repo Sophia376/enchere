@@ -267,34 +267,47 @@ public class Encheres {
 
         }
     }
-    
-    public static List<Encheres> DernieresEncheres(Connection con, int idUtilisateur) throws SQLException {
 
-        List<Encheres> res = new ArrayList<>();
+    @Override
+    public String toString() {
+        return "Encheres{" + "id=" + id + ", quand=" + quand + ", montant=" + montant + ", sur=" + sur + ", de=" + de + '}';
+    }
+    
+
+        
+    public static Encheres DerniereEnchere(Connection con, int idObjet) throws SQLException {
+
+        int id = -1;
+        Timestamp quand = Timestamp.valueOf(LocalDateTime.MIN);
+        int montant = -1;
+        int sur = -1;
+        int de = -1;
         try ( PreparedStatement pst = con.prepareStatement(
                 """
                 select * 
                     from Encheres
                         join Objets on objets.id = encheres.sur
-                        join Clients on clients.id = encheres.de
-                    where (montant = prix and clients.id = ?) 
+                    where montant = prix and objets.id = ? 
                 
                 """)) {
-            pst.setInt(1, idUtilisateur);
+            pst.setInt(1, idObjet);
             try ( ResultSet rs = pst.executeQuery()) {
                 while (rs.next()) {
-                    res.add(new Encheres(rs.getInt("id"),
-                            rs.getTimestamp("quand"),
-                            rs.getInt("montant"),
-                            rs.getInt("sur"),
-                            rs.getInt("de")
-                    ));
+                    id = rs.getInt("id");
+                    quand = rs.getTimestamp("quand");
+                    montant = rs.getInt("montant");
+                    sur = rs.getInt("sur");
+                    de = rs.getInt("de");
                 }
-                return res;
+                
             }
+            
 
         }
+        return new Encheres(id, quand, montant, sur, de);
     }
+    
+    
     
     
     

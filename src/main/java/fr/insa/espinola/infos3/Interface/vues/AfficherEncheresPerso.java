@@ -10,7 +10,9 @@ import fr.insa.espinola.infos3.tables.Clients;
 import fr.insa.espinola.infos3.tables.Encheres;
 import fr.insa.espinola.infos3.tables.Objets;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -31,7 +33,7 @@ public class AfficherEncheresPerso extends GridPane {
         this.setVgap(25);
         this.main = main;
         this.vboxencheres = vboxencheres;
-        int id1 = this.main.getUtilisateurs().getUtilisateurID();
+        this.encheres = new ArrayList();
         Label t1 = new Label("Enchères que vous gagnez");
         Label t2 = new Label("Enchères que vous perdez");
         Label t3 = new Label("Enchères terminées");
@@ -47,7 +49,35 @@ public class AfficherEncheresPerso extends GridPane {
         int lig2 = 1;
         
         try {
-            this.encheres = Encheres.DernieresEncheres(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurID());
+            List<Encheres> touteslesencheres = Encheres.encheresUtilisateur(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurID());
+            List<Objets> touslesobjets = new ArrayList();
+ 
+            System.out.println(touteslesencheres);
+            for(int i = 0; i < touteslesencheres.size(); i++){
+                Objets objet = Encheres.ConversionIdObjet(this.main.getUtilisateurs().getConBdD(),touteslesencheres.get(i).getSur() );
+                touslesobjets.add(objet);
+   
+            }
+            
+            for (int i = touslesobjets.size() - 1; i >= 0; i--) {
+                for (int j = 0; j < i; j++) {
+                    if ((touslesobjets.get(i).getId())==(touslesobjets.get(j).getId())) {
+                        touslesobjets.remove(i);
+                        break;
+                    }
+                }
+            }
+            
+
+            
+            System.out.println(touslesobjets);
+            int taille2 = touslesobjets.size();
+            for(int k = 0; k < taille2; k++){
+                this.encheres.add(Encheres.DerniereEnchere(this.main.getUtilisateurs().getConBdD(), touslesobjets.get(k).getId()));
+            }
+            System.out.println(this.encheres);
+            //this.encheres = Encheres.DernieresEncheresClients(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurID());
+            //this.encheres.addAll(Encheres.DernieresEncheresPasClients(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurID()));
             int taille = this.encheres.size();
             for (int i = 0; i < taille; i++) {
                 boolean termine = GestionbD.EnchereTerminee(Objets.ConversionFinObjet(this.main.getUtilisateurs().getConBdD(), this.encheres.get(i).getSur()),Objets.ConversionDebutObjet(this.main.getUtilisateurs().getConBdD(), this.encheres.get(i).getSur()));
