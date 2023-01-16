@@ -465,7 +465,7 @@ public class Objets {
                 """
                 select * 
                     from Objets
-                    where titre LIKE '?%'
+                    where UPPER(titre) = UPPER(?)  
                 
                 """)) {
             pst.setString(1, titre);

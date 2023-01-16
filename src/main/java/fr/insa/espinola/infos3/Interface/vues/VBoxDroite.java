@@ -4,6 +4,7 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import com.sun.prism.paint.Color;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Clients;
 import java.io.InputStream;
@@ -14,6 +15,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -35,22 +42,19 @@ public class VBoxDroite extends VBox {
         this.deconnexion.setOnAction((event) -> {
             this.Deconnexion();
         });
-        this.setSpacing(20);
+        this.setSpacing(15);
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
         InputStream complet = this.getClass().getResourceAsStream("images/IconeProfil.png");
         ImageView imageView = new ImageView(new Image(complet));
-        
-        
 
         this.propose = new ToggleButton("Publier un Objet");
         this.propose.setOnAction((event) -> {
             this.main.setPagePrincipale(new PublierObjet(this.main));
         });
-        try{ 
-            
+        try {
+
             Label label = new Label(Clients.ConversionEmailNPClient(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurEmail()));
-            Font font = Font.font("Arial",FontWeight.BOLD,11);
-            label.setFont(font);
+            label.setFont(new Font("Roboto", 15));
             imageView.setFitWidth(50); // fixer la largeur à 200 pixels
             imageView.setFitHeight(50); // fixer la hauteur à 200 pixels
             imageView.setPreserveRatio(true); // conserver le ratio de l'image
@@ -59,11 +63,26 @@ public class VBoxDroite extends VBox {
             this.getChildren().add(this.propose);
             this.getChildren().add(this.deconnexion);
             this.setAlignment(Pos.TOP_CENTER);
-        }catch (SQLException ex){
-            
-        }
-        
+        } catch (SQLException ex) {
 
+        }
+        var image = new Image("https://th.bing.com/th/id/OIP.cSCTCMoEpXHDj6Xt1RXcgAHaNK?w=115&h=184&c=7&r=0&o=5&pid=1.7");
+        var bgImage = new BackgroundImage(
+                image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                new BackgroundSize(1.0, 1.0, true, true, false, false)
+        );
+        this.setBackground(new Background(bgImage));
+        
+        
+        this.deconnexion.setPrefSize(120, 15);
+        this.propose.setPrefSize(120, 15);
+        this.deconnexion.setFont(new Font("Roboto", 13));
+        this.propose.setFont(new Font("Roboto", 13));
+
+        
     }
 
     public void Deconnexion() {

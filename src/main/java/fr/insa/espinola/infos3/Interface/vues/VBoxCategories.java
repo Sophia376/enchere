@@ -15,7 +15,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.VBox;
 
 /**
@@ -56,6 +63,10 @@ public class VBoxCategories extends VBox {
                         } catch (SQLException ex) {
                             Logger.getLogger(VBoxGauche.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        if (objets.isEmpty()){
+                        showAlert();
+                            
+                        }
                     } else {
                         try {
                             objets = Categories.ChoisirCategorie(con, idCategorie);
@@ -74,14 +85,15 @@ public class VBoxCategories extends VBox {
                         Choisir(p_categories);
                     } else {
                         Choisir2();
+                        
                     }
                 }
             };
             c.setOnAction(event);
         }
 
-        /*
-        var image = new Image("https://retec2000.com/Media/retectablerosypuertas/_Profiles/294eef10/4958ff96/NEGRO%20ref.421.jpg?v=637085590089472190");
+        
+       /* var image = new Image("https://th.bing.com/th/id/OIP.cSCTCMoEpXHDj6Xt1RXcgAHaNK?w=115&h=184&c=7&r=0&o=5&pid=1.7");
         var bgImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,
@@ -90,8 +102,8 @@ public class VBoxCategories extends VBox {
                 new BackgroundSize(1.0, 1.0, true, true, false, false)
         );
         
-        this.setBackground(new Background(bgImage));
-         */
+        this.setBackground(new Background(bgImage));*/
+         
         this.setSpacing(20);
         this.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
     }
@@ -102,6 +114,17 @@ public class VBoxCategories extends VBox {
 
     public void Choisir2() {
         this.main.setPagePrincipale(new VBoxEncheres(this.main));
+    }
+    
+    private void showAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Recherche");
+
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText("Aucun article ne correspond aux critères choisis!");
+
+        alert.showAndWait();
     }
 
 }
