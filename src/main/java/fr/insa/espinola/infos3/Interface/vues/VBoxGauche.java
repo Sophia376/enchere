@@ -4,6 +4,7 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import javafx.scene.layout.VBox;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Objets;
@@ -27,6 +28,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
 import javafx.scene.text.Font;
 
 /**
@@ -175,10 +177,24 @@ public class VBoxGauche extends VBox {
                 BackgroundPosition.DEFAULT,
                 new BackgroundSize(1.0, 1.0, true, true, false, false)
         );
+        var image1 = new Image("https://de-production.imgix.net/colors/browser/de6096.jpg");
+        var bgImage1 = new BackgroundImage(
+                image1,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                new BackgroundSize(1.0, 1.0, true, true, false, false)
+        );
 
         this.accordion.setPrefSize(200, 15);
         this.setBackground(new Background(bgImage));
-        //this.accordion.setBackground(new Background(bgImage));
+        this.accordion.setBackground(new Background(bgImage1));
+        JavaFXUtils.addSimpleBorder(this.accordion);
+        JavaFXUtils.addSimpleBorder(this.barrerecherche);
+        JavaFXUtils.addSimpleBorder(this.filtreprix);
+        JavaFXUtils.addSimpleBorder(this.accordion);
+        barre.setStyle("-fx-text-fill: black");
+        prix.setStyle("-fx-text-fill: black");
         barre.setFont(new Font("Roboto", 15));
         prix.setFont(new Font("Roboto", 15));
         this.accordion.setPrefSize(150, 20);

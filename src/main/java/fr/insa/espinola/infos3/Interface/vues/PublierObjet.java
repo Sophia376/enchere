@@ -23,6 +23,12 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -136,6 +142,18 @@ public class PublierObjet extends GridPane {
         this.add(this.date_fin, 1, lig);
         lig++;
         this.add(this.valider, 0, lig);
+        
+        
+        
+        /* var image = new Image("http://www.interinclusion.org/wp-content/uploads/2012/10/105876350-light-wave-1.1.jpg");
+        var bgImage = new BackgroundImage(
+        image,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundRepeat.NO_REPEAT,
+        BackgroundPosition.DEFAULT,
+        new BackgroundSize(1.0, 1.0, true, true, false, false)
+        );
+        this.setBackground(new Background(bgImage));*/
     }
     
     public int ChoisiCategorie(){

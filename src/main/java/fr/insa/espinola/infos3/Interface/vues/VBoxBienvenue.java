@@ -29,14 +29,14 @@ public class VBoxBienvenue extends VBox {
         this.setSpacing(100);
         this.setPadding(new javafx.geometry.Insets(150,200,15,330));
         
-        Label titre = new Label("                     Bienvenue sur Enchères2000");
-        Font font = Font.font("Baskerville",FontWeight.BOLD,  40);
+        Label titre = new Label("                   Bienvenue sur Enchères2000");
+        Font font = Font.font("Baskerville",FontWeight.BOLD,  35);
         titre.setTextFill(Color.rgb(255, 255, 255, 0.87));
         titre.setFont(font);
         titre.setAlignment(Pos.BASELINE_CENTER);
         
-        Label slogan = new Label("           \"Achetez-le pas cher, vendez-le aux enchères\" ");
-        Font font2 = Font.font("Baskerville",FontPosture.ITALIC,  40);
+        Label slogan = new Label("          \"Achetez-le pas cher, vendez-le aux enchères\" ");
+        Font font2 = Font.font("Baskerville",FontPosture.ITALIC,  35);
         slogan.setTextFill(Color.web("#999999"));
         slogan.setFont(font2);
         slogan.setAlignment(Pos.CENTER);

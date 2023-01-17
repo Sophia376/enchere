@@ -4,6 +4,7 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
+import fr.insa.espinola.infos3.Interface.JavaFXUtils;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Clients;
 import java.io.InputStream;
@@ -52,6 +53,7 @@ public class VBoxDroite extends VBox {
 
             Label label = new Label(Clients.ConversionEmailNPClient(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurEmail()));
             label.setFont(new Font("Roboto", 15));
+            label.setStyle("-fx-text-fill: black");
             imageView.setFitWidth(50); // fixer la largeur à 200 pixels
             imageView.setFitHeight(50); // fixer la hauteur à 200 pixels
             imageView.setPreserveRatio(true); // conserver le ratio de l'image
@@ -73,7 +75,8 @@ public class VBoxDroite extends VBox {
         );
         this.setBackground(new Background(bgImage));
         
-        
+        JavaFXUtils.addSimpleBorder(this.deconnexion);
+        JavaFXUtils.addSimpleBorder(this.propose);
         this.deconnexion.setPrefSize(120, 15);
         this.propose.setPrefSize(120, 15);
         this.deconnexion.setFont(new Font("Roboto", 13));

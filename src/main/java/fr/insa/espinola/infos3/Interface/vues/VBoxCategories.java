@@ -93,7 +93,7 @@ public class VBoxCategories extends VBox {
         }
 
         
-       /* var image = new Image("https://th.bing.com/th/id/OIP.ZmeSO0gTtZbUR6Lb2AecWQHaLH?pid=ImgDet&rs=1");
+        var image = new Image("https://de-production.imgix.net/colors/browser/de6096.jpg");
         var bgImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,
@@ -102,7 +102,7 @@ public class VBoxCategories extends VBox {
                 new BackgroundSize(1.0, 1.0, true, true, false, false)
         );
         
-        this.setBackground(new Background(bgImage));*/
+        this.setBackground(new Background(bgImage));
         this.setSpacing(20);
         this.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
     }
