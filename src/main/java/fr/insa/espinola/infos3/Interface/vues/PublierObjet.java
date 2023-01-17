@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
+import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
@@ -98,7 +99,7 @@ public class PublierObjet extends GridPane {
         });
         
         
-        
+        this.setAlignment(Pos.CENTER);
         this.valider.setOnAction((event) -> {
             int id = -1;
             

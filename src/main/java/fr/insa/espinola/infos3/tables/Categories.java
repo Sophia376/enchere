@@ -236,7 +236,7 @@ public class Categories {
         public static int ConversionIdCategorie2(Connection con, String nom) throws SQLException {
         int id = -1;
         try ( PreparedStatement pst = con.prepareStatement(
-                "select id from categories where nom = ? ")) {
+                "select id from categories where nom ILIKE '%?%' ")) {
             pst.setString(1, nom);
             ResultSet res = pst.executeQuery();
             while (res.next()) {

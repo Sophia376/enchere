@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -62,7 +63,7 @@ public class Inscription extends GridPane {
         this.retour.setOnAction((event) -> {
             this.main.setPagePrincipale(new AffichageBienvenue(this.main));
         });
-
+        this.setAlignment(Pos.CENTER);
         this.valider.setOnAction((event) -> {
             Connection con = this.main.getUtilisateurs().getConBdD();
             String nom = this.nom.getText();
@@ -103,7 +104,7 @@ public class Inscription extends GridPane {
 
         this.setHgap(5);
         this.setVgap(5);
-        this.setPadding(new Insets(20, 20, 20, 20));
+        //this.setPadding(new Insets(20, 20, 20, 20));
 
         emailL.setFont(new Font("Roboto", 17));
         passeL.setFont(new Font("Roboto", 17));

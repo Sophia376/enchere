@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -96,7 +97,7 @@ public class Connexion extends GridPane {
         
 
         this.setBackground(new Background(bgImage));
-
+        this.setAlignment(Pos.CENTER);
     }
 
     public void SeConnecter() {
