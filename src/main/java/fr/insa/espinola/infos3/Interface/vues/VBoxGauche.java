@@ -48,10 +48,10 @@ public class VBoxGauche extends VBox {
 
     public VBoxGauche(VuePrincipale main) throws SQLException {
         this.main = main;
-        this.barre = new Label("  Barre de Recherche");
+        this.barre = new Label(" Barre de Recherche ");
         this.barrerecherche = new TextField();
         this.vboxcategories = new VBoxCategories(this.main);
-        this.prix = new Label("         Prix Maximal");
+        this.prix = new Label(" Prix Maximal ");
         this.filtreprix = new TextField();
         this.accordion = new Accordion();
         TitledPane pane1 = new TitledPane("Categories", this.vboxcategories);
@@ -86,7 +86,7 @@ public class VBoxGauche extends VBox {
                 } else if (objets1.size() == objets2.size()) {
                     for (int j = 0; j < objets2.size(); j++) {
                         if (!(objets1.contains(objets2.get(j)))) {
-                            objets1.remove(objets1.get(j));
+                            objets1.remove(objets2.get(j));
                         }
                     }
                     objets = objets1;
