@@ -44,6 +44,8 @@ public class VBoxDroite extends VBox {
         this.setPadding(new javafx.geometry.Insets(20, 20, 20, 20));
         InputStream complet = this.getClass().getResourceAsStream("images/IconeProfil.png");
         ImageView imageView = new ImageView(new Image(complet));
+        InputStream complet1 = this.getClass().getResourceAsStream("images/Encheres.png");
+        ImageView imageView1 = new ImageView(new Image(complet1));
 
         this.propose = new ToggleButton("Publier un Objet");
         this.propose.setOnAction((event) -> {
@@ -54,9 +56,13 @@ public class VBoxDroite extends VBox {
             Label label = new Label(Clients.ConversionEmailNPClient(this.main.getUtilisateurs().getConBdD(), this.main.getUtilisateurs().getUtilisateurEmail()));
             label.setFont(new Font("Roboto", 15));
             label.setStyle("-fx-text-fill: black");
-            imageView.setFitWidth(50); // fixer la largeur à 200 pixels
-            imageView.setFitHeight(50); // fixer la hauteur à 200 pixels
-            imageView.setPreserveRatio(true); // conserver le ratio de l'image
+            imageView.setFitWidth(50); 
+            imageView.setFitHeight(50); 
+            imageView.setPreserveRatio(true); 
+            imageView1.setFitWidth(150); 
+            imageView1.setFitHeight(100); 
+            imageView1.setPreserveRatio(true); // 
+            this.getChildren().add(imageView1);
             this.getChildren().add(imageView);
             this.getChildren().add(label);
             this.getChildren().add(this.propose);
