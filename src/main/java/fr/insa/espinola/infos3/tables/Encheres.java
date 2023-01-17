@@ -287,7 +287,7 @@ public class Encheres {
                 select * 
                     from Encheres
                         join Objets on objets.id = encheres.sur
-                    where montant = prix and objets.id = ? 
+                    where (montant = prix and objets.id = ?) 
                 
                 """)) {
             pst.setInt(1, idObjet);
