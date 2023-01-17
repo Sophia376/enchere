@@ -48,10 +48,10 @@ public class VBoxGauche extends VBox {
 
     public VBoxGauche(VuePrincipale main) throws SQLException {
         this.main = main;
-        this.barre = new Label("Barre de Recherche");
+        this.barre = new Label("  Barre de Recherche");
         this.barrerecherche = new TextField();
         this.vboxcategories = new VBoxCategories(this.main);
-        this.prix = new Label("Prix Maximal");
+        this.prix = new Label("         Prix Maximal");
         this.filtreprix = new TextField();
         this.accordion = new Accordion();
         TitledPane pane1 = new TitledPane("Categories", this.vboxcategories);
@@ -167,7 +167,7 @@ public class VBoxGauche extends VBox {
         this.setSpacing(15);
         this.getChildren().addAll(this.barre, this.barrerecherche, this.accordion, this.prix, this.filtreprix);
 
-        var image = new Image("https://th.bing.com/th/id/OIP.cSCTCMoEpXHDj6Xt1RXcgAHaNK?w=115&h=184&c=7&r=0&o=5&pid=1.7");
+        var image = new Image("https://i.pinimg.com/originals/98/7c/0e/987c0e707590a70295a3801d01525530.jpg");
         var bgImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,
@@ -178,7 +178,7 @@ public class VBoxGauche extends VBox {
 
         this.accordion.setPrefSize(200, 15);
         this.setBackground(new Background(bgImage));
-        this.accordion.setBackground(new Background(bgImage));
+        //this.accordion.setBackground(new Background(bgImage));
         barre.setFont(new Font("Roboto", 15));
         prix.setFont(new Font("Roboto", 15));
         this.accordion.setPrefSize(150, 20);

@@ -70,8 +70,8 @@ public class Connexion extends GridPane {
 
         emailL.setFont(new Font("Roboto", 20));
         passL.setFont(new Font("Roboto", 19));
-        emailL.setStyle("-fx-text-fill: white");
-        passL.setStyle("-fx-text-fill: white");
+        emailL.setStyle("-fx-text-fill: black");
+        passL.setStyle("-fx-text-fill: black");
         emailL.setPrefWidth(150);
         passL.setPrefSize(150, 50);
 
@@ -82,7 +82,7 @@ public class Connexion extends GridPane {
             this.SeConnecter();
         });
 
-        var image = new Image("https://static.vecteezy.com/system/resources/previews/001/181/686/original/triangle-pattern-abstract-background-in-blue-vector.jpg");
+        var image = new Image("https://wallpapercave.com/wp/wp1915308.jpg");
         var bgImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,
@@ -93,6 +93,7 @@ public class Connexion extends GridPane {
 
         this.setPrefSize(main.getWidth(), main.getHeight());
         this.setMinSize(main.getWidth(), main.getHeight());
+        
 
         this.setBackground(new Background(bgImage));
 

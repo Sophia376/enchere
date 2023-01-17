@@ -4,7 +4,6 @@
  */
 package fr.insa.espinola.infos3.Interface.vues;
 
-import com.sun.prism.paint.Color;
 import fr.insa.espinola.infos3.Interface.VuePrincipale;
 import fr.insa.espinola.infos3.tables.Clients;
 import java.io.InputStream;
@@ -20,10 +19,8 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 /**
  *
@@ -66,7 +63,7 @@ public class VBoxDroite extends VBox {
         } catch (SQLException ex) {
 
         }
-        var image = new Image("https://th.bing.com/th/id/OIP.cSCTCMoEpXHDj6Xt1RXcgAHaNK?w=115&h=184&c=7&r=0&o=5&pid=1.7");
+        var image = new Image("https://i.pinimg.com/originals/98/7c/0e/987c0e707590a70295a3801d01525530.jpg");
         var bgImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,

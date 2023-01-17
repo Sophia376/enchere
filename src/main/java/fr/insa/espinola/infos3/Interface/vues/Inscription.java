@@ -105,11 +105,11 @@ public class Inscription extends GridPane {
         this.setVgap(5);
         this.setPadding(new Insets(20, 20, 20, 20));
 
-        emailL.setFont(new Font("Roboto", 15));
-        passeL.setFont(new Font("Roboto", 15));
-        nomL.setFont(new Font("Roboto", 15));
-        prenomL.setFont(new Font("Roboto", 15));
-        codeL.setFont(new Font("Roboto", 15));
+        emailL.setFont(new Font("Roboto", 17));
+        passeL.setFont(new Font("Roboto", 17));
+        nomL.setFont(new Font("Roboto", 17));
+        prenomL.setFont(new Font("Roboto", 17));
+        codeL.setFont(new Font("Roboto", 17));
 
         emailL.setStyle("-fx-text-fill: white");
         passeL.setStyle("-fx-text-fill: white");
@@ -120,7 +120,7 @@ public class Inscription extends GridPane {
         this.email.setPrefWidth(200);
         this.pass.setPrefWidth(200);
 
-        var image = new Image("https://static.vecteezy.com/system/resources/previews/001/181/686/original/triangle-pattern-abstract-background-in-blue-vector.jpg");
+        var image = new Image("https://images.fineartamerica.com/images/artworkimages/mediumlarge/1/yellow-fractel-david-lane.jpg");
         var bgImage = new BackgroundImage(
                 image,
                 BackgroundRepeat.NO_REPEAT,

@@ -23,7 +23,7 @@ public class AffichageBienvenue extends Pane{
         this.vbox = new VBoxBienvenue(this.main);
         
         
-        var image = new Image("https://img.freepik.com/photos-premium/fond-motifs-geometriques-pastel_53876-149767.jpg?w=1060");
+        var image = new Image("http://www.interinclusion.org/wp-content/uploads/2012/10/105876350-light-wave-1.1.jpg");
         var bgImage = new BackgroundImage(
         image,
         BackgroundRepeat.NO_REPEAT,
@@ -40,4 +40,4 @@ public class AffichageBienvenue extends Pane{
         
     }
     
-}
+}//https://img.freepik.com/photos-premium/fond-motifs-geometriques-pastel_53876-149767.jpg?w=1060

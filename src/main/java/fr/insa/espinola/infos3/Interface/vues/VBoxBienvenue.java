@@ -30,20 +30,20 @@ public class VBoxBienvenue extends VBox {
         this.setPadding(new javafx.geometry.Insets(150,200,15,330));
         
         Label titre = new Label("                     Bienvenue sur Enchères2000");
-        Font font = Font.font("Baskerville",FontWeight.BOLD,  35);
-        titre.setTextFill(Color.web("#000000"));
+        Font font = Font.font("Baskerville",FontWeight.BOLD,  40);
+        titre.setTextFill(Color.rgb(255, 255, 255, 0.87));
         titre.setFont(font);
         titre.setAlignment(Pos.BASELINE_CENTER);
         
         Label slogan = new Label("           \"Achetez-le pas cher, vendez-le aux enchères\" ");
-        Font font2 = Font.font("Baskerville",FontPosture.ITALIC,  35);
-        slogan.setTextFill(Color.web("#666666"));
+        Font font2 = Font.font("Baskerville",FontPosture.ITALIC,  40);
+        slogan.setTextFill(Color.web("#999999"));
         slogan.setFont(font2);
         slogan.setAlignment(Pos.CENTER);
         
         Label label = new Label("Veuillez vous connecter si vous possédez déjà un compte ou vous inscrire si vous êtes un nouvel utilisateur");
-        Font font1 = Font.font("Baskerville",FontWeight.BOLD,  20);
-        label.setTextFill(Color.web("#000000"));
+        Font font1 = Font.font("Baskerville",FontWeight.BOLD,  25);
+        label.setTextFill(Color.rgb(255, 255, 255, 0.87));
         label.setFont(font1);
         label.setAlignment(Pos.CENTER);
         this.getChildren().addAll(titre, slogan,label,this.boutons, this.logo);
